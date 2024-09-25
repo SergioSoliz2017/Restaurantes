@@ -23,7 +23,7 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/banner"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FactureroReparacionCelular"
+        android:theme="@style/Theme.Restaurantes"
         tools:targetApi="31">
 
         <provider
@@ -38,8 +38,21 @@
 
 
         <activity
-            android:name=".Inicio"
-            android:exported="false" />
+            android:name=".InicioSesion"
+            android:exported="false"
+        />
+        <activity
+            android:name=".PantallaPrincipal"
+            android:exported="false"
+            />
+        <activity
+            android:name=".Registro"
+            android:exported="false"
+            />
+        <activity
+            android:name=".RegistroRestaurante"
+            android:exported="false"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true">
