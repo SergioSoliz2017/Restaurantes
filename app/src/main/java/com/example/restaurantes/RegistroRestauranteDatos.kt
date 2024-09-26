@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.*  // Importar todo el layout de manera automática
+import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.*
 import java.util.Calendar
 
 class RegistroRestauranteDatos : Fragment() {
@@ -25,75 +26,49 @@ class RegistroRestauranteDatos : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ponerVisible()
-        dias()
+        gestionarHorarios()
+        //CrearLista()
     }
 
-    private fun dias() {
-        lunesAbre.setOnClickListener { ClickHora(lunesAbre) }
-        lunesCierra.setOnClickListener { ClickHora(lunesCierra) }
-        martesAbre.setOnClickListener { ClickHora(martesAbre) }
-        martesCierra.setOnClickListener { ClickHora(martesCierra) }
-        miercolesAbre.setOnClickListener { ClickHora(miercolesAbre) }
-        miercolesCierra.setOnClickListener { ClickHora(miercolesCierra) }
-        juevesAbre.setOnClickListener { ClickHora(juevesAbre) }
-        juevesCierra.setOnClickListener { ClickHora(juevesCierra) }
-        viernesAbre.setOnClickListener { ClickHora(viernesAbre) }
-        viernesCierra.setOnClickListener { ClickHora(viernesCierra) }
-        sabadoAbre.setOnClickListener { ClickHora(sabadoAbre) }
-        sabadoCierra.setOnClickListener { ClickHora(sabadoCierra) }
-        domingoAbre.setOnClickListener { ClickHora(domingoAbre) }
-        domingoCierra.setOnClickListener { ClickHora(domingoCierra) }
-    }
+    private fun gestionarHorarios() {
+        val dias = listOf(
+            Pair("Lunes", Pair(lunesAbre, lunesCierra)),
+            Pair("Martes", Pair(martesAbre, martesCierra)),
+            Pair("Miercoles", Pair(miercolesAbre, miercolesCierra)),
+            Pair("Jueves", Pair(juevesAbre, juevesCierra)),
+            Pair("Viernes", Pair(viernesAbre, viernesCierra)),
+            Pair("Sabado", Pair(sabadoAbre, sabadoCierra)),
+            Pair("Domingo", Pair(domingoAbre, domingoCierra))
+        )
 
-    private fun ponerVisible() {
-        Lunes?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                lineaLunes.visibility = View.VISIBLE
-            } else {
-                lineaLunes.visibility = View.INVISIBLE
+        dias.forEach { (dia, pair) ->
+            val (abre, cierra) = pair
+            abre.setOnClickListener { ClickHora(abre) }
+            cierra.setOnClickListener { ClickHora(cierra) }
+
+            val checkBox = when (dia) {
+                "Lunes" -> Lunes
+                "Martes" -> Martes
+                "Miercoles" -> Miercoles
+                "Jueves" -> Jueves
+                "Viernes" -> Viernes
+                "Sabado" -> Sabado
+                "Domingo" -> Domingo
+                else -> null
             }
-        }
-        Martes?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                lineaMartes.visibility = View.VISIBLE
-            } else {
-                lineaMartes.visibility = View.INVISIBLE
-            }
-        }
-        Miercoles?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                lineaMiercoles.visibility = View.VISIBLE
-            } else {
-                lineaMiercoles.visibility = View.INVISIBLE
-            }
-        }
-        Jueves?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                lineaJueves.visibility = View.VISIBLE
-            } else {
-                lineaJueves.visibility = View.INVISIBLE
-            }
-        }
-        Viernes?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                lineaViernes.visibility = View.VISIBLE
-            } else {
-                lineaViernes.visibility = View.INVISIBLE
-            }
-        }
-        Sabado?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                lineaSabado.visibility = View.VISIBLE
-            } else {
-                lineaSabado.visibility = View.INVISIBLE
-            }
-        }
-        Domingo?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                lineaDomingo.visibility = View.VISIBLE
-            } else {
-                lineaDomingo.visibility = View.INVISIBLE
+
+            checkBox?.setOnCheckedChangeListener { _, isChecked ->
+                val linea = when (dia) {
+                    "Lunes" -> lineaLunes
+                    "Martes" -> lineaMartes
+                    "Miercoles" -> lineaMiercoles
+                    "Jueves" -> lineaJueves
+                    "Viernes" -> lineaViernes
+                    "Sabado" -> lineaSabado
+                    "Domingo" -> lineaDomingo
+                    else -> null
+                }
+                linea?.visibility = if (isChecked) View.VISIBLE else View.INVISIBLE
             }
         }
     }
@@ -109,5 +84,11 @@ class RegistroRestauranteDatos : Fragment() {
             }, hora, minuto, true)
 
         timePickerDialog.show()
+    }
+
+    private fun CrearLista () {
+        if (Lunes.isChecked){
+            Toast.makeText(this.context, "funciona", Toast.LENGTH_SHORT).show()
+        }
     }
 }

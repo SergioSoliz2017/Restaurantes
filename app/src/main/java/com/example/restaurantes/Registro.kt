@@ -8,6 +8,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_inicio.usuario
 import kotlinx.android.synthetic.main.activity_registro.EsRestaurante
 import kotlinx.android.synthetic.main.activity_registro.NombreRegistro
 import kotlinx.android.synthetic.main.activity_registro.Registrar
@@ -30,7 +31,18 @@ class Registro : AppCompatActivity() {
             if (true){
 
                 if (EsRestaurante.isChecked){
-                    val inicio = Intent(this, RegistroRestaurante:: class.java)
+                    val user = Usuario(
+                        NombreRegistro.text.toString(),
+                        usuarioRegistro.text.toString(),
+                        contraseñaRegistro.text.toString(),
+                        fechaRegistro.text.toString(),
+                        true
+                    )
+
+                    val inicio = Intent(this, RegistroRestaurante::class.java).apply {
+                        putExtra("usuario", user)
+                    }
+
                     startActivity(inicio)
                     finish()
                 }else{
