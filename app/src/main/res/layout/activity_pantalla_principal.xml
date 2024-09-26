@@ -7,13 +7,55 @@
     tools:context=".PantallaPrincipal">
 
 
-    <TextView
-        android:id="@+id/textView5"
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="1dp" />
+
+    <Button
+        android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pantalla inicio"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Ofertas"
+        app:layout_constraintStart_toStartOf="@+id/bottomAppBar"
+        tools:layout_editor_absoluteY="665dp" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="busqueda"
+        app:layout_constraintEnd_toStartOf="@+id/button6"
+        app:layout_constraintStart_toEndOf="@+id/button4"
+        tools:layout_editor_absoluteY="666dp" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Perfil"
+        app:layout_constraintEnd_toEndOf="@+id/bottomAppBar"
+        tools:layout_editor_absoluteY="668dp" />
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="409dp"
+        android:layout_height="53dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Foodable"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp" />
+
+    <FrameLayout
+        android:layout_width="409dp"
+        android:layout_height="595dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="55dp">
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
