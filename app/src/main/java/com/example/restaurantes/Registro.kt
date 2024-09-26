@@ -27,7 +27,7 @@ class Registro : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         fecha()
         Registrar.setOnClickListener {
-            if (Verificar()){
+            if (true){
 
                 if (EsRestaurante.isChecked){
                     val inicio = Intent(this, RegistroRestaurante:: class.java)
