@@ -1,13 +1,24 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
+    <!-- Tema Base SIN ActionBar -->
     <style name="Base.Theme.Restaurantes" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Personaliza tu tema aquí (colores, tipografía, etc.) -->
+        <!-- Ejemplo de personalización de colores:
+        <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <!-- Tema Base CON ActionBar -->
+    <style name="Base.Theme.Restaurantes.WithActionBar" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/white</item> <!-- Color del tema -->
+        <item name="colorOnPrimary">@color/black</item>
+    </style>
+
+    <!-- Tema heredado, en caso de que quieras usar un nombre común para tus temas base -->
     <style name="Theme.Restaurantes" parent="Base.Theme.Restaurantes" />
-    
+
+    <!-- Personalización para un indicador activo en BottomNavigationView -->
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/white</item>
     </style>
+
 </resources>
