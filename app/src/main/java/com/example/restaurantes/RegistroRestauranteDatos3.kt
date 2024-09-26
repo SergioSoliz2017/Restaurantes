@@ -33,14 +33,12 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflar el layout para este fragmento
         return inflater.inflate(R.layout.fragment_registro_restaurante_datos3, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Obtener el SupportMapFragment y notificar cuando el mapa esté listo
         val mapFragment = childFragmentManager.findFragmentById(R.id.Mapa) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
@@ -50,14 +48,10 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
         this.mMap.setOnMapClickListener(this)
         this.mMap.setOnMapLongClickListener(this)
 
-        // Verifica si se tienen permisos para acceder a la ubicación
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Solicita permisos
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
             return
         }
-
-        // Obtiene la ubicación actual
         obtenerUbicacionActual()
     }
 
@@ -66,7 +60,6 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
             return
         }
 
-        // Obtén la última ubicación conocida
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             if (location != null) {
                 val ubicacionActual = LatLng(location.latitude, location.longitude)
@@ -77,11 +70,9 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
     }
 
     override fun onMapClick(p0: LatLng) {
-        // Implementa tu lógica al hacer clic en el mapa
     }
 
     override fun onMapLongClick(p0: LatLng) {
-        // Implementa tu lógica al hacer una larga presión en el mapa
     }
 
     // Manejo de permisos
@@ -89,7 +80,6 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                // Permiso otorgado, obtén la ubicación
                 obtenerUbicacionActual()
             }
         }

@@ -41,24 +41,20 @@ class InicioSesion : AppCompatActivity() {
         val text1 = "No tienes cuenta "
         val text2 = "Regístrate"
 
-        // Combina los textos
         val spannable = SpannableString("$text1$text2")
 
-        // Aplica color al primer texto (negro)
         spannable.setSpan(
             ForegroundColorSpan(Color.parseColor("#646464")),
             0, text1.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
-        // Aplica color al segundo texto (naranja)
         spannable.setSpan(
             ForegroundColorSpan(Color.parseColor("#EF9106")),
             text1.length, spannable.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
-        // Asigna el texto al TextView
         textoRegistrate.text = spannable
     }
     private val GOOGLE = 100

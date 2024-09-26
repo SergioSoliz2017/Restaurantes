@@ -20,7 +20,6 @@ class RegistroRestauranteDatos : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_registro_restaurante_datos, container, false)
     }
 
@@ -104,10 +103,8 @@ class RegistroRestauranteDatos : Fragment() {
         val hora = calendario.get(Calendar.HOUR_OF_DAY)
         val minuto = calendario.get(Calendar.MINUTE)
 
-        // Mostrar el TimePickerDialog
         val timePickerDialog = TimePickerDialog(context,
             { _, selectedHour, selectedMinute ->
-                // Formatear la hora seleccionada y establecerla en el EditText
                 edit.setText(String.format("%02d:%02d", selectedHour, selectedMinute))
             }, hora, minuto, true)
 

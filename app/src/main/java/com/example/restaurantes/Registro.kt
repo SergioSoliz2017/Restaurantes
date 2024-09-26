@@ -54,29 +54,21 @@ class Registro : AppCompatActivity() {
 
     private fun fecha () {
         fechaRegistro.setOnClickListener {
-            // Obtener la fecha actual para inicializar el DatePicker
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-            // Crear el DatePickerDialog
             val datePickerDialog =
                 DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
-                    // La fecha seleccionada
                     val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-                    // Asignar la fecha seleccionada al EditText
                     fechaRegistro.setText(selectedDate)
                 }, year, month, day)
-
-            // Mostrar el DatePickerDialog
             datePickerDialog.show()
         }
     }
     private fun Verificar(): Boolean {
         var verificado = true
 
-        // Validación de correo
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         val correo = usuarioRegistro.text.toString()
         if (correo.isEmpty()) {
@@ -89,7 +81,6 @@ class Registro : AppCompatActivity() {
                 MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null)
         }
 
-        // Validación de contraseña
         val contraseña = contraseñaRegistro.text.toString()
         if (contraseña.isEmpty()) {
             verificado = false
@@ -101,7 +92,6 @@ class Registro : AppCompatActivity() {
                 MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null)
         }
 
-        // Validación de nombre
         val nombre = NombreRegistro.text.toString()
         if (nombre.isEmpty()) {
             verificado = false
@@ -113,7 +103,6 @@ class Registro : AppCompatActivity() {
                 MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null)
         }
 
-        // Validación de fecha de nacimiento
         val fecha = fechaRegistro.text.toString()
         if (fecha.isEmpty()) {
             verificado = false
@@ -123,6 +112,4 @@ class Registro : AppCompatActivity() {
 
         return verificado
     }
-
-
 }

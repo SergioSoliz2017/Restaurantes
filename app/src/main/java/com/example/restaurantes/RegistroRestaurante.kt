@@ -41,11 +41,10 @@ class RegistroRestaurante : AppCompatActivity() {
                     }
                     3 -> {
                         abrirFragment(registro3)
-                        Adelante.text = "Registrar" // Cambia el texto a "Registrar" cuando estés en el fragmento 3
+                        Adelante.text = "Registrar"
                     }
                 }
             } else {
-                // Cuando llega al fragmento 3, inicia la nueva actividad
                 val inicio = Intent(this, PantallaPrincipal::class.java)
                 startActivity(inicio)
                 finish()
@@ -70,7 +69,6 @@ class RegistroRestaurante : AppCompatActivity() {
     }
 
     private fun actualizarBotonAtras() {
-        // Mostrar/ocultar el botón Atras según el valor de numero
         Atras.visibility = if (numero > 1) View.VISIBLE else View.GONE
     }
     private fun abrirFragment(fragment: Fragment) {

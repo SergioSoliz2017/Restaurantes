@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(inicio)
             //finish()
         }
-
     }
-
 
 }
