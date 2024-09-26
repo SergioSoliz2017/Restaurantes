@@ -8,8 +8,10 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
@@ -77,46 +79,42 @@ class InicioSesion : AppCompatActivity() {
                 }
             }
         }
+        val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        googleClient = GoogleSignIn.getClient(this, googleConf)
         BotonGoogle.setOnClickListener {
-            val googleConfig = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-            val googleClient = GoogleSignIn.getClient(this,googleConfig)
             googleClient.signOut()
-            startActivityForResult(googleClient.signInIntent,GOOGLE)
+            googleSignIn.launch(googleClient.signInIntent)
         }
     }
+    private lateinit var googleClient: GoogleSignInClient
+    private val googleSignIn = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            if (account != null){
+                val credential = GoogleAuthProvider.getCredential(account.idToken,null)
+                FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+                    if (it.isSuccessful){
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == GOOGLE){
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                if (account != null){
-                    val credential = GoogleAuthProvider.getCredential(account.idToken,null)
-                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
-                        if (it.isSuccessful){
-                            Log.d("TAG", "Entraaa")
-                            val inicio = Intent(this, PantallaPrincipal:: class.java)
-                            startActivity(inicio)
-                            MotionToast.createToast(this,"Operacion Exitosa", "Inicio exitoso",MotionToast.TOAST_SUCCESS,
-                                MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
-                            finish()
-                        }else{
-                            MotionToast.createToast(this,"Operacion Fallida", "Algo salio mal",MotionToast.TOAST_ERROR,
-                                MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
-                        }
+                        val inicio = Intent(this, PantallaPrincipal:: class.java)
+                        startActivity(inicio)
+                        MotionToast.createToast(this,"Operacion Exitosa", "Inicio exitoso",MotionToast.TOAST_SUCCESS,
+                            MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
+
+                    }else{
+                        MotionToast.createToast(this,"Operacion Fallida", "Algo salio mal",MotionToast.TOAST_ERROR,
+                            MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
                     }
                 }
-            }catch (e: ApiException){
-                MotionToast.createToast(this,"Operacion Fallida", "Algo salio mal",MotionToast.TOAST_ERROR,
-                    MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
             }
-
+        }catch (e: ApiException){
+            MotionToast.createToast(this,"Operacion Fallida", "Algo salio mal",MotionToast.TOAST_ERROR,
+                MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
+            }
         }
-    }
     private fun Verificar (): Boolean {
         var verificado = true;
         if (usuario.text.toString().isEmpty()){
