@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -20,16 +22,21 @@ import java.util.Calendar
 
 class Registro : AppCompatActivity() {
 
+    private lateinit var email: String
+    private lateinit var nombre: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        email = intent.getStringExtra("email") ?: ""
+        nombre = intent.getStringExtra("nombre") ?: ""
+        usuarioRegistro.setText(email)
+        NombreRegistro.setText(nombre)
         fecha()
         Registrar.setOnClickListener {
-            if (true){
-
+            if (Verificar()){
                 if (EsRestaurante.isChecked){
                     val user = Usuario(
                         NombreRegistro.text.toString(),

@@ -12,7 +12,6 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Adelante2
-import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Atras1
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Carne
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.ComidaRapida
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Desayuno
@@ -49,9 +48,7 @@ class RegistroRestauranteDatos2 : Fragment() {
             (activity as RegistroRestaurante).agregarCategoria(obtenerCategorias())
             (activity as RegistroRestaurante).cambiarFragmento(3)
         }
-        Atras1.setOnClickListener {
-            (activity as RegistroRestaurante).cambiarFragmento(1)
-        }
+
     }
     private fun abrirGaleria() {
         val intent = Intent(Intent.ACTION_PICK)

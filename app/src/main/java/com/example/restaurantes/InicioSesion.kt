@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_inicio.BotonGoogle
 import kotlinx.android.synthetic.main.activity_inicio.contraseña
 import kotlinx.android.synthetic.main.activity_inicio.entrar
@@ -86,31 +87,51 @@ class InicioSesion : AppCompatActivity() {
         }
     }
     private lateinit var googleClient: GoogleSignInClient
+
     private val googleSignIn = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
-            if (account != null){
-                val credential = GoogleAuthProvider.getCredential(account.idToken,null)
-                FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
-                    if (it.isSuccessful){
-
-                        val inicio = Intent(this, PantallaPrincipal:: class.java)
-                        startActivity(inicio)
-                        MotionToast.createToast(this,"Operacion Exitosa", "Inicio exitoso",MotionToast.TOAST_SUCCESS,
-                            MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
-
-                    }else{
-                        MotionToast.createToast(this,"Operacion Fallida", "Algo salio mal",MotionToast.TOAST_ERROR,
-                            MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
+            if (account != null) {
+                val email = account.email
+                // Verificar si el correo está registrado en Firestore
+                val firestore = FirebaseFirestore.getInstance()
+                firestore.collection("Usuarios").document(email.toString()).get().addOnCompleteListener { documentTask ->
+                    if (documentTask.isSuccessful) {
+                        val document = documentTask.result
+                        if (document != null && document.exists()) {
+                            // El correo está registrado, iniciar sesión con Firebase
+                            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                            FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    val inicio = Intent(this, PantallaPrincipal::class.java)
+                                    startActivity(inicio)
+                                    MotionToast.createToast(this, "Operación Exitosa", "Inicio exitoso", MotionToast.TOAST_SUCCESS,
+                                        MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null)
+                                } else {
+                                    MotionToast.createToast(this, "Operación Fallida", "Algo salió mal", MotionToast.TOAST_ERROR,
+                                        MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null)
+                                }
+                            }
+                        } else {
+                            // El correo no está registrado, redirigir a la pantalla de registro
+                            val registroIntent = Intent(this, Registro::class.java).apply {
+                                putExtra("email", email)
+                                putExtra("nombre", account.displayName)
+                            }
+                            startActivity(registroIntent)
+                        }
+                    } else {
+                        MotionToast.createToast(this, "Operación Fallida", "Error al consultar Firestore", MotionToast.TOAST_ERROR,
+                            MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null)
                     }
                 }
             }
         }catch (e: ApiException){
             MotionToast.createToast(this,"Operacion Fallida", "Algo salio mal",MotionToast.TOAST_ERROR,
                 MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
-            }
         }
+    }
     private fun Verificar (): Boolean {
         var verificado = true;
         if (usuario.text.toString().isEmpty()){

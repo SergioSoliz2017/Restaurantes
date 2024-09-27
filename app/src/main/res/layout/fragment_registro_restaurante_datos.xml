@@ -63,7 +63,7 @@
             android:drawablePadding="10dp"
             android:ems="10"
             android:hint=""
-            android:inputType="text"
+            android:inputType="number"
             android:paddingLeft="10dp"
             android:textSize="20sp"
             tools:ignore="MissingConstraints" />

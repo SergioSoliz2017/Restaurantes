@@ -24,7 +24,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos3.Adelante3
-import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos3.Atras3
 
 
 class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener,
@@ -98,9 +97,7 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
                     }
                 }
         }
-        Atras3.setOnClickListener {
-            (activity as RegistroRestaurante).cambiarFragmento(2)
-        }
+
     }
 
     fun convertirHorariosAHashMap(listaHorarios: ArrayList<Horario>): List<HashMap<String, String>> {

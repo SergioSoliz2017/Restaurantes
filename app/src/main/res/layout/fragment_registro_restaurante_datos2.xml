@@ -139,18 +139,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-
-            <Button
-                android:id="@+id/Atras1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="30dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/black"
-                android:text="Atras"/>
-
             <Button
                 android:id="@+id/Adelante2"
                 android:layout_width="wrap_content"
