@@ -33,6 +33,7 @@ class RegistroRestauranteDatos : Fragment() {
             val celular = celularReferencia.text.toString()
             (activity as RegistroRestaurante).agregarRestaurante(nombre, celular)
             (activity as RegistroRestaurante).cambiarFragmento(2)
+            (activity as RegistroRestaurante).agregarHorario(obtenerHorarios())
         }
     }
 
@@ -90,5 +91,53 @@ class RegistroRestauranteDatos : Fragment() {
             }, hora, minuto, true)
 
         timePickerDialog.show()
+    }
+
+    fun obtenerHorarios(): ArrayList<Horario> {
+        val listaHorarios = ArrayList<Horario>()
+
+        if (Lunes.isChecked) {
+            val abrir = lunesAbre.text.toString()
+            val cerrar = lunesCierra.text.toString()
+            val horarioLunes = Horario("Lunes", abrir, cerrar)
+            listaHorarios.add(horarioLunes)
+        }
+        if (Martes.isChecked) {
+            val abrir = martesAbre.text.toString()
+            val cerrar = martesCierra.text.toString()
+            val horarioLunes = Horario("Martes", abrir, cerrar)
+            listaHorarios.add(horarioLunes)
+        }
+        if (Miercoles.isChecked) {
+            val abrir = miercolesAbre.text.toString()
+            val cerrar = miercolesCierra.text.toString()
+            val horarioLunes = Horario("Miercoles", abrir, cerrar)
+            listaHorarios.add(horarioLunes)
+        }
+        if (Jueves.isChecked) {
+            val abrir = juevesAbre.text.toString()
+            val cerrar = juevesCierra.text.toString()
+            val horarioLunes = Horario("Jueves", abrir, cerrar)
+            listaHorarios.add(horarioLunes)
+        }
+        if (Viernes.isChecked) {
+            val abrir = viernesAbre.text.toString()
+            val cerrar = viernesCierra.text.toString()
+            val horarioLunes = Horario("Viernes", abrir, cerrar)
+            listaHorarios.add(horarioLunes)
+        }
+        if (Sabado.isChecked) {
+            val abrir = sabadoAbre.text.toString()
+            val cerrar = sabadoCierra.text.toString()
+            val horarioLunes = Horario("Sabado", abrir, cerrar)
+            listaHorarios.add(horarioLunes)
+        }
+        if (Domingo.isChecked) {
+            val abrir = domingoAbre.text.toString()
+            val cerrar = domingoCierra.text.toString()
+            val horarioLunes = Horario("Domingo", abrir, cerrar)
+            listaHorarios.add(horarioLunes)
+        }
+        return listaHorarios
     }
 }

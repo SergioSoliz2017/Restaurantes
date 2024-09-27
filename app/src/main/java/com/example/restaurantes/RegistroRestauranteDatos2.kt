@@ -13,8 +13,14 @@ import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Adelante2
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Atras1
+import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Carne
+import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.ComidaRapida
+import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Desayuno
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.ImagenLogoRe
+import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Pollo
+import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Postre
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.SubirLogo
+import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Vegano
 
 
 class RegistroRestauranteDatos2 : Fragment() {
@@ -38,8 +44,9 @@ class RegistroRestauranteDatos2 : Fragment() {
             abrirGaleria()
         }
         Adelante2.setOnClickListener {
-            val logo = "inganePorlo"
-            (activity as RegistroRestaurante).agregarLogo(logo)
+            val logo = uri
+            (activity as RegistroRestaurante).agregarLogo(logo!!)
+            (activity as RegistroRestaurante).agregarCategoria(obtenerCategorias())
             (activity as RegistroRestaurante).cambiarFragmento(3)
         }
         Atras1.setOnClickListener {
@@ -61,5 +68,28 @@ class RegistroRestauranteDatos2 : Fragment() {
             }
         }
     }
+    fun obtenerCategorias (): ArrayList<String>  {
+        val listaCategoria = ArrayList<String>()
+        if(Carne.isChecked){
+            listaCategoria.add("Carne")
+        }
+        if(Pollo.isChecked){
+            listaCategoria.add("Pollo")
+        }
+        if(Vegano.isChecked){
+            listaCategoria.add("Vegano")
+        }
+        if(Postre.isChecked){
+            listaCategoria.add("Postre")
+        }
+        if(Desayuno.isChecked){
+            listaCategoria.add("Desayuno")
+        }
+        if(ComidaRapida.isChecked){
+            listaCategoria.add("ComidaRapida")
+        }
+        return listaCategoria
+    }
+
 }
 

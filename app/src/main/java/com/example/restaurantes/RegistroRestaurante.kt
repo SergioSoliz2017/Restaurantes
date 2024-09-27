@@ -2,11 +2,13 @@ package com.example.restaurantes
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.celularReferencia
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.nombreRestaurante
@@ -55,11 +57,17 @@ class RegistroRestaurante : AppCompatActivity() {
         restaurante.celularreferencia = celular
     }
 
-    fun agregarLogo(logo: String) {
+    fun agregarLogo(logo: Uri) {
         restaurante.logo = logo
     }
+    fun agregarHorario(horario: ArrayList<Horario>) {
+        restaurante.horarioAtencion = horario
+    }
+    fun agregarCategoria(categoria: ArrayList<String>) {
+        restaurante.categoria = categoria
+    }
 
-    fun agregarUbicacion(ubicacion: String) {
+    fun agregarUbicacion(ubicacion: LatLng) {
         restaurante.ubicacion = ubicacion
     }
 

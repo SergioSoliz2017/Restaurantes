@@ -1,14 +1,13 @@
 package com.example.restaurantes
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -18,11 +17,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos3.Adelante3
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos3.Atras3
-import www.sanju.motiontoast.MotionToast
+
 
 class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener,
     GoogleMap.OnMapLongClickListener {
@@ -45,6 +48,11 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
     ): View? {
         return inflater.inflate(R.layout.fragment_registro_restaurante_datos3, container, false)
     }
+    lateinit var storageReference : StorageReference
+    private var marcador: Marker? = null
+    private var ubicacionSeleccionada: LatLng? = null
+    private var marcadorActual: Marker? = null
+    private var ubicacionActual: LatLng? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,41 +60,58 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
         val mapFragment = childFragmentManager.findFragmentById(R.id.Mapa) as SupportMapFragment
         mapFragment.getMapAsync(this)
         Adelante3.setOnClickListener {
-            val ubicacion = "me invento"
+            val ubicacion : LatLng = (ubicacionSeleccionada ?: ubicacionActual)!!
             (activity as RegistroRestaurante).agregarUbicacion(ubicacion)
             arguments?.let {
                 usuario = it.getParcelable("usuario")!!
             }
             val restaurante = (activity as RegistroRestaurante).restaurante
+            val horariosMap = convertirHorariosAHashMap(restaurante.horarioAtencion)
+
             Adelante3.isEnabled = false;
-            db.collection("Usuarios").document(usuario.correo.toString()).set(
-                hashMapOf(
-                    "Nombre" to usuario?.nombre.toString(),
-                    "Contraseña" to usuario?.contraseña.toString(),
-                    "FechaNacimiento" to usuario?.fechaNacimiento.toString(),
-                    "TieneRestaurante" to true,
-                )
-            )
-            db.collection("Restaurante").document(restaurante.nombreRestaurante).set(
-                hashMapOf(
-                    "nombreRestaurante" to restaurante.nombreRestaurante,
-                    "celularReferencia" to restaurante.celularreferencia,
-                    "logo" to restaurante.logo,
-                    "ubicacion" to restaurante.ubicacion
-                )
-            )
-            (activity as RegistroRestaurante).mostrar()
-            val inicio = Intent(this.context,PantallaPrincipal::class.java)
-            startActivity(inicio)
-            requireActivity().finish()
+            storageReference = FirebaseStorage.getInstance().getReference("Restaurante/${restaurante.nombreRestaurante}")
+            storageReference.putFile(restaurante.logo).addOnSuccessListener {snapshot->
+                val uriTask : Task<Uri> = snapshot.getStorage().getDownloadUrl()
+                uriTask.addOnSuccessListener {uri->
+                    db.collection("Usuarios").document(usuario.correo.toString()).set(
+                        hashMapOf(
+                            "Nombre" to usuario?.nombre.toString(),
+                            "Contraseña" to usuario?.contraseña.toString(),
+                            "FechaNacimiento" to usuario?.fechaNacimiento.toString(),
+                            "TieneRestaurante" to true,
+                        )
+                    )
+                    db.collection("Restaurante").document(restaurante.nombreRestaurante).set(
+                        hashMapOf(
+                            "nombreRestaurante" to restaurante.nombreRestaurante,
+                            "celularReferencia" to restaurante.celularreferencia,
+                            "logo" to restaurante.logo.toString(),
+                            "ubicacion" to restaurante.ubicacion,
+                            "horarioAtencion" to horariosMap,
+                            "categoria" to restaurante.categoria
+                        )
+                    )
+                    (activity as RegistroRestaurante).mostrar()
+                    val inicio = Intent(this.context,PantallaPrincipal::class.java)
+                    startActivity(inicio)
+                    requireActivity().finish()
+                    }
+                }
         }
-
-
         Atras3.setOnClickListener {
             (activity as RegistroRestaurante).cambiarFragmento(2)
         }
     }
 
+    fun convertirHorariosAHashMap(listaHorarios: ArrayList<Horario>): List<HashMap<String, String>> {
+        return listaHorarios.map { horario ->
+            hashMapOf(
+                "dia" to horario.Dia,
+                "abrir" to horario.Abrir,
+                "cerrar" to horario.Cerrar
+            )
+        }
+    }
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         this.mMap.setOnMapClickListener(this)
@@ -106,21 +131,42 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             if (location != null) {
-                val ubicacionActual = LatLng(location.latitude, location.longitude)
-                mMap.addMarker(MarkerOptions().position(ubicacionActual).title("Ubicación Actual"))
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual, 15f)) // Zoom nivel 15
+                ubicacionActual = LatLng(location.latitude, location.longitude)
+
+                // Si ya hay un marcador de ubicación actual, lo eliminamos
+                if (marcadorActual != null) {
+                    marcadorActual!!.remove()
+                }
+
+                // Agregar el marcador de la ubicación actual
+                marcadorActual = mMap.addMarker(MarkerOptions().position(ubicacionActual!!).title("Ubicación Actual"))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual!!, 15f)) // Zoom nivel 15
             }
         }
     }
 
-    override fun onMapClick(p0: LatLng) {
+    override fun onMapClick(latLng: LatLng) {
+        // Si ya hay un marcador de ubicación seleccionada, lo movemos
+        if (marcador != null) {
+            marcador!!.position = latLng
+        } else {
+            // Si no hay marcador, creamos uno nuevo
+            marcador = mMap.addMarker(MarkerOptions().position(latLng).title("Ubicación seleccionada"))
+        }
+
+        // Guardar la nueva ubicación
+        ubicacionSeleccionada = latLng
+
+        // Eliminar el marcador de la ubicación actual
+        if (marcadorActual != null) {
+            marcadorActual!!.remove()
+            marcadorActual = null
+        }
     }
 
     override fun onMapLongClick(p0: LatLng) {
-
     }
 
-    // Manejo de permisos
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
