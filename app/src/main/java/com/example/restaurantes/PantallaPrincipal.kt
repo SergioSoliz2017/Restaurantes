@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_pantalla_principal.Buscar
+import kotlinx.android.synthetic.main.activity_pantalla_principal.bottomNavigationView
 import www.sanju.motiontoast.MotionToast
 
 class PantallaPrincipal : AppCompatActivity() {
@@ -24,9 +26,41 @@ class PantallaPrincipal : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         title= "FOOTABLE"
 
-        if (savedInstanceState == null) {
-            cargarFragmento(Ofertas()) // Cargar el fragmento al iniciar la actividad
+        abrirFragment (Ofertas())
+        bottomNavigationView.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.Ofertas -> {
+                    abrirFragment (Ofertas())
+                    true
+                }
+                R.id.MisOfertas -> {
+                        abrirFragment (MisOfertas())
+                    true
+                }
+                R.id.MiRestaurante -> {
+                        abrirFragment (MiRestaurante())
+                    true
+                }
+                R.id.Perfil -> {
+                        abrirFragment (Perfil())
+                    true
+                }
+
+                else -> false
+            }
         }
+        Buscar.setOnClickListener {
+            abrirFragment (Busqueda())
+        }
+    }
+
+    private fun abrirFragment(fragment: Fragment) {
+        //val bundle = Bundle()
+        //bundle.putString("nombreUsuario", user)
+        //fragment.arguments = bundle
+        val transaccion = supportFragmentManager.beginTransaction()
+        transaccion.replace(R.id.containerView,fragment)
+        transaccion.commit()
     }
 
     private fun cargarFragmento(fragment: Fragment) {

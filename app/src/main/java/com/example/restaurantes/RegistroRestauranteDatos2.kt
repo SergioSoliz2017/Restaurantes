@@ -36,14 +36,14 @@ class RegistroRestauranteDatos2 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         SubirLogo.setOnClickListener {
             abrirGaleria()
-            Adelante2.setOnClickListener {
-                val logo = "inganePorlo"
-                (activity as RegistroRestaurante).agregarLogo(logo)
-                (activity as RegistroRestaurante).cambiarFragmento(3)
-            }
-            Atras1.setOnClickListener {
-                (activity as RegistroRestaurante).cambiarFragmento(1)
-            }
+        }
+        Adelante2.setOnClickListener {
+            val logo = "inganePorlo"
+            (activity as RegistroRestaurante).agregarLogo(logo)
+            (activity as RegistroRestaurante).cambiarFragmento(3)
+        }
+        Atras1.setOnClickListener {
+            (activity as RegistroRestaurante).cambiarFragmento(1)
         }
     }
     private fun abrirGaleria() {

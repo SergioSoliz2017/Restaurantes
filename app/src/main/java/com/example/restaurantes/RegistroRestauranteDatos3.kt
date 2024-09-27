@@ -54,12 +54,11 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
         Adelante3.setOnClickListener {
             val ubicacion = "me invento"
             (activity as RegistroRestaurante).agregarUbicacion(ubicacion)
-
             arguments?.let {
                 usuario = it.getParcelable("usuario")!!
             }
-
             val restaurante = (activity as RegistroRestaurante).restaurante
+            Adelante3.isEnabled = false;
             db.collection("Usuarios").document(usuario.correo.toString()).set(
                 hashMapOf(
                     "Nombre" to usuario?.nombre.toString(),
@@ -67,49 +66,19 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
                     "FechaNacimiento" to usuario?.fechaNacimiento.toString(),
                     "TieneRestaurante" to true,
                 )
-            ).addOnSuccessListener {
-                db.collection("Restaurante").document(restaurante.nombreRestaurante).set(
-                    hashMapOf(
-                        "nombreRestaurante" to restaurante.nombreRestaurante,
-                        "celularReferencia" to restaurante.celularreferencia,
-                        "logo" to restaurante.logo,
-                        "ubicacion" to restaurante.ubicacion
-                    )
-                ).addOnSuccessListener {
-                    val inicio = Intent(this.context, InicioSesion::class.java)
-                    startActivity(inicio)
-                    MotionToast.createToast(
-                        requireActivity(),
-                        "Operación Exitosa",
-                        "Registro exitoso",
-                        MotionToast.TOAST_SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                    requireActivity().finish()
-                }.addOnFailureListener {
-                    MotionToast.createToast(
-                        requireActivity(),
-                        "Error",
-                        "Error al registrar el restaurante",
-                        MotionToast.TOAST_ERROR,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,
-                        null
-                    )
-                }
-            }.addOnFailureListener {
-                MotionToast.createToast(
-                    requireActivity(),
-                    "Error",
-                    "Error al registrar el usuario",
-                    MotionToast.TOAST_ERROR,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.LONG_DURATION,
-                    null
+            )
+            db.collection("Restaurante").document(restaurante.nombreRestaurante).set(
+                hashMapOf(
+                    "nombreRestaurante" to restaurante.nombreRestaurante,
+                    "celularReferencia" to restaurante.celularreferencia,
+                    "logo" to restaurante.logo,
+                    "ubicacion" to restaurante.ubicacion
                 )
-            }
+            )
+            (activity as RegistroRestaurante).mostrar()
+            val inicio = Intent(this.context,PantallaPrincipal::class.java)
+            startActivity(inicio)
+            requireActivity().finish()
         }
 
 

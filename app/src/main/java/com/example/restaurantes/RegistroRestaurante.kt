@@ -67,4 +67,8 @@ class RegistroRestaurante : AppCompatActivity() {
         numeroFragmento = nuevoNumero
         mostrarFragmento(numeroFragmento)
     }
+    fun mostrar() {
+        MotionToast.createToast(this,"Operacion Exitosa", "Registro exitoso",MotionToast.TOAST_SUCCESS,
+            MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
+    }
 }
