@@ -11,6 +11,8 @@ import android.widget.ImageView
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Adelante2
+import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Atras1
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.ImagenLogoRe
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.SubirLogo
 
@@ -34,6 +36,14 @@ class RegistroRestauranteDatos2 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         SubirLogo.setOnClickListener {
             abrirGaleria()
+            Adelante2.setOnClickListener {
+                val logo = "inganePorlo"
+                (activity as RegistroRestaurante).agregarLogo(logo)
+                (activity as RegistroRestaurante).cambiarFragmento(3)
+            }
+            Atras1.setOnClickListener {
+                (activity as RegistroRestaurante).cambiarFragmento(1)
+            }
         }
     }
     private fun abrirGaleria() {
@@ -47,7 +57,7 @@ class RegistroRestauranteDatos2 : Fragment() {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             uri = data.data // Obtiene la URI de la imagen seleccionada
             if (uri != null) {
-                Picasso.get().load(uri).into(ImagenLogoRe) // Cargar la imagen en el ImageView
+                Picasso.get().load(uri).into(ImagenLogoRe)
             }
         }
     }

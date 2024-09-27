@@ -1,12 +1,12 @@
 package com.example.restaurantes
 
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.*
 import java.util.Calendar
@@ -24,10 +24,16 @@ class RegistroRestauranteDatos : Fragment() {
         return inflater.inflate(R.layout.fragment_registro_restaurante_datos, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         gestionarHorarios()
-        //CrearLista()
+        Adelante1.setOnClickListener{
+            val nombre = nombreRestaurante.text.toString()
+            val celular = celularReferencia.text.toString()
+            (activity as RegistroRestaurante).agregarRestaurante(nombre, celular)
+            (activity as RegistroRestaurante).cambiarFragmento(2)
+        }
     }
 
     private fun gestionarHorarios() {
@@ -84,11 +90,5 @@ class RegistroRestauranteDatos : Fragment() {
             }, hora, minuto, true)
 
         timePickerDialog.show()
-    }
-
-    private fun CrearLista () {
-        if (Lunes.isChecked){
-            Toast.makeText(this.context, "funciona", Toast.LENGTH_SHORT).show()
-        }
     }
 }

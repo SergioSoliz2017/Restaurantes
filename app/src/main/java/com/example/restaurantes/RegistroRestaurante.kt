@@ -4,101 +4,67 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_registro_restaurante.Adelante
-import kotlinx.android.synthetic.main.activity_registro_restaurante.Atras
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.celularReferencia
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.nombreRestaurante
+import www.sanju.motiontoast.MotionToast
 
 class RegistroRestaurante : AppCompatActivity() {
-
-    val registro1 :RegistroRestauranteDatos = RegistroRestauranteDatos()
-    val registro2 : RegistroRestauranteDatos2 = RegistroRestauranteDatos2()
-    val registro3 : RegistroRestauranteDatos3 = RegistroRestauranteDatos3();
+    var restaurante = Restaurante()
+    private var numeroFragmento = 1
+    var cerrar = false
     private val db = FirebaseFirestore.getInstance()
-    var numero : Int = 1;
+    lateinit var usuario: Usuario
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_restaurante)
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        abrirFragment(registro1)
-        actualizarBotonAtras()
+        usuario = intent.getParcelableExtra("usuario")!!
 
-        Adelante.setOnClickListener {
-            if (numero < 3) {
-                numero++
-                when (numero) {
-                    2 -> {
-                        abrirFragment(registro2)
-                        Adelante.text = "Siguiente"
-                    }
-                    3 -> {
-                        abrirFragment(registro3)
-                        Adelante.text = "Registrar"
-                    }
+        mostrarFragmento(1)
+    }
+
+    private fun mostrarFragmento(numero: Int) {
+
+            val fragment = when (numero) {
+                1 -> RegistroRestauranteDatos()
+                2 -> RegistroRestauranteDatos2()
+                3 -> {
+                    val fragmento3 = RegistroRestauranteDatos3()
+                    val bundle = Bundle()
+                    bundle.putParcelable("usuario", usuario) // Pasar el objeto usuario
+                    fragmento3.arguments = bundle
+                    fragmento3
                 }
-            } else {
-                subirDatos()
+                else -> RegistroRestauranteDatos()
             }
-            actualizarBotonAtras()
-        }
 
-        Atras.setOnClickListener {
-            numero--
-            when (numero) {
-                1 -> {
-                    abrirFragment(registro1)
-                    Adelante.text = "Siguiente"
-                }
-                2 -> {
-                    abrirFragment(registro2)
-                    Adelante.text = "Siguiente"
-                }
-            }
-            actualizarBotonAtras()
-        }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.containerView, fragment as Fragment)
+                .commit()
+
     }
 
-    private fun subirDatos() {
-        val usuario: Usuario? = intent.getParcelableExtra("usuario")
-        db.collection("Usuarios").document(usuario?.correo.toString()).set(
-            hashMapOf(
-                "Nombre" to usuario?.nombre,
-                "Contraseña" to usuario?.contraseña,
-                "FechaNacimiento" to usuario?.fechaNacimiento,
-                "TieneRestaurante" to true
-            )
-        )
-
-        db.collection("Restaurante").document(nombreRestaurante.text.toString()).set(
-                    hashMapOf(
-                        "Dueño" to usuario?.correo,
-                        "Celular" to celularReferencia.text.toString(),
-                        "HorarioAtencion" to "" ,  // Aquí pones los horarios seleccionados del fragmento
-                        "Categoria" to true,
-                        "Logo" to true,
-                        "Ubicacion" to true
-                    )
-                )
-
-        val inicio = Intent(this, PantallaPrincipal::class.java)
-        startActivity(inicio)
-        finish()
+    fun agregarRestaurante(nombre: String, celular: String) {
+        restaurante.nombreRestaurante = nombre
+        restaurante.celularreferencia = celular
     }
 
-    private fun actualizarBotonAtras() {
-        Atras.visibility = if (numero > 1) View.VISIBLE else View.GONE
+    fun agregarLogo(logo: String) {
+        restaurante.logo = logo
     }
 
-    private fun abrirFragment(fragment: Fragment) {
-        val transaccion = supportFragmentManager.beginTransaction()
-        transaccion.replace(R.id.containerView,fragment)
-        transaccion.commit()
+    fun agregarUbicacion(ubicacion: String) {
+        restaurante.ubicacion = ubicacion
     }
 
+    fun cambiarFragmento(nuevoNumero: Int) {
+        numeroFragmento = nuevoNumero
+        mostrarFragmento(numeroFragmento)
+    }
 }

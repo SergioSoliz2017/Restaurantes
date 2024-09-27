@@ -38,13 +38,17 @@ class Registro : AppCompatActivity() {
                         fechaRegistro.text.toString(),
                         true
                     )
-
-                    val inicio = Intent(this, RegistroRestaurante::class.java).apply {
-                        putExtra("usuario", user)
+                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(usuarioRegistro.text.toString(),contraseñaRegistro.text.toString()).addOnCompleteListener {
+                        if (it.isSuccessful){
+                            val inicio = Intent(this, RegistroRestaurante::class.java).apply {
+                                putExtra("usuario", user)
+                            }
+                            startActivity(inicio)
+                        }else{
+                            MotionToast.createToast(this,"Operacion Fallida", "Algo salio mal",MotionToast.TOAST_ERROR,
+                                MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
+                        }
                     }
-
-                    startActivity(inicio)
-                    finish()
                 }else{
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(usuarioRegistro.text.toString(),contraseñaRegistro.text.toString()).addOnCompleteListener {
                         if (it.isSuccessful){
