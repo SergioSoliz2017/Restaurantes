@@ -16,6 +16,8 @@ public class Restaurante {
     ArrayList<String> categoria;
     ArrayList<MenuItem> menus;
 
+    public Restaurante(){}
+
     public Restaurante(String nombreRestaurante, ArrayList<Horario> horarioAtencion, String celularreferencia,
                        LatLng ubicacion, Uri logo, int numero, ArrayList<String> categoria, ArrayList<MenuItem> menus) {
         this.nombreRestaurante = nombreRestaurante;

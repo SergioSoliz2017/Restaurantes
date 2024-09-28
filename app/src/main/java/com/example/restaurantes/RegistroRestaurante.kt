@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.type.LatLng
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.celularReferencia
@@ -69,7 +68,8 @@ class RegistroRestaurante : AppCompatActivity() {
     }
 
     fun agregarUbicacion(ubicacion: com.google.type.LatLng) {
-        restaurante.ubicacion = ubicacion
+        val latLng = com.google.android.gms.maps.model.LatLng(ubicacion.latitude, ubicacion.longitude)
+        restaurante.ubicacion = latLng
     }
 
     fun cambiarFragmento(nuevoNumero: Int) {
