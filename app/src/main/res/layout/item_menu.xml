@@ -10,6 +10,8 @@
         style="Reference:	@style/App.Custom.Indicator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:scaleX="0.5"
         android:scaleY="0.5"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,13 +29,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toEndOf="@+id/itImg"
-        app:layout_constraintTop_toBottomOf="@+id/itTitulo" />
+        app:layout_constraintTop_toBottomOf="@+id/itPlato" />
 
     <TextView
-        android:id="@+id/itTitulo"
+        android:id="@+id/itPlato"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Titulo"
+        android:text="Plato"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/itPrecio"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +47,9 @@
         android:id="@+id/itImg"
         android:layout_width="218dp"
         android:layout_height="173dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

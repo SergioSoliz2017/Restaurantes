@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.type.LatLng
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.celularReferencia
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.nombreRestaurante
 import www.sanju.motiontoast.MotionToast
@@ -67,7 +68,7 @@ class RegistroRestaurante : AppCompatActivity() {
         restaurante.categoria = categoria
     }
 
-    fun agregarUbicacion(ubicacion: LatLng) {
+    fun agregarUbicacion(ubicacion: com.google.type.LatLng) {
         restaurante.ubicacion = ubicacion
     }
 
