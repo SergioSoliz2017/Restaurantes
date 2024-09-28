@@ -25,7 +25,7 @@ class RestauranteAdapter(
 
     override fun onBindViewHolder(holder: RestauranteViewHolder, position: Int) {
         val restaurante = restaurantes[position]
-        holder.tvRestauranteNombre.text = restaurante.nomRestaurante
+        holder.tvRestauranteNombre.text = restaurante.nombreRestaurante
 
         // Configurar el RecyclerView de los menús
         holder.recyclerMenus.layoutManager = LinearLayoutManager(holder.recyclerMenus.context, LinearLayoutManager.HORIZONTAL, false)

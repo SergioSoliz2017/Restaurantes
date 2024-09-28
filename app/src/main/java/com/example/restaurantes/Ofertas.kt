@@ -41,7 +41,7 @@ class Ofertas : Fragment() {
                     val restaurante = restauranteSnapshot.getValue(Restaurante::class.java)
                     restaurante?.let {
                         // Aquí deberías obtener los menús correspondientes
-                        obtenerMenusPorRestaurante(it.identificador) // Asumiendo que tienes un método para esto
+                        obtenerMenusPorRestaurante(it.nombreRestaurante) // Asumiendo que tienes un método para esto
                     }
                 }
             }
@@ -52,10 +52,11 @@ class Ofertas : Fragment() {
         })
     }
 
-    private fun obtenerMenusPorRestaurante(identificador: String) {
+    private fun obtenerMenusPorRestaurante(nombreRestaurante: String) {
         val menuRef = FirebaseDatabase.getInstance().getReference("Menu")
 
-        menuRef.orderByChild("restauranteId").equalTo(identificador).addListenerForSingleValueEvent(object : ValueEventListener {
+        // Usar "nomRestaurante" como el identificador en lugar de "restauranteId"
+        menuRef.orderByChild("nomRestaurante").equalTo(nombreRestaurante).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val menus = mutableListOf<MenuItem>()
                 for (menuSnapshot in snapshot.children) {
@@ -63,11 +64,11 @@ class Ofertas : Fragment() {
                     menuItem?.let { menus.add(it) }
                 }
 
-                // Después de obtener los menús, puedes agregar el restaurante y su lista de menús a la lista de restaurantes
-                val restaurante = Restaurante(identificador, menus) // Asegúrate de que tengas un constructor apropiado
-                restaurantes.add(restaurante)
+                // Después de obtener los menús, agregar el restaurante y su lista de menús
+                val restaurante = restaurantes.find { it.nombreRestaurante == nombreRestaurante }
+                restaurante?.menus = ArrayList(menus)
 
-                // Actualiza el adapter
+                // Actualiza el adapter para reflejar los menús del restaurante
                 restauranteAdapter = RestauranteAdapter(restaurantes)
                 recyclerRestaurantes.adapter = restauranteAdapter
             }
