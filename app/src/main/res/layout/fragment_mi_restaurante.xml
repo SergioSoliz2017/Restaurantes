@@ -48,27 +48,27 @@
 
         <!-- Botones de editar y eliminar -->
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_width="57dp"
+            android:layout_height="65dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageButton
                 android:id="@+id/btn_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_edit"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Editar menú"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:src="@drawable/baseline_edit_24" />
 
             <ImageButton
                 android:id="@+id/btn_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete"
-                android:contentDescription="Eliminar menú"
+                android:layout_marginTop="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_marginTop="8dp" />
+                android:contentDescription="Eliminar menú"
+                android:src="@drawable/baseline_edit_24" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

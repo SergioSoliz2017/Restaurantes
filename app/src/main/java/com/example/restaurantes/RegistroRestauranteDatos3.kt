@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -59,44 +60,55 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
         val mapFragment = childFragmentManager.findFragmentById(R.id.Mapa) as SupportMapFragment
         mapFragment.getMapAsync(this)
         Adelante3.setOnClickListener {
-            val ubicacion : LatLng = (ubicacionSeleccionada ?: ubicacionActual)!!
-            (activity as RegistroRestaurante).agregarUbicacion(ubicacion)
-            arguments?.let {
-                usuario = it.getParcelable("usuario")!!
-            }
-            val restaurante = (activity as RegistroRestaurante).restaurante
-            val horariosMap = convertirHorariosAHashMap(restaurante.horarioAtencion)
+            // Asegúrate de que al menos una ubicación esté disponible
+            val ubicacion: LatLng? = ubicacionSeleccionada ?: ubicacionActual
 
-            Adelante3.isEnabled = false;
-            storageReference = FirebaseStorage.getInstance().getReference("Restaurante/${restaurante.nombreRestaurante}")
-            storageReference.putFile(restaurante.logo).addOnSuccessListener {snapshot->
-                val uriTask : Task<Uri> = snapshot.getStorage().getDownloadUrl()
-                uriTask.addOnSuccessListener {uri->
-                    db.collection("Usuarios").document(usuario.correo.toString()).set(
-                        hashMapOf(
-                            "Nombre" to usuario?.nombre.toString(),
-                            "Contraseña" to usuario?.contraseña.toString(),
-                            "FechaNacimiento" to usuario?.fechaNacimiento.toString(),
-                            "TieneRestaurante" to true,
+            if (ubicacion != null) {
+                (activity as RegistroRestaurante).agregarUbicacion(ubicacion)
+
+                arguments?.let {
+                    usuario = it.getParcelable("usuario")!!
+                }
+
+                val restaurante = (activity as RegistroRestaurante).restaurante
+                val horariosMap = convertirHorariosAHashMap(restaurante.horarioAtencion)
+
+                Adelante3.isEnabled = false
+                storageReference = FirebaseStorage.getInstance().getReference("Restaurante/${restaurante.nombreRestaurante}")
+
+                storageReference.putFile(restaurante.logo).addOnSuccessListener { snapshot ->
+                    val uriTask: Task<Uri> = snapshot.getStorage().getDownloadUrl()
+                    uriTask.addOnSuccessListener { uri ->
+                        db.collection("Usuarios").document(usuario.correo.toString()).set(
+                            hashMapOf(
+                                "Nombre" to usuario.nombre,
+                                "Contraseña" to usuario.contraseña,
+                                "FechaNacimiento" to usuario.fechaNacimiento,
+                                "TieneRestaurante" to true,
+                            )
                         )
-                    )
-                    db.collection("Restaurante").document(restaurante.nombreRestaurante).set(
-                        hashMapOf(
-                            "nombreRestaurante" to restaurante.nombreRestaurante,
-                            "celularReferencia" to restaurante.celularreferencia,
-                            "logo" to restaurante.logo.toString(),
-                            "ubicacion" to restaurante.ubicacion,
-                            "horarioAtencion" to horariosMap,
-                            "categoria" to restaurante.categoria
+                        db.collection("Restaurante").document(restaurante.nombreRestaurante).set(
+                            hashMapOf(
+                                "nombreRestaurante" to restaurante.nombreRestaurante,
+                                "celularReferencia" to restaurante.celularreferencia,
+                                "logo" to restaurante.logo.toString(),
+                                "ubicacion" to restaurante.ubicacion,
+                                "horarioAtencion" to horariosMap,
+                                "categoria" to restaurante.categoria
+                            )
                         )
-                    )
-                    (activity as RegistroRestaurante).mostrar()
-                    val inicio = Intent(this.context,PantallaPrincipal::class.java)
-                    startActivity(inicio)
-                    requireActivity().finish()
+                        (activity as RegistroRestaurante).mostrar()
+                        val inicio = Intent(this.context, PantallaPrincipal::class.java)
+                        startActivity(inicio)
+                        requireActivity().finish()
                     }
                 }
+            } else {
+                // Manejo de caso cuando no hay ubicación seleccionada ni actual
+                Toast.makeText(requireContext(), "Por favor selecciona una ubicación", Toast.LENGTH_SHORT).show()
+            }
         }
+
 
     }
 

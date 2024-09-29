@@ -1,17 +1,12 @@
 package com.example.restaurantes
 
-import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.type.LatLng
-import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.celularReferencia
-import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos.nombreRestaurante
 import www.sanju.motiontoast.MotionToast
 
 class RegistroRestaurante : AppCompatActivity() {
@@ -67,9 +62,10 @@ class RegistroRestaurante : AppCompatActivity() {
         restaurante.categoria = categoria
     }
 
-    fun agregarUbicacion(ubicacion: com.google.type.LatLng) {
-        val latLng = com.google.android.gms.maps.model.LatLng(ubicacion.latitude, ubicacion.longitude)
-        restaurante.ubicacion = latLng
+    fun agregarUbicacion(ubicacion: com.google.android.gms.maps.model.LatLng?) {
+        ubicacion?.let {
+            restaurante.ubicacion = com.google.android.gms.maps.model.LatLng(it.latitude, it.longitude)
+        }
     }
 
     fun cambiarFragmento(nuevoNumero: Int) {
