@@ -9,6 +9,7 @@ import android.text.Editable
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_inicio.usuario
 import kotlinx.android.synthetic.main.activity_registro.EsRestaurante
@@ -24,6 +25,7 @@ class Registro : AppCompatActivity() {
 
     private lateinit var email: String
     private lateinit var nombre: String
+    val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +61,14 @@ class Registro : AppCompatActivity() {
                 }else{
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(usuarioRegistro.text.toString(),contraseñaRegistro.text.toString()).addOnCompleteListener {
                         if (it.isSuccessful){
+                            db.collection("Usuarios").document(usuarioRegistro.text.toString()).set(
+                                hashMapOf(
+                                    "Nombre" to NombreRegistro.text.toString(),
+                                    "Contraseña" to contraseñaRegistro.text.toString(),
+                                    "FechaNacimiento" to fechaRegistro.text.toString(),
+                                    "TieneRestaurante" to false,
+                                )
+                            )
                             val inicio = Intent(this, PantallaPrincipal:: class.java)
                             startActivity(inicio)
                             MotionToast.createToast(this,"Operacion Exitosa", "Registro exitoso",MotionToast.TOAST_SUCCESS,

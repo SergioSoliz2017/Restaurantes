@@ -17,7 +17,7 @@ class PantallaPrincipal : AppCompatActivity() {
         setContentView(R.layout.activity_pantalla_principal)
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        title= "FOOTABLE"
+        title= "Menu's Here"
 
         abrirFragment (Ofertas())
         bottomNavigationView.setOnItemSelectedListener {

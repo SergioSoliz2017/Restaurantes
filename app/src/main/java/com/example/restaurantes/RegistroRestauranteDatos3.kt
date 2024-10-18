@@ -85,6 +85,7 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
                                 "Contraseña" to usuario.contraseña,
                                 "FechaNacimiento" to usuario.fechaNacimiento,
                                 "TieneRestaurante" to true,
+                                "Restaurante" to restaurante.nombreRestaurante
                             )
                         )
                         db.collection("Restaurante").document(restaurante.nombreRestaurante).set(
