@@ -26,20 +26,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:itemIconSize="35dp"
-        app:menu="@menu/botton_menu">
+        app:itemIconSize="30dp"
+        app:itemTextAppearanceActive="@style/BottomNavigationText"
+        app:itemTextAppearanceInactive="@style/BottomNavigationText"
+        >
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/Buscar"
+            android:id="@+id/BuscarCliente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/baseline_menu_book_24"
+            android:src="@drawable/baseline_search_24"
             app:maxImageSize="50dp"
             app:backgroundTint="@color/white"
             app:fabCustomSize="75dp"
             app:borderWidth="20dp"
-            app:tint="@color/black" />
+            app:tint="@color/black"
+            android:visibility="gone"/>
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

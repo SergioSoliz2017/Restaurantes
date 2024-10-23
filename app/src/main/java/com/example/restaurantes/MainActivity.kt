@@ -26,12 +26,12 @@ class MainActivity : AppCompatActivity() {
         IniciarSesion.setOnClickListener {
             val inicio = Intent(this, InicioSesion:: class.java)
             startActivity(inicio)
-            //finish()
+            finish()
         }
         Registrarse.setOnClickListener {
             val inicio = Intent(this, Registro:: class.java)
             startActivity(inicio)
-            //finish()
+            finish()
         }
     }
 

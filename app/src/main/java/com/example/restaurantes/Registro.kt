@@ -52,6 +52,7 @@ class Registro : AppCompatActivity() {
                             val inicio = Intent(this, RegistroRestaurante::class.java).apply {
                                 putExtra("usuario", user)
                             }
+                            finish()
                             startActivity(inicio)
                         }else{
                             MotionToast.createToast(this,"Operacion Fallida", "Algo salio mal",MotionToast.TOAST_ERROR,

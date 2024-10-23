@@ -9,7 +9,9 @@ public class Usuario implements Parcelable {
     String contraseña;
     String fechaNacimiento;
     boolean tieneRestaurante;
+    public Usuario () {
 
+    }
     public Usuario(String nombre, String correo, String contraseña, String fechaNacimiento, boolean tieneRestaurante) {
         this.nombre = nombre;
         this.correo = correo;

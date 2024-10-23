@@ -64,7 +64,9 @@ class InicioSesion : AppCompatActivity() {
             if (Verificar()){
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(usuario.text.toString(),contraseña.text.toString()).addOnCompleteListener {
                     if (it.isSuccessful){
-                        val inicio = Intent(this, PantallaPrincipal:: class.java)
+                        val inicio = Intent(this, PantallaPrincipal:: class.java).apply {
+                            putExtra("email", usuario.text.toString())
+                        }
                         startActivity(inicio)
                         MotionToast.createToast(this,"Operacion Exitosa", "Inicio exitoso",MotionToast.TOAST_SUCCESS,
                             MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
@@ -104,8 +106,11 @@ class InicioSesion : AppCompatActivity() {
                             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
                             FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                                 if (it.isSuccessful) {
-                                    val inicio = Intent(this, PantallaPrincipal::class.java)
+                                    val inicio = Intent(this, PantallaPrincipal::class.java).apply {
+                                        putExtra("email", email)
+                                    }
                                     startActivity(inicio)
+                                    finish()
                                     MotionToast.createToast(this, "Operación Exitosa", "Inicio exitoso", MotionToast.TOAST_SUCCESS,
                                         MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null)
                                 } else {
@@ -114,11 +119,11 @@ class InicioSesion : AppCompatActivity() {
                                 }
                             }
                         } else {
-                            // El correo no está registrado, redirigir a la pantalla de registro
                             val registroIntent = Intent(this, Registro::class.java).apply {
                                 putExtra("email", email)
                                 putExtra("nombre", account.displayName)
                             }
+                            finish()
                             startActivity(registroIntent)
                         }
                     } else {

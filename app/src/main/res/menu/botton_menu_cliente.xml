@@ -3,19 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/MisOfertas"
-        android:title="Mis ofertas"
+        android:id="@+id/Ofertas"
+        android:title="Ofertas"
         android:icon="@drawable/baseline_other_house_24"
         />
     <item
-        android:id="@+id/Buscar"
-        android:title="Buscar"
-        android:icon="@drawable/baseline_search_24"
-        />
-    <item
-        android:id="@+id/MiRestaurante"
-        android:title="Mi restaurante"
-        android:icon="@drawable/baseline_settings_24"
+        android:title=""
         />
     <item
         android:id="@+id/Perfil"

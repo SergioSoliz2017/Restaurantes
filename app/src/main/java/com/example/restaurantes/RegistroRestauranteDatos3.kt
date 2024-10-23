@@ -99,7 +99,9 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
                             )
                         )
                         (activity as RegistroRestaurante).mostrar()
-                        val inicio = Intent(this.context, PantallaPrincipal::class.java)
+                        val inicio = Intent(this.context, PantallaPrincipal::class.java).apply {
+                            putExtra("email", usuario.correo.toString())
+                        }
                         startActivity(inicio)
                         requireActivity().finish()
                     }
