@@ -47,6 +47,7 @@ class Registro : AppCompatActivity() {
                         fechaRegistro.text.toString(),
                         true
                     )
+                    //hablar si se va modificar (aca cabiar consultar si el correo ya existe y seguna  eso verificar y esto poner al final)
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(usuarioRegistro.text.toString(),contraseñaRegistro.text.toString()).addOnCompleteListener {
                         if (it.isSuccessful){
                             val inicio = Intent(this, RegistroRestaurante::class.java).apply {
