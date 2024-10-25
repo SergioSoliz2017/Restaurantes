@@ -8,14 +8,7 @@
         android:icon="@drawable/baseline_other_house_24"
         />
     <item
-        android:id="@+id/Buscar"
-        android:title="Buscar"
-        android:icon="@drawable/baseline_search_24"
-        />
-    <item
-        android:id="@+id/MiRestaurante"
-        android:title="Mi restaurante"
-        android:icon="@drawable/baseline_settings_24"
+        android:title=""
         />
     <item
         android:id="@+id/Perfil"

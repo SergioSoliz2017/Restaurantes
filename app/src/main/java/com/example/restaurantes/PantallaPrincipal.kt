@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_pantalla_principal.BuscarCliente
+import kotlinx.android.synthetic.main.activity_pantalla_principal.MiRestaurante
 import kotlinx.android.synthetic.main.activity_pantalla_principal.bottomNavigationView
 import www.sanju.motiontoast.MotionToast
 
@@ -44,31 +45,26 @@ class PantallaPrincipal : AppCompatActivity() {
                     if (usuario.tieneRestaurante) {
                         bottomNavigationView.menu.clear()
                         bottomNavigationView.inflateMenu(R.menu.botton_menu)
+                        MiRestaurante.visibility = View.VISIBLE
+                        abrirFragment (MiRestaurante())
                     } else {
                         bottomNavigationView.menu.clear()
                         bottomNavigationView.inflateMenu(R.menu.botton_menu_cliente)
                         BuscarCliente.visibility = View.VISIBLE
+                        abrirFragment (Ofertas())
                     }
                 }
             }
         }
-        abrirFragment (Ofertas())
+
         bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.Ofertas -> {
                     abrirFragment (Ofertas())
                     true
                 }
-                R.id.Buscar -> {
-                    abrirFragment (Busqueda())
-                    true
-                }
                 R.id.MisOfertas -> {
                     abrirFragment (MisOfertas())
-                    true
-                }
-                R.id.MiRestaurante -> {
-                    abrirFragment (MiRestaurante())
                     true
                 }
                 R.id.Perfil -> {
@@ -81,6 +77,9 @@ class PantallaPrincipal : AppCompatActivity() {
         }
         BuscarCliente.setOnClickListener {
             abrirFragment (Busqueda())
+        }
+        MiRestaurante.setOnClickListener {
+            abrirFragment (MiRestaurante())
         }
     }
 
