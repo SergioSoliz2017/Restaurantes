@@ -18,15 +18,16 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
+            tools:src="@" />
 
         <ImageButton
             android:id="@+id/imageButton2"
-            android:layout_width="50dp"
-            android:layout_height="41dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/baseline_settings_24"
+            android:contentDescription="@string/Btn_config"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,20 +46,23 @@
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nombre" />
+                android:layout_height="match_parent"
+                android:text="Nombre"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gmail" />
+                android:text="Gmail"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Telefono" />
+                android:text="Telefono"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -79,25 +83,41 @@
                 android:id="@+id/button5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Eliminar cuenta" />
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Eliminar cuenta"
+                tools:ignore="HardcodedText,SpUsage"
+                android:textSize="17dp"
+                android:textColor="@color/white"/>
 
             <Button
                 android:id="@+id/button6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Button"
+                tools:ignore="HardcodedText,SpUsage"
+                android:textSize="17dp"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/button7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Button"
+                tools:ignore="HardcodedText,SpUsage"
+                android:textSize="17dp"
+                android:textColor="@color/white"/>
 
             <Button
                 android:id="@+id/button8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Button"
+                tools:ignore="HardcodedText,SpUsage"
+                android:textSize="17dp"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
