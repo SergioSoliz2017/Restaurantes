@@ -11,24 +11,30 @@ import com.example.restaurantes.Restaurante
 
 class BusquedaFiltrador : Fragment() {
 
-    private lateinit var restauranteAdapter: RestauranteAdapterFiltro
+    private lateinit var restauranteAdapterFiltro: RestauranteAdapterFiltro
     private lateinit var recyclerRestaurantes: RecyclerView
-    private val listaRestaurantes = mutableListOf<Restaurante>()
+    private val listaRestaurantes = ArrayList<Restaurante>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_busqueda, container, false)
+        return inflater.inflate(R.layout.fragment_busqueda, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         recyclerRestaurantes = view.findViewById(R.id.recyclerRestaurantes)
         recyclerRestaurantes.layoutManager = LinearLayoutManager(context)
 
-        restauranteAdapter = RestauranteAdapterFiltro(listaRestaurantes)
-        recyclerRestaurantes.adapter = restauranteAdapter
+        restauranteAdapterFiltro = RestauranteAdapterFiltro(listaRestaurantes)
+        recyclerRestaurantes.adapter = restauranteAdapterFiltro
 
         obtenerRestaurantesDesdeDB()
-
-        return view
     }
 
     private fun obtenerRestaurantesDesdeDB() {
@@ -41,7 +47,7 @@ class BusquedaFiltrador : Fragment() {
                     val restaurante = document.toObject(Restaurante::class.java)
                     listaRestaurantes.add(restaurante)
                 }
-                restauranteAdapter.notifyDataSetChanged()
+                restauranteAdapterFiltro.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
                 println("Error al recuperar datos: ${exception.message}")

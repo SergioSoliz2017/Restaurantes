@@ -1,5 +1,6 @@
 package com.example.restaurantes
 
+import BusquedaFiltrador
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -77,7 +78,7 @@ class PantallaPrincipal : AppCompatActivity() {
             }
         }
         BuscarCliente.setOnClickListener {
-            abrirFragment (Busqueda())
+            abrirFragment (BusquedaFiltrador())
         }
         MiRestaurante.setOnClickListener {
             abrirFragment (MiRestaurante())
