@@ -45,4 +45,5 @@ public class Restaurante {
     public void setNombreRestaurante(String nombreRestaurante) {
         this.nombreRestaurante = nombreRestaurante;
     }
+    public Uri getLogo() {return logo;}
 }
