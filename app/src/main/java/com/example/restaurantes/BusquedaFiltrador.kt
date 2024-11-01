@@ -41,11 +41,16 @@ class BusquedaFiltrador : Fragment() {
         val db = FirebaseFirestore.getInstance()
         db.collection("Restaurante")
             .get()
-            .addOnSuccessListener { result ->
+            .addOnSuccessListener { resultado ->
                 listaRestaurantes.clear()
-                for (document in result) {
-                    val restaurante = document.toObject(Restaurante::class.java)
+                for (documento in resultado){
+
+                    val nombreRestaurante = documento.data?.get("nombreRestaurante").toString()
+
+                    val restaurante : Restaurante = Restaurante()
+                    restaurante.nombreRestaurante = nombreRestaurante
                     listaRestaurantes.add(restaurante)
+                    //val uri imagen
                 }
                 restauranteAdapterFiltro.notifyDataSetChanged()
             }
