@@ -45,6 +45,7 @@ class Registro : AppCompatActivity() {
                         usuarioRegistro.text.toString(),
                         contraseñaRegistro.text.toString(),
                         fechaRegistro.text.toString(),
+
                         true
                     )
                     //hablar si se va modificar (aca cabiar consultar si el correo ya existe y seguna  eso verificar y esto poner al final)

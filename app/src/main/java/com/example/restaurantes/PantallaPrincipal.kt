@@ -34,13 +34,15 @@ class PantallaPrincipal : AppCompatActivity() {
                     val contraseña = document.getString("Contraseña")
                     val fechaNacimiento = document.getString("FechaNacimiento")
                     val tieneRestaurante = document.getBoolean("TieneRestaurante") ?: false
+                    //val restauranteRef = document.getString("Restaurante")
 
                     usuario = Usuario(
                         nombre ?: "",
                         correo ?: "",
                         contraseña ?: "",
                         fechaNacimiento ?: "",
-                        tieneRestaurante
+                        tieneRestaurante,
+                        //restauranteRef ?: ""
                     )
                     MotionToast.createToast(this, "Operación Exitosa", "Inicio exitoso", MotionToast.TOAST_SUCCESS,
                         MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null)
@@ -70,8 +72,13 @@ class PantallaPrincipal : AppCompatActivity() {
                     true
                 }
                 R.id.Perfil -> {
-                    abrirFragment (Perfil())
-                    true
+                    if(usuario.tieneRestaurante){
+                        abrirFragment (Perfil())
+                        true
+                    }else{
+                        abrirFragment (PerfilRestaurante())
+                        true
+                    }
                 }
 
                 else -> false
@@ -84,7 +91,11 @@ class PantallaPrincipal : AppCompatActivity() {
             abrirFragment (MiRestaurante())
         }
         MiPerfil.setOnClickListener {
-            abrirFragment (Perfil())
+            if(usuario.tieneRestaurante){
+                abrirFragment (Perfil())
+            }else{
+                abrirFragment (PerfilRestaurante())
+            }
         }
     }
 

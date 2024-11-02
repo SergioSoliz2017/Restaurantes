@@ -9,6 +9,8 @@ public class Usuario implements Parcelable {
     String contraseña;
     String fechaNacimiento;
     boolean tieneRestaurante;
+    String restauranteRef;
+
     public Usuario () {
 
     }
@@ -18,6 +20,7 @@ public class Usuario implements Parcelable {
         this.contraseña = contraseña;
         this.fechaNacimiento = fechaNacimiento;
         this.tieneRestaurante = tieneRestaurante;
+        restauranteRef = "";
     }
 
     protected Usuario(Parcel in) {
@@ -26,6 +29,7 @@ public class Usuario implements Parcelable {
         contraseña = in.readString();
         fechaNacimiento = in.readString();
         tieneRestaurante = in.readByte() != 0;
+        restauranteRef = in.readString();
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
@@ -52,5 +56,6 @@ public class Usuario implements Parcelable {
         dest.writeString(contraseña);
         dest.writeString(fechaNacimiento);
         dest.writeByte((byte) (tieneRestaurante ? 1 : 0));
+        dest.writeString(restauranteRef);
     }
 }
