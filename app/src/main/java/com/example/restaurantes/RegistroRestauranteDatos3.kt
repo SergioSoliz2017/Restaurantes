@@ -88,6 +88,10 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
                                 "Restaurante" to restaurante.nombreRestaurante
                             )
                         )
+                        val categoriasMap: MutableMap<String, Any> = HashMap()
+                        for (categoria in restaurante.categoria) {
+                            categoriasMap.putAll(categoria.toMap())
+                        }
                         db.collection("Restaurante").document(restaurante.nombreRestaurante).set(
                             hashMapOf(
                                 "nombreRestaurante" to restaurante.nombreRestaurante,
@@ -95,7 +99,8 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
                                 "logo" to restaurante.logo.toString(),
                                 "ubicacion" to restaurante.ubicacion,
                                 "horarioAtencion" to horariosMap,
-                                "categoria" to restaurante.categoria
+                                "categoria" to categoriasMap,
+                                "servicios" to restaurante.servicios
                             )
                         )
                         (activity as RegistroRestaurante).mostrar()

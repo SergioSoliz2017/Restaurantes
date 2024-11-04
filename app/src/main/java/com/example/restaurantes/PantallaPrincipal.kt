@@ -5,12 +5,12 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_pantalla_principal.BuscarCliente
-import kotlinx.android.synthetic.main.activity_pantalla_principal.MiPerfil
 import kotlinx.android.synthetic.main.activity_pantalla_principal.MiRestaurante
 import kotlinx.android.synthetic.main.activity_pantalla_principal.bottomNavigationView
 import www.sanju.motiontoast.MotionToast
@@ -29,6 +29,8 @@ class PantallaPrincipal : AppCompatActivity() {
             if (documentTask.isSuccessful) {
                 val document = documentTask.result
                 if (document != null && document.exists()) {
+                    MotionToast.createToast(this, "Operación Exitosa", "Inicio Exitoso", MotionToast.TOAST_SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null)
                     val nombre = document.getString("Nombre")
                     val correo = email
                     val contraseña = document.getString("Contraseña")
@@ -44,8 +46,6 @@ class PantallaPrincipal : AppCompatActivity() {
                         tieneRestaurante,
                         //restauranteRef ?: ""
                     )
-                    MotionToast.createToast(this, "Operación Exitosa", "Inicio exitoso", MotionToast.TOAST_SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null)
                     if (usuario.tieneRestaurante) {
                         bottomNavigationView.menu.clear()
                         bottomNavigationView.inflateMenu(R.menu.botton_menu)
@@ -73,10 +73,10 @@ class PantallaPrincipal : AppCompatActivity() {
                 }
                 R.id.Perfil -> {
                     if(usuario.tieneRestaurante){
-                        abrirFragment (Perfil())
+                        abrirFragment (PerfilRestaurante())
                         true
                     }else{
-                        abrirFragment (PerfilRestaurante())
+                        abrirFragment (Perfil())
                         true
                     }
                 }
@@ -90,13 +90,7 @@ class PantallaPrincipal : AppCompatActivity() {
         MiRestaurante.setOnClickListener {
             abrirFragment (MiRestaurante())
         }
-        MiPerfil.setOnClickListener {
-            if(usuario.tieneRestaurante){
-                abrirFragment (Perfil())
-            }else{
-                abrirFragment (PerfilRestaurante())
-            }
-        }
+
     }
 
     private fun abrirFragment(fragment: Fragment) {

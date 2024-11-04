@@ -3,6 +3,8 @@ package com.example.restaurantes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 public class Usuario implements Parcelable {
     String nombre;
     String correo;
@@ -50,12 +52,12 @@ public class Usuario implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(nombre);
-        dest.writeString(correo);
-        dest.writeString(contraseña);
-        dest.writeString(fechaNacimiento);
-        dest.writeByte((byte) (tieneRestaurante ? 1 : 0));
-        dest.writeString(restauranteRef);
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(nombre);
+        parcel.writeString(correo);
+        parcel.writeString(contraseña);
+        parcel.writeString(fechaNacimiento);
+        parcel.writeByte((byte) (tieneRestaurante ? 1 : 0));
+        parcel.writeString(restauranteRef);
     }
 }

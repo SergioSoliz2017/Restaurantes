@@ -26,7 +26,12 @@ import www.sanju.motiontoast.MotionToast
 
 class InicioSesion : AppCompatActivity() {
 
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val inicio = Intent(this, MainActivity:: class.java)
+        startActivity(inicio)
+        finish()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio)
@@ -34,7 +39,11 @@ class InicioSesion : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         ColorTexto()
         IniciarSesion()
-
+        textoRegistrate.setOnClickListener {
+            val inicio = Intent(this, Registro:: class.java)
+            startActivity(inicio)
+            finish()
+        }
 
     }
 

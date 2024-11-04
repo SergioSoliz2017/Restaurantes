@@ -26,7 +26,12 @@ class Registro : AppCompatActivity() {
     private lateinit var email: String
     private lateinit var nombre: String
     val db = FirebaseFirestore.getInstance()
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val inicio = Intent(this, MainActivity:: class.java)
+        startActivity(inicio)
+        finish()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)

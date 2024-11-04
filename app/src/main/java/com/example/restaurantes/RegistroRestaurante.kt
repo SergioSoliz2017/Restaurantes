@@ -58,8 +58,11 @@ class RegistroRestaurante : AppCompatActivity() {
     fun agregarHorario(horario: ArrayList<Horario>) {
         restaurante.horarioAtencion = horario
     }
-    fun agregarCategoria(categoria: ArrayList<String>) {
+    fun agregarCategoria(categoria: ArrayList<Categoria>) {
         restaurante.categoria = categoria
+    }
+    fun agregarServicios(servicios: ArrayList<String>) {
+        restaurante.servicios = servicios
     }
 
     fun agregarUbicacion(ubicacion: com.google.android.gms.maps.model.LatLng?) {

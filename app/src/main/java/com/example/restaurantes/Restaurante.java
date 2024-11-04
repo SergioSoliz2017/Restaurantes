@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -15,13 +17,14 @@ public class Restaurante implements Parcelable {
     LatLng ubicacion;
     Uri logo;
     int numero;
-    ArrayList<String> categoria;
+    ArrayList<Categoria> categoria;
     ArrayList<MenuItem> menus;
+    ArrayList<String> servicios;
 
     public Restaurante(){}
 
     public Restaurante(String nombreRestaurante, ArrayList<Horario> horarioAtencion, String celularreferencia,
-                       LatLng ubicacion, Uri logo, int numero, ArrayList<String> categoria, ArrayList<MenuItem> menus) {
+                       LatLng ubicacion, Uri logo, int numero, ArrayList<Categoria> categoria, ArrayList<MenuItem> menus) {
         this.nombreRestaurante = nombreRestaurante;
         this.horarioAtencion = horarioAtencion;
         this.celularreferencia = celularreferencia;
@@ -31,6 +34,28 @@ public class Restaurante implements Parcelable {
         this.categoria = categoria;
         this.menus = menus; // Asignar la lista de menús
     }
+
+    protected Restaurante(Parcel in) {
+        nombreRestaurante = in.readString();
+        celularreferencia = in.readString();
+        ubicacion = in.readParcelable(LatLng.class.getClassLoader());
+        logo = in.readParcelable(Uri.class.getClassLoader());
+        numero = in.readInt();
+        menus = in.createTypedArrayList(MenuItem.CREATOR);
+        servicios = in.createStringArrayList();
+    }
+
+    public static final Creator<Restaurante> CREATOR = new Creator<Restaurante>() {
+        @Override
+        public Restaurante createFromParcel(Parcel in) {
+            return new Restaurante(in);
+        }
+
+        @Override
+        public Restaurante[] newArray(int size) {
+            return new Restaurante[size];
+        }
+    };
 
     public ArrayList<MenuItem> getMenus() {
         return menus;
@@ -49,28 +74,6 @@ public class Restaurante implements Parcelable {
     }
     public Uri getLogo() {return logo;}
 
-    protected Restaurante(Parcel in) {
-        nombreRestaurante = in.readString();
-        horarioAtencion = in.readParcelable(Horario.class.getClassLoader());
-        celularreferencia = in.readString();
-        ubicacion = in.readParcelable(LatLng.class.getClassLoader());
-        logo = in.readParcelable(Uri.class.getClassLoader());
-        numero = in.readInt();
-        categoria = in.createStringArrayList();
-        menus = in.createTypedArrayList(MenuItem.CREATOR);
-    }
-
-    public static final Parcelable.Creator<Restaurante> CREATOR = new Parcelable.Creator<Restaurante>() {
-        @Override
-        public Restaurante createFromParcel(Parcel in) {
-            return new Restaurante(in);
-        }
-
-        @Override
-        public Restaurante[] newArray(int size) {
-            return new Restaurante[size];
-        }
-    };
 
     @Override
     public int describeContents() {
@@ -78,14 +81,14 @@ public class Restaurante implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(nombreRestaurante);
-        dest.writeParcelable((Parcelable) horarioAtencion, flags);
-        dest.writeString(celularreferencia);
-        dest.writeParcelable(ubicacion, flags);
-        dest.writeParcelable(logo, flags);
-        dest.writeInt(numero);
-        dest.writeStringList(categoria);
-        dest.writeTypedList(menus);
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(nombreRestaurante);
+        parcel.writeString(celularreferencia);
+        parcel.writeParcelable(ubicacion, i);
+        parcel.writeParcelable(logo, i);
+        parcel.writeInt(numero);
+        parcel.writeTypedList(menus);
+        parcel.writeStringList(servicios);
     }
+
 }
