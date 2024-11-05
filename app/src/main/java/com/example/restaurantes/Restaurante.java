@@ -20,11 +20,12 @@ public class Restaurante implements Parcelable {
     ArrayList<Categoria> categoria;
     ArrayList<MenuItem> menus;
     ArrayList<String> servicios;
+    String direccionLogo;
 
     public Restaurante(){}
 
     public Restaurante(String nombreRestaurante, ArrayList<Horario> horarioAtencion, String celularreferencia,
-                       LatLng ubicacion, Uri logo, int numero, ArrayList<Categoria> categoria, ArrayList<MenuItem> menus) {
+                       LatLng ubicacion, Uri logo, int numero, ArrayList<Categoria> categoria, ArrayList<MenuItem> menus,String direccionLogo) {
         this.nombreRestaurante = nombreRestaurante;
         this.horarioAtencion = horarioAtencion;
         this.celularreferencia = celularreferencia;
@@ -32,7 +33,8 @@ public class Restaurante implements Parcelable {
         this.logo = logo;
         this.numero = numero;
         this.categoria = categoria;
-        this.menus = menus; // Asignar la lista de menús
+        this.menus = menus;
+        this.direccionLogo = direccionLogo;
     }
 
     protected Restaurante(Parcel in) {
@@ -72,6 +74,11 @@ public class Restaurante implements Parcelable {
     public void setNombreRestaurante(String nombreRestaurante) {
         this.nombreRestaurante = nombreRestaurante;
     }
+    public String getDirLogo() {return direccionLogo;}
+
+    public void setDirLogo(String dir) {
+        this.direccionLogo = dir;
+    }
     public Uri getLogo() {return logo;}
     public void setLogo(Uri logo) {this.logo = logo;}
 
@@ -84,6 +91,7 @@ public class Restaurante implements Parcelable {
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeString(nombreRestaurante);
         parcel.writeString(celularreferencia);
+        parcel.writeString(direccionLogo);
         parcel.writeParcelable(ubicacion, i);
         parcel.writeParcelable(logo, i);
         parcel.writeInt(numero);

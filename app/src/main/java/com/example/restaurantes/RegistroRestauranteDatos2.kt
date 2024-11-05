@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Adelante2
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Asiatica
@@ -96,7 +97,12 @@ class RegistroRestauranteDatos2 : Fragment() {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             uri = data.data // Obtiene la URI de la imagen seleccionada
             if (uri != null) {
-                Picasso.get().load(uri).into(ImagenLogoRe)
+                this.context?.let {
+                    Glide.with(it)
+                        .load(uri)
+                        .circleCrop()
+                        .into(ImagenLogoRe)
+                }
             }
         }
     }
