@@ -1,4 +1,3 @@
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -6,16 +5,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.restaurantes.ListaRestauranteAdapterFiltro
 import com.example.restaurantes.R
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.restaurantes.Restaurante
 
 class BusquedaFiltrador : Fragment() {
 
-
+    private lateinit var restauranteAdapterFiltro: RestauranteAdapterFiltro
     private lateinit var recyclerRestaurantes: RecyclerView
-    private lateinit var listaRestaurantes : ArrayList<Restaurante>
+    private val listaRestaurantes = ArrayList<Restaurante>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -29,32 +28,29 @@ class BusquedaFiltrador : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        obtenerRestaurantesDesdeDB()
-    }
+        recyclerRestaurantes = view.findViewById(R.id.recyclerRestaurantes)
+        recyclerRestaurantes.layoutManager = LinearLayoutManager(context)
 
-    private fun moveToDescription(item: Restaurante?) {
-        val nombreUsuario = item?.nombreRestaurante
-        //val inicio = Intent(this, Inicio:: class.java)
-        //inicio.putExtra("nombreUsuario",nombreUsuario)
-        //startActivity(inicio)
+        restauranteAdapterFiltro = RestauranteAdapterFiltro(listaRestaurantes)
+        recyclerRestaurantes.adapter = restauranteAdapterFiltro
+
+        obtenerRestaurantesDesdeDB()
     }
 
     private fun obtenerRestaurantesDesdeDB() {
         val db = FirebaseFirestore.getInstance()
-        db.collection("Restaurante").get().addOnSuccessListener { resultado ->
-            listaRestaurantes  = ArrayList<Restaurante>()
-            for (documento in resultado){
-
-                val nombreRestaurante = documento.data?.get("nombreRestaurante").toString()
-
-                val restaurante : Restaurante = Restaurante()
-                restaurante.nombreRestaurante = nombreRestaurante
-                listaRestaurantes.add(restaurante)
-
+        db.collection("Restaurante")
+            .get()
+            .addOnSuccessListener { result ->
+                listaRestaurantes.clear()
+                for (document in result) {
+                    val restaurante = document.toObject(Restaurante::class.java)
+                    listaRestaurantes.add(restaurante)
+                }
+                restauranteAdapterFiltro.notifyDataSetChanged()
             }
-            var listAdapter : ListaRestauranteAdapterFiltro = ListaRestauranteAdapterFiltro(listaRestaurantes,this.context,ListaRestauranteAdapterFiltro.OnItemClickListener { item: Restaurante? -> moveToDescription(item) })
-            recyclerRestaurantes.setLayoutManager(LinearLayoutManager(this.context))
-            recyclerRestaurantes.setAdapter(listAdapter)
-        }
+            .addOnFailureListener { exception ->
+                println("Error al recuperar datos: ${exception.message}")
+            }
     }
 }

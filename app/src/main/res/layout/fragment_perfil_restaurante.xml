@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Perfil">
+    tools:context=".PerfilRestaurante">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
             android:layout_height="154dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/banner" />
@@ -43,6 +44,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:contentDescription="@null"
+                android:scrollbars="none"
+                tools:ignore="ExtraText">
+
+                <LinearLayout
+                    android:id="@+id/linearCategorias"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
@@ -58,18 +76,18 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/Referencia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fecha de nacimiento:"
+                android:text="Referencia:"
                 android:textSize="20sp"
                 android:textStyle="bold|italic"/>
 
             <TextView
-                android:id="@+id/fechaNac"
+                android:id="@+id/outTel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="FechaNac"
+                android:text="telefono"
                 android:textSize="20sp" />
 
             <TextView
@@ -85,6 +103,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Restaurante"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/horarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Horarios:"
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:id="@+id/linearHorarios"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/direc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dirección:"
+                android:textSize="20sp"
+                android:textStyle="bold|italic"/>
+
+            <TextView
+                android:id="@+id/outDirec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dirección"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -124,5 +171,6 @@
                 android:textColor="@color/white"/>
 
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
