@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
@@ -87,12 +86,11 @@ class Perfil : Fragment() {
             .addOnSuccessListener { documento ->
                 val nombreUsr = documento.data?.get("Nombre").toString()
                 val fechaNacUsr = documento.data?.get("FechaNacimiento").toString()
-                val restauranteRef = documento.data?.get("Restaurante") as? DocumentReference
-                val idRestaurante = restauranteRef?.id
+                val restauranteNombre = documento.data?.get("Restaurante") as? String
                 val imageView: ImageView? = view?.findViewById(R.id.imageView3)
 
-                if (idRestaurante != null) {
-                    db.collection("Restaurante").document(idRestaurante)
+                if (restauranteNombre != null) {
+                    db.collection("Restaurante").document(restauranteNombre)
                         .get()
                         .addOnSuccessListener { documento ->
                             val nombreRestaurante = documento.data?.get("nombreRestaurante").toString()
@@ -111,7 +109,7 @@ class Perfil : Fragment() {
                 val outNombre: TextView = view?.findViewById(R.id.outNombre)!!
                 val fechaNac: TextView = view?.findViewById(R.id.fechaNac)!!
 
-                cargarImagenRestaurante(idRestaurante, imageView!!)
+                cargarImagenRestaurante(restauranteNombre, imageView!!)
 
                 outNombre.text = nombreUsr
                 fechaNac.text = fechaNacUsr
@@ -119,11 +117,11 @@ class Perfil : Fragment() {
             .addOnFailureListener { exception ->
                 println("Error al recuperar datos: ${exception.message}")
             }
-        }
+    }
 
-    private fun cargarImagenRestaurante(idRestaurante: String?, imageView: ImageView) {
+    private fun cargarImagenRestaurante(restauranteNombre: String?, imageView: ImageView) {
         val storageReference = FirebaseStorage.getInstance().reference
-        val imagenReference = storageReference.child("Restaurante/$idRestaurante")
+        val imagenReference = storageReference.child("Restaurante/$restauranteNombre")
         val contexto = imageView.context
         imagenReference.downloadUrl.addOnSuccessListener { uri ->
             Picasso.get()

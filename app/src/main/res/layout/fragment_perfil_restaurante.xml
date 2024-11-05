@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Perfil">
+    tools:context=".PerfilRestaurante">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
             android:layout_height="154dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/banner" />
@@ -43,25 +44,94 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:contentDescription="@null"
+                android:scrollbars="none"
+                tools:ignore="ExtraText">
+
+                <LinearLayout
+                    android:id="@+id/linearCategorias"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
             <TextView
-                android:id="@+id/nombreOut"
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre:"
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
+            <TextView
+                android:id="@+id/outNombre"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Nombre"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/Referencia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gmail"
+                android:text="Referencia:"
+                android:textSize="20sp"
+                android:textStyle="bold|italic"/>
+
+            <TextView
+                android:id="@+id/outTel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="telefono"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Telefono"
+                android:text="Nombre restaurante:"
+                android:textSize="20sp"
+                android:textStyle="bold|italic"/>
+
+            <TextView
+                android:id="@+id/outRes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Restaurante"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/horarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Horarios:"
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:id="@+id/linearHorarios"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/direc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dirección:"
+                android:textSize="20sp"
+                android:textStyle="bold|italic"/>
+
+            <TextView
+                android:id="@+id/outDirec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dirección"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -74,50 +144,32 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:orientation="vertical"
+            android:gravity="bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <Button
+                android:id="@+id/button6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/green"
+                android:text="Modificar Datos"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                tools:ignore="HardcodedText,SpUsage" />
+
+            <Button
                 android:id="@+id/button5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@color/green"
                 android:text="Eliminar cuenta"
                 tools:ignore="HardcodedText,SpUsage"
                 android:textSize="17dp"
                 android:textColor="@color/white"/>
 
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="Button"
-                tools:ignore="HardcodedText,SpUsage"
-                android:textSize="17dp"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="Button"
-                tools:ignore="HardcodedText,SpUsage"
-                android:textSize="17dp"
-                android:textColor="@color/white"/>
-
-            <Button
-                android:id="@+id/button8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="Button"
-                tools:ignore="HardcodedText,SpUsage"
-                android:textSize="17dp"
-                android:textColor="@color/white"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

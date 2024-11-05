@@ -104,6 +104,16 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <Button
+                android:id="@+id/button6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/green"
+                android:text="Modificar Datos"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                tools:ignore="HardcodedText,SpUsage" />
+
+            <Button
                 android:id="@+id/button5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -113,36 +123,6 @@
                 android:textSize="17dp"
                 android:textColor="@color/white"/>
 
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/green"
-                android:text="Solo perfil"
-                tools:ignore="HardcodedText,SpUsage"
-                android:textSize="17dp"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/green"
-                android:text="Button"
-                tools:ignore="HardcodedText,SpUsage"
-                android:textSize="17dp"
-                android:textColor="@color/white"/>
-
-            <Button
-                android:id="@+id/button8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/green"
-                android:text="Button"
-                tools:ignore="HardcodedText,SpUsage"
-                android:textSize="17dp"
-                android:textColor="@color/white"/>
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
