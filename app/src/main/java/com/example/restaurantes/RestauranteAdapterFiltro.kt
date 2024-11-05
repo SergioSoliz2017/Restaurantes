@@ -3,9 +3,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.restaurantes.R
 import com.example.restaurantes.Restaurante
 import com.google.firebase.storage.FirebaseStorage
@@ -29,20 +27,12 @@ class RestauranteAdapterFiltro(private val restaurantes: List<Restaurante>) :
         holder.nombreRestaurante.text = restaurante.nombreRestaurante
 
         val storageReference = FirebaseStorage.getInstance().reference
-        for(restaurante in restaurantes){
-            val imagenReference = storageReference.child("Restaurante/${restaurante.nombreRestaurante}")
-            imagenReference.downloadUrl.addOnSuccessListener { uri ->
-                Picasso.get()
-                    .load(uri)
-                    .into(logoRestaurante)
+        val imagenReference = storageReference.child("Restaurante/${restaurante.nombreRestaurante}")
+        imagenReference.downloadUrl.addOnSuccessListener { uri ->
+            Picasso.get()
+                .load(uri)
+                .into(holder.logoRestaurante)
         }
-
-
-
-        // Cargar imagen desde la URL usando Glide
-        Glide.with(holder.logoRestaurante.context)
-            .load(restaurante.logo)
-            .into(holder.logoRestaurante)
     }
 
     override fun getItemCount() = restaurantes.size
