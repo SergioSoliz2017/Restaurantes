@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_pantalla_principal.BuscarCliente
-import kotlinx.android.synthetic.main.activity_pantalla_principal.MiPerfil
 import kotlinx.android.synthetic.main.activity_pantalla_principal.MiRestaurante
 import kotlinx.android.synthetic.main.activity_pantalla_principal.bottomNavigationView
 import www.sanju.motiontoast.MotionToast
@@ -82,9 +81,6 @@ class PantallaPrincipal : AppCompatActivity() {
         }
         MiRestaurante.setOnClickListener {
             abrirFragment (MiRestaurante())
-        }
-        MiPerfil.setOnClickListener {
-            abrirFragment (Perfil())
         }
     }
 
