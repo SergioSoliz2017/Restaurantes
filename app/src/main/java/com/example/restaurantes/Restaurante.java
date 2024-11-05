@@ -21,11 +21,12 @@ public class Restaurante implements Parcelable {
     ArrayList<MenuItem> menus;
     ArrayList<String> servicios;
     String direccionLogo;
+    String descripcion;
 
     public Restaurante(){}
 
     public Restaurante(String nombreRestaurante, ArrayList<Horario> horarioAtencion, String celularreferencia,
-                       LatLng ubicacion, Uri logo, int numero, ArrayList<Categoria> categoria, ArrayList<MenuItem> menus,String direccionLogo) {
+                       LatLng ubicacion, Uri logo, int numero, ArrayList<Categoria> categoria, ArrayList<MenuItem> menus,String direccionLogo ,String descripcion) {
         this.nombreRestaurante = nombreRestaurante;
         this.horarioAtencion = horarioAtencion;
         this.celularreferencia = celularreferencia;
@@ -35,6 +36,7 @@ public class Restaurante implements Parcelable {
         this.categoria = categoria;
         this.menus = menus;
         this.direccionLogo = direccionLogo;
+        this.descripcion = descripcion;
     }
 
     protected Restaurante(Parcel in) {

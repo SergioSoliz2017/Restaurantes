@@ -1,19 +1,9 @@
 package com.example.restaurantes
 
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatDelegate
-import kotlinx.android.synthetic.main.activity_inicio.textoRegistrate
-
-import www.sanju.motiontoast.MotionToast
 
 class Inicio : AppCompatActivity() {
 
@@ -23,19 +13,80 @@ class Inicio : AppCompatActivity() {
         setContentView(R.layout.activity_inicio)
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        val text1 = "No tienes cuenta "
-        val text2 = "Regístrate"
-        val spannable = SpannableString("$text1$text2")
-        spannable.setSpan(
-            ForegroundColorSpan(Color.parseColor("#646464")),
-            0, text1.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        spannable.setSpan(
-            ForegroundColorSpan(Color.parseColor("#EF9106")),
-            text1.length, spannable.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        textoRegistrate.text = spannable
+
     }
 }
+/*<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- Imagen miniatura del plato -->
+        <ImageView
+            android:id="@+id/iv_dish_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Imagen del plato"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/banner" />
+
+        <!-- Detalles del menú -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_dish_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre del Plato"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_dish_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descripción del plato"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Botones de editar y eliminar -->
+        <LinearLayout
+            android:layout_width="57dp"
+            android:layout_height="65dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btn_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Editar menú"
+                android:src="@drawable/baseline_edit_24" />
+
+            <ImageButton
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Eliminar menú"
+                android:src="@drawable/baseline_edit_24" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>*/

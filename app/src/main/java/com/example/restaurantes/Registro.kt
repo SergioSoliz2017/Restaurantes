@@ -50,8 +50,9 @@ class Registro : AppCompatActivity() {
                         usuarioRegistro.text.toString(),
                         contraseñaRegistro.text.toString(),
                         fechaRegistro.text.toString(),
-
-                        true
+                        true,
+                        "",
+                        ""
                     )
                     //hablar si se va modificar (aca cabiar consultar si el correo ya existe y seguna  eso verificar y esto poner al final)
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(usuarioRegistro.text.toString(),contraseñaRegistro.text.toString()).addOnCompleteListener {
@@ -75,6 +76,7 @@ class Registro : AppCompatActivity() {
                                     "Contraseña" to contraseñaRegistro.text.toString(),
                                     "FechaNacimiento" to fechaRegistro.text.toString(),
                                     "TieneRestaurante" to false,
+                                    "FotoPerfil" to ""
                                 )
                             )
                             val inicio = Intent(this, PantallaPrincipal:: class.java)

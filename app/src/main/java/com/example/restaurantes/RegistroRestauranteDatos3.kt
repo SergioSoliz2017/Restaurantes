@@ -84,7 +84,8 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
                                 "Contraseña" to usuario.contraseña,
                                 "FechaNacimiento" to usuario.fechaNacimiento,
                                 "TieneRestaurante" to true,
-                                "Restaurante" to restaurante.nombreRestaurante
+                                "Restaurante" to restaurante.nombreRestaurante,
+                                "FotoPerfil" to ""
                             )
                         )
                         val categoriasMap: MutableMap<String, Any> = HashMap()
@@ -99,7 +100,8 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
                                 "ubicacion" to restaurante.ubicacion,
                                 "horarioAtencion" to horariosMap,
                                 "categoria" to categoriasMap,
-                                "servicios" to restaurante.servicios
+                                "servicios" to restaurante.servicios,
+                                "descripcion" to ""
                             )
                         )
                         (activity as RegistroRestaurante).mostrar()
@@ -119,14 +121,17 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
 
     }
 
-    fun convertirHorariosAHashMap(listaHorarios: ArrayList<Horario>): List<HashMap<String, String>> {
-        return listaHorarios.map { horario ->
-            hashMapOf(
-                "dia" to horario.Dia,
+    fun convertirHorariosAHashMap(listaHorarios: ArrayList<Horario>): HashMap<String, HashMap<String, String>> {
+        val resultMap = HashMap<String, HashMap<String, String>>()
+
+        listaHorarios.forEach { horario ->
+            resultMap[horario.Dia] = hashMapOf(
                 "abrir" to horario.Abrir,
                 "cerrar" to horario.Cerrar
             )
         }
+
+        return resultMap
     }
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
