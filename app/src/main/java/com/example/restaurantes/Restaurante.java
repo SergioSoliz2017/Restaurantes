@@ -73,7 +73,7 @@ public class Restaurante implements Parcelable {
         this.nombreRestaurante = nombreRestaurante;
     }
     public Uri getLogo() {return logo;}
-
+    public void setLogo(Uri logo) {this.logo = logo;}
 
     @Override
     public int describeContents() {
