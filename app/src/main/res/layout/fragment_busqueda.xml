@@ -27,10 +27,9 @@
         android:gravity="center"
         android:text="Filtrar por nombre de comida" />
 
-    <!-- lista de restaurantes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerRestaurantes"
+        android:layout_marginTop="120dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp" />
+        android:layout_height="match_parent" />
 </FrameLayout>

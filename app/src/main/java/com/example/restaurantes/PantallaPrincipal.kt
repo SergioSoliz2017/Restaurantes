@@ -34,7 +34,7 @@ class PantallaPrincipal : AppCompatActivity() {
                     val contraseña = document.getString("Contraseña")
                     val fechaNacimiento = document.getString("FechaNacimiento")
                     val tieneRestaurante = document.getBoolean("TieneRestaurante") ?: false
-
+                    val restauranteRef = document.getString("Restaurante")
                     usuario = Usuario(
                         nombre ?: "",
                         correo ?: "",

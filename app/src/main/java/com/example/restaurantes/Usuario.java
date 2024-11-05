@@ -3,15 +3,18 @@ package com.example.restaurantes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+
 public class Usuario implements Parcelable {
     String nombre;
     String correo;
     String contraseña;
     String fechaNacimiento;
     boolean tieneRestaurante;
-    public Usuario () {
 
-    }
+    public  Usuario (){}
     public Usuario(String nombre, String correo, String contraseña, String fechaNacimiento, boolean tieneRestaurante) {
         this.nombre = nombre;
         this.correo = correo;

@@ -38,7 +38,6 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Inicializa el cliente de ubicación
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
