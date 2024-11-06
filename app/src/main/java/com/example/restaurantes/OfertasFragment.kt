@@ -13,7 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
 
-class OfertasFragment : Fragment() {
+class OfertasFragment : Fragment(), OnOfertaClickListener {
     private lateinit var recyclerRestaurantes: RecyclerView
     private lateinit var ofertaAdapter: OfertaAdapter
 
@@ -25,7 +25,7 @@ class OfertasFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_ofertas, container, false)
         recyclerRestaurantes = view.findViewById(R.id.recycler_view)
         recyclerRestaurantes.layoutManager = LinearLayoutManager(context)
-        ofertaAdapter = OfertaAdapter(emptyList())
+        ofertaAdapter = OfertaAdapter(emptyList(), this) // Pasamos el fragmento como listener
         recyclerRestaurantes.adapter = ofertaAdapter
         obtenerOfertas()
         return view
@@ -53,5 +53,13 @@ class OfertasFragment : Fragment() {
                     }
                 }
             })
+    }
+
+    override fun onOfertaClick(oferta: Oferta) {
+        val dialog = DetalleOfertaDialogFragment()
+        val args = Bundle()
+        args.putParcelable("oferta", oferta)
+        dialog.arguments = args
+        dialog.show(childFragmentManager, "DetalleOfertaDialogFragment")
     }
 }
