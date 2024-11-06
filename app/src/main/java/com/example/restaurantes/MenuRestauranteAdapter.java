@@ -68,7 +68,6 @@ public class MenuRestauranteAdapter extends RecyclerView.Adapter<MenuRestaurante
             nombrePlato.setText(item.getNombrePlato());
             precio.setText("Precio: " +item.getPrecioPlato() + "Bs.");
 
-            //nombrePlato.setText(item.getIngredientePlato());
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
