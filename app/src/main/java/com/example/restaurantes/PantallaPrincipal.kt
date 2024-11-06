@@ -64,7 +64,7 @@ class PantallaPrincipal : AppCompatActivity() {
                         bottomNavigationView.menu.clear()
                         bottomNavigationView.inflateMenu(R.menu.botton_menu_cliente)
                         BuscarCliente.visibility = View.VISIBLE
-                        abrirFragment(Ofertas())
+                        abrirFragment(OfertasFragment())
                         bottomNavigationView.selectedItemId = R.id.Ofertas
                     }
                 }
@@ -74,7 +74,7 @@ class PantallaPrincipal : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.Ofertas -> {
-                    abrirFragment(Ofertas())
+                    abrirFragment(OfertasFragment())
                     true
                 }
                 R.id.MisOfertas -> {
