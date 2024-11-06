@@ -6,41 +6,212 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ListaMenus"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ListaMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="menusss"/>
-            </LinearLayout>
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
 
             <LinearLayout
                 android:id="@+id/AñadirPlato"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                >
+
+
                 <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="añadir"/>
-            </LinearLayout>
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:text="Foto plato:"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/InfoPlato"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ImagenPlato"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_marginTop="10dp"
+                            tools:srcCompat="@tools:sample/avatars" />
+
+                        <Button
+                            android:id="@+id/SubirFotoPlato"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:backgroundTint="@color/black"
+                            android:text="Subir foto"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="40dp"
+                            android:text="Nombre plato:"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:typeface="serif" />
+
+                        <EditText
+                            android:id="@+id/textNombrePlatoAñadir"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="40dp"
+                            android:background="@drawable/recuadro"
+                            android:drawablePadding="10dp"
+                            android:ems="10"
+                            android:inputType="text"
+                            android:paddingLeft="10dp"
+                            android:textSize="20sp"
+                            tools:ignore="MissingConstraints" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="40dp"
+                            android:text="Precio:"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:typeface="serif" />
+
+                        <EditText
+                            android:id="@+id/textPrecioPlatoAñadir"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="40dp"
+                            android:background="@drawable/recuadro"
+                            android:drawablePadding="10dp"
+                            android:ems="10"
+                            android:inputType="text"
+                            android:paddingLeft="10dp"
+                            android:textSize="20sp"
+                            tools:ignore="MissingConstraints" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="40dp"
+                                android:layout_marginEnd="40dp"
+                                android:text="Ingredientes:"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:typeface="serif" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:gravity="end"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/botonAñadirIngrediente"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginEnd="20dp"
+                                    android:src="@drawable/baseline_add_circle_24"
+                                    app:backgroundTint="@color/white"
+                                    app:borderWidth="25dp"
+                                    app:fabCustomSize="30dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:maxImageSize="30dp"
+                                    app:tint="@color/black"
+                                    tools:ignore="MissingConstraints" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ListaIngredientesText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/textIngredienteAñadir"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="40dp"
+                                android:layout_marginEnd="40dp"
+                                android:background="@drawable/recuadro"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:inputType="text"
+                                android:paddingLeft="17dp"
+                                android:textSize="20sp"
+                                tools:ignore="MissingConstraints" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/BotonGuardarPlato"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="@color/black"
+                        android:text="Guardar plato"
+                        android:textColor="@color/white" />
+
+
+                </LinearLayout>
+
 
             </LinearLayout>
-        </ScrollView>
 
+        </LinearLayout>
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/botonAñadirPlato"
