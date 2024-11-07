@@ -56,6 +56,10 @@
             android:exported="false"
             />
         <activity
+            android:name=".DetalleMenu"
+            android:exported="false"
+            />
+        <activity
             android:name=".MiRestaurante"
             android:exported="false"
             android:theme="@style/Base.Theme.Restaurantes.WithActionBar"

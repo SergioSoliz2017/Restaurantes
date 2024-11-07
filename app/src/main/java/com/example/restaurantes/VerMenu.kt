@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.activity_detalle_menu.ListaIngredientesEdit
 import kotlinx.android.synthetic.main.activity_ver_menu.AñadirPlato
 import kotlinx.android.synthetic.main.activity_ver_menu.BotonGuardarPlato
 import kotlinx.android.synthetic.main.activity_ver_menu.ImagenPlato
@@ -27,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_ver_menu.ListaMenu
 import kotlinx.android.synthetic.main.activity_ver_menu.SubirFotoPlato
 import kotlinx.android.synthetic.main.activity_ver_menu.botonAñadirIngrediente
 import kotlinx.android.synthetic.main.activity_ver_menu.botonAñadirPlato
-import kotlinx.android.synthetic.main.activity_ver_menu.textIngredienteAñadir
 import kotlinx.android.synthetic.main.activity_ver_menu.textNombrePlatoAñadir
 import kotlinx.android.synthetic.main.activity_ver_menu.textPrecioPlatoAñadir
 import kotlinx.android.synthetic.main.fragment_busqueda.recyclerRestaurantes
@@ -77,13 +77,14 @@ val listaMenu = ArrayList<Menu>()
         }
 
         BotonGuardarPlato.setOnClickListener {
+
             storageReference = FirebaseStorage.getInstance().getReference("Menu/${usuario.nombreRestaurante}/${textNombrePlatoAñadir.text.toString()}")
             storageReference.putFile(uri!!).addOnSuccessListener { snapshot ->
                 val uriTask: Task<Uri> = snapshot.getStorage().getDownloadUrl()
                 uriTask.addOnSuccessListener { uri ->
                 obtenerIngredientes()
                     val menu = Menu (uri.toString(),textNombrePlatoAñadir.text.toString(),textPrecioPlatoAñadir.text.toString(),listaIngredientes)
-                    db.collection("Menu").document(usuario.nombreRestaurante).update(
+                    db.collection("Menu").document(usuario.nombreRestaurante).set(
                         hashMapOf(
                             menu.nombrePlato to hashMapOf(
                                 "Precio" to menu.precio ,
@@ -92,6 +93,7 @@ val listaMenu = ArrayList<Menu>()
                             )
                         ) as Map<String, Any>
                     ).addOnSuccessListener {
+                        borrar()
                         botonAñadirPlato.visibility = View.VISIBLE
                         ListaMenu.visibility = View.VISIBLE
                         AñadirPlato.visibility = View.GONE
@@ -99,17 +101,27 @@ val listaMenu = ArrayList<Menu>()
                             MotionToast.TOAST_SUCCESS,
                             MotionToast.GRAVITY_BOTTOM,
                             MotionToast.LONG_DURATION,null)
+                        crearMenu()
                     }
                 }
             }
         }
     }
 
+    private fun borrar() {
+        textNombrePlatoAñadir.setText("")
+        textPrecioPlatoAñadir.setText("")
+        ListaIngredientesText.removeAllViews()
+        uri = null;
+        Glide.with(this)
+            .load(uri)
+            .circleCrop()
+            .into(ImagenPlato)
+    }
+
     val listaIngredientes = ArrayList<String>()
 
     fun obtenerIngredientes() {
-        listaIngredientes.add(textIngredienteAñadir.text.toString())
-
         for (i in 0 until ListaIngredientesText.childCount) {
             val childView = ListaIngredientesText.getChildAt(i)
 
@@ -171,6 +183,8 @@ val listaMenu = ArrayList<Menu>()
         }
     }
 
+
+
     private fun abrirGaleria() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -178,7 +192,11 @@ val listaMenu = ArrayList<Menu>()
     }
 
     private fun moveToDescription(item: Menu) {
-        //aca es para ir detalle restaurante a su actividad
+        val detalle = Intent(this, DetalleMenu::class.java).apply {
+            putExtra("menu", item)
+            putExtra("restaurante",usuario.nombreRestaurante)
+        }
+        startActivity(detalle)
     }
 
     private fun crearMenu() {
@@ -186,7 +204,7 @@ val listaMenu = ArrayList<Menu>()
         db.collection("Menu").document(usuario.nombreRestaurante)
             .get()
             .addOnSuccessListener { document ->
-                if (document != null) {
+                if (document != null && document.data != null) {
                     listaMenu.clear()
                     for (menu in document.data!!.keys) {
                         val menuData = document.get(menu) as Map<String, Any>
