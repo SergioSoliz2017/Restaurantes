@@ -1,7 +1,9 @@
 package com.example.restaurantes
 
 import BusquedaFiltrador
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -27,8 +29,8 @@ class PantallaPrincipal : AppCompatActivity() {
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         title = "Menu's Here"
-
         val email = intent.getStringExtra("email") ?: ""
+        guardarDatos(email)
         db.collection("Usuarios").document(email).get().addOnCompleteListener { documentTask ->
             if (documentTask.isSuccessful) {
                 val document = documentTask.result
@@ -100,10 +102,18 @@ class PantallaPrincipal : AppCompatActivity() {
             startActivity(inicio)
         }
     }
+    private fun guardarDatos(email:String) {
+        val preferencias : SharedPreferences = getSharedPreferences("Credenciales",Context.MODE_PRIVATE)
+        val user = email
+        val editor : SharedPreferences.Editor = preferencias.edit()
+        editor.putString("email",user)
+        editor.apply()
+    }
 
     private fun abrirFragment(fragment: Fragment) {
         val transaccion = supportFragmentManager.beginTransaction()
         transaccion.replace(R.id.containerView, fragment)
         transaccion.commit()
     }
+
 }

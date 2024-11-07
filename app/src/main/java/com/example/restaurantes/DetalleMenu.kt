@@ -14,7 +14,9 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.model.FieldPath
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_detalle_menu.BotonGuardarPlatoEditar
@@ -39,6 +41,7 @@ class DetalleMenu : AppCompatActivity() {
 
     lateinit var menu: Menu
     val db = FirebaseFirestore.getInstance()
+    lateinit var usuario: Usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +49,7 @@ class DetalleMenu : AppCompatActivity() {
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         menu = intent.getParcelableExtra("menu")!!
-        val nombreRestaurante = intent.getStringExtra("restaurante")!!
-
+        usuario = intent.getParcelableExtra("usuario")!!
         cargarDatos()
         agregarIngredientes()
         SubirFotoPlatoEditar.setOnClickListener {
@@ -55,57 +57,70 @@ class DetalleMenu : AppCompatActivity() {
         }
         BotonGuardarPlatoEditar.setOnClickListener {
             if (uri!= null){
-                storageReference = FirebaseStorage.getInstance().getReference("Menu/${nombreRestaurante}/${textNombrePlatoEditar.text.toString()}")
+                storageReference = FirebaseStorage.getInstance().getReference("Menu/${usuario.nombreRestaurante}/${textNombrePlatoEditar.text.toString()}")
                 storageReference.putFile((uri) as Uri).addOnSuccessListener { snapshot ->
                     val uriTask: Task<Uri> = snapshot.getStorage().getDownloadUrl()
                     uriTask.addOnSuccessListener { uri ->
                         obtenerIngredientes()
+                        val nombreOriginalPlato =menu.nombrePlato
                         val menu = Menu (uri.toString(),textNombrePlatoEditar.text.toString(),textPrecioPlatoEditar.text.toString(),listaIngredientes)
-                        db.collection("Menu").document(nombreRestaurante).update(
-                            hashMapOf(
-                                menu.nombrePlato to hashMapOf(
-                                    "Precio" to menu.precio ,
-                                    "FotoPlato" to menu.fotoPlato,
-                                    "Ingredientes" to menu.ingredientes,
-                                )
-                            ) as Map<String, Any>
-                        ).addOnSuccessListener {
-
-                            botonAñadirPlato.visibility = View.VISIBLE
-                            ListaMenu.visibility = View.VISIBLE
-                            AñadirPlato.visibility = View.GONE
-                            MotionToast.createToast(this,"Operacion Exitosa", "Plato añadido exitoso",
-                                MotionToast.TOAST_SUCCESS,
-                                MotionToast.GRAVITY_BOTTOM,
-                                MotionToast.LONG_DURATION,null)
-
-                        }
+                        db.collection("Menu").document(usuario.nombreRestaurante).update(mapOf(nombreOriginalPlato to FieldValue.delete()))
+                            .addOnSuccessListener {
+                                db.collection("Menu").document(usuario.nombreRestaurante).update( hashMapOf(
+                                    menu.nombrePlato to hashMapOf(
+                                        "Precio" to menu.precio ,
+                                        "FotoPlato" to menu.fotoPlato,
+                                        "Ingredientes" to menu.ingredientes,
+                                    )
+                                ) as Map<String, Any>)
+                                    .addOnSuccessListener {
+                                        MotionToast.createToast(
+                                            this, "Operación Exitosa", "Plato actualizado exitosamente",
+                                            MotionToast.TOAST_SUCCESS,
+                                            MotionToast.GRAVITY_BOTTOM,
+                                            MotionToast.LONG_DURATION, null
+                                        )
+                                        val verMenu = Intent(this, VerMenu::class.java).apply {
+                                            putExtra("usuario",usuario)
+                                        }
+                                        startActivity(verMenu)
+                                        finish()
+                                    }
+                            }
                     }
                 }
             }else{
                 obtenerIngredientes()
+                val nombreOriginalPlato =menu.nombrePlato
                 val menu = Menu (menu.fotoPlato,textNombrePlatoEditar.text.toString(),textPrecioPlatoEditar.text.toString(),listaIngredientes)
-                db.collection("Menu").document(nombreRestaurante).update(
-                    hashMapOf(
-                        menu.nombrePlato to hashMapOf(
+                db.collection("Menu").document(usuario.nombreRestaurante).update(mapOf(nombreOriginalPlato to FieldValue.delete()))
+                    .addOnSuccessListener {
+                        db.collection("Menu").document(usuario.nombreRestaurante).update( hashMapOf(
+                            menu.nombrePlato to hashMapOf(
                             "Precio" to menu.precio ,
                             "FotoPlato" to menu.fotoPlato,
                             "Ingredientes" to menu.ingredientes,
-                        )
-                    ) as Map<String, Any>
-                ).addOnSuccessListener {
-
-                    MotionToast.createToast(this,"Operacion Exitosa", "Plato añadido exitoso",
-                        MotionToast.TOAST_SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM,
-                        MotionToast.LONG_DURATION,null)
-
+                            )
+                        ) as Map<String, Any>)
+                        .addOnSuccessListener {
+                            MotionToast.createToast(
+                                this, "Operación Exitosa", "Plato actualizado exitosamente",
+                                MotionToast.TOAST_SUCCESS,
+                                MotionToast.GRAVITY_BOTTOM,
+                                MotionToast.LONG_DURATION, null
+                            )
+                            val verMenu = Intent(this, VerMenu::class.java).apply {
+                                putExtra("usuario",usuario)
+                            }
+                            startActivity(verMenu)
+                            finish()
+                        }
                 }
             }
 
         }
     }
-    private val PICK_IMAGE_REQUEST = 1
+    private var PICK_IMAGE_REQUEST = 1
     private var uri: Uri? = null
     lateinit var storageReference : StorageReference
     private fun abrirGaleria() {
@@ -116,13 +131,13 @@ class DetalleMenu : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            uri = data.data // Obtiene la URI de la imagen seleccionada
+            uri = data.data
             if (uri != null) {
                 this?.let {
                     Glide.with(it)
                         .load(uri)
                         .circleCrop()
-                        .into(ImagenPlato)
+                        .into(ImagenPlatoEditar)
                 }
             }
         }
@@ -174,7 +189,7 @@ class DetalleMenu : AppCompatActivity() {
                 }
                 setBackgroundResource(R.drawable.recuadro)
                 setPadding(17.dpToPx(), 0, 0, 0)
-                textSize = 20f  // Tamaño de texto explícito
+                textSize = 20f
                 inputType = InputType.TYPE_CLASS_TEXT
             }
             nuevoLayout.addView(nuevoEditText)
@@ -190,7 +205,7 @@ class DetalleMenu : AppCompatActivity() {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    setMargins(0, 10.dpToPx(), 0, 0)  // Margen superior de 10dp
+                    setMargins(0, 10.dpToPx(), 0, 0)
                 }
                 orientation = LinearLayout.HORIZONTAL
             }
@@ -206,7 +221,7 @@ class DetalleMenu : AppCompatActivity() {
                 }
                 setBackgroundResource(R.drawable.recuadro)
                 setPadding(17.dpToPx(), 0, 0, 0)
-                textSize = 20f  // Tamaño de texto explícito
+                textSize = 20f
                 inputType = InputType.TYPE_CLASS_TEXT
                 setText(ingrediente)
             }

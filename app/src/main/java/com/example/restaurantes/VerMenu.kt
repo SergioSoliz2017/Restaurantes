@@ -77,22 +77,29 @@ val listaMenu = ArrayList<Menu>()
         }
 
         BotonGuardarPlato.setOnClickListener {
-
             storageReference = FirebaseStorage.getInstance().getReference("Menu/${usuario.nombreRestaurante}/${textNombrePlatoAñadir.text.toString()}")
             storageReference.putFile(uri!!).addOnSuccessListener { snapshot ->
                 val uriTask: Task<Uri> = snapshot.getStorage().getDownloadUrl()
                 uriTask.addOnSuccessListener { uri ->
                 obtenerIngredientes()
                     val menu = Menu (uri.toString(),textNombrePlatoAñadir.text.toString(),textPrecioPlatoAñadir.text.toString(),listaIngredientes)
-                    db.collection("Menu").document(usuario.nombreRestaurante).set(
-                        hashMapOf(
-                            menu.nombrePlato to hashMapOf(
-                                "Precio" to menu.precio ,
+                    db.collection("Menu").document(usuario.nombreRestaurante).get().addOnSuccessListener { document ->
+                        if (document.exists()) {
+                            db.collection("Menu").document(usuario.nombreRestaurante).update(menu.nombrePlato, hashMapOf(
+                                "Precio" to menu.precio,
                                 "FotoPlato" to menu.fotoPlato,
-                                "Ingredientes" to menu.ingredientes,
-                            )
-                        ) as Map<String, Any>
-                    ).addOnSuccessListener {
+                                "Ingredientes" to menu.ingredientes
+                            ))
+                        }else{
+                            db.collection("Menu").document(usuario.nombreRestaurante).set(hashMapOf(
+                                menu.nombrePlato to hashMapOf(
+                                    "Precio" to menu.precio ,
+                                    "FotoPlato" to menu.fotoPlato,
+                                    "Ingredientes" to menu.ingredientes,
+                                )
+                            ) as Map<String, Any>)
+                        }
+                    }.addOnSuccessListener {
                         borrar()
                         botonAñadirPlato.visibility = View.VISIBLE
                         ListaMenu.visibility = View.VISIBLE
@@ -169,7 +176,7 @@ val listaMenu = ArrayList<Menu>()
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            uri = data.data // Obtiene la URI de la imagen seleccionada
+            uri = data.data
             if (uri != null) {
                 this?.let {
                     Glide.with(it)
@@ -181,8 +188,6 @@ val listaMenu = ArrayList<Menu>()
         }
     }
 
-
-
     private fun abrirGaleria() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -192,9 +197,10 @@ val listaMenu = ArrayList<Menu>()
     private fun moveToDescription(item: Menu) {
         val detalle = Intent(this, DetalleMenu::class.java).apply {
             putExtra("menu", item)
-            putExtra("restaurante",usuario.nombreRestaurante)
+            putExtra("usuario",usuario)
         }
         startActivity(detalle)
+        finish()
     }
 
     private fun crearMenu() {
