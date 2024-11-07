@@ -1,5 +1,6 @@
 package com.example.restaurantes
 
+import android.content.Context
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
@@ -10,12 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.withContext
 import javax.security.auth.callback.Callback
 
-class OfertaAdapter(var ofertas: List<Oferta>) :
+class OfertaAdapter(var ofertas: List<Oferta>,
+                    private val listener: OnOfertaClickListener) :
     RecyclerView.Adapter<OfertaAdapter.OfertaViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OfertaViewHolder {
@@ -42,6 +46,10 @@ class OfertaAdapter(var ofertas: List<Oferta>) :
             Picasso.get().load(url).into(holder.imagen)
         }.addOnFailureListener { e ->
             Log.d("Imagen", "Error al cargar imagen: ${e.message}")
+        }
+
+        holder.itemView.setOnClickListener {
+            listener.onOfertaClick(ofertas[position])
         }
     }
 
