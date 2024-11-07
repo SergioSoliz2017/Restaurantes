@@ -125,9 +125,7 @@ val listaMenu = ArrayList<Menu>()
         for (i in 0 until ListaIngredientesText.childCount) {
             val childView = ListaIngredientesText.getChildAt(i)
 
-            // Verificar si el hijo es un LinearLayout (es donde están los EditText dinámicos)
             if (childView is LinearLayout) {
-                // Obtener el primer hijo dentro del LinearLayout, que debería ser un EditText
                 val editText = childView.getChildAt(0) as EditText
                 listaIngredientes.add(editText.text.toString())
             }
@@ -227,31 +225,3 @@ val listaMenu = ArrayList<Menu>()
     }
 
 }
-
-
-/*
-db.collection("Menu").document(usuario.nombreRestaurante)
-    .get()
-    .addOnSuccessListener { documento ->
-        listaMenu.clear()
-        Toast.makeText(this, documento.data, Toast.LENGTH_SHORT).show()
-            val nombreRestaurante = documento.data["nombreRestaurante"].toString()
-            val storageRef = FirebaseStorage.getInstance().reference
-            val imageRef = storageRef.child("Restaurante/$nombreRestaurante")
-            imageRef.downloadUrl.addOnSuccessListener { uri ->
-                val imageUrl = uri.toString()
-                val restaurante = Restaurante().apply {
-                    this.nombreRestaurante = nombreRestaurante
-                    this.dirLogo = imageUrl
-                }
-                listaMenu.add(restaurante)
-                documentosProcesados++
-                if (documentosProcesados == totalDocumentos) {
-                    configurarAdaptador()
-                }
-            }.addOnFailureListener {
-                documentosProcesados++
-                if (documentosProcesados == totalDocumentos) {
-                    configurarAdaptador()
-                }
-            }*/

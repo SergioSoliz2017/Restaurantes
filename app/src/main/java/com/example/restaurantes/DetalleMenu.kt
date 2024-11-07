@@ -134,9 +134,7 @@ class DetalleMenu : AppCompatActivity() {
         for (i in 0 until ListaIngredientesEdit.childCount) {
             val childView = ListaIngredientesEdit.getChildAt(i)
 
-            // Verificar si el hijo es un LinearLayout (es donde están los EditText dinámicos)
             if (childView is LinearLayout) {
-                // Obtener el primer hijo dentro del LinearLayout, que debería ser un EditText
                 val editText = childView.getChildAt(0) as EditText
                 listaIngredientes.add(editText.text.toString())
             }
@@ -185,12 +183,8 @@ class DetalleMenu : AppCompatActivity() {
     }
 
     fun llenarIngredientes(ingredientes: ArrayList<String>) {
-        // Limpiamos el contenedor para evitar duplicados
         ListaIngredientesEdit.removeAllViews()
-
-        // Iteramos sobre la lista de ingredientes
         for (ingrediente in ingredientes) {
-            // Crear un nuevo LinearLayout para el conjunto EditText + botón
             val nuevoLayout = LinearLayout(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -201,12 +195,11 @@ class DetalleMenu : AppCompatActivity() {
                 orientation = LinearLayout.HORIZONTAL
             }
 
-            // Crear el EditText y establecer el texto del ingrediente
             val nuevoEditText = EditText(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
-                    0,  // Width en 0 para que tome el peso
-                    LinearLayout.LayoutParams.MATCH_PARENT,  // Altura que coincida con el padre
-                    1f  // Peso para ocupar el espacio disponible
+                    0,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    1f
                 ).apply {
                     marginStart = 40.dpToPx()
                     marginEnd = 40.dpToPx()
@@ -215,15 +208,10 @@ class DetalleMenu : AppCompatActivity() {
                 setPadding(17.dpToPx(), 0, 0, 0)
                 textSize = 20f  // Tamaño de texto explícito
                 inputType = InputType.TYPE_CLASS_TEXT
-                setText(ingrediente)  // Establece el texto del ingrediente
+                setText(ingrediente)
             }
 
-            // Crear el FloatingActionButton (puedes añadir lógica de eliminar si quieres)
-
-
             nuevoLayout.addView(nuevoEditText)
-
-            // Añadir el nuevo LinearLayout al contenedor principal
             ListaIngredientesEdit.addView(nuevoLayout)
         }
     }
