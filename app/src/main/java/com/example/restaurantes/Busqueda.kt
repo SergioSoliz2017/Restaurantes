@@ -1,10 +1,12 @@
 package com.example.restaurantes
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,10 +18,22 @@ import kotlinx.android.synthetic.main.activity_busqueda.recyclerRestaurantes
 class Busqueda : AppCompatActivity() {
 
     private val listaRestaurantes = ArrayList<Restaurante>()
+    //mis check box
+    private lateinit var checkBoxItaliana: CheckBox
+    private lateinit var checkBoxMexicana: CheckBox
+    private lateinit var checkBoxDomicilio: CheckBox
+    private lateinit var usuario: Usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_busqueda)
+        //inicializar os check
+        usuario = intent.getParcelableExtra("usuario")!!
+        checkBoxItaliana = findViewById(R.id.checkBoxItaliana)
+        checkBoxMexicana = findViewById(R.id.checkBoxMexicana)
+        checkBoxDomicilio = findViewById(R.id.checkBoxDomicilio)
+
+
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         listAdapter = RestauranteAdapterFiltro(
@@ -54,7 +68,29 @@ class Busqueda : AppCompatActivity() {
                 listAdapter.filtrar(textoBusqueda)
             }
         })
+        checkBoxItaliana.setOnCheckedChangeListener { _, _ -> aplicarFiltros(TextBuscador.text.toString()) }
+        checkBoxMexicana.setOnCheckedChangeListener { _, _ -> aplicarFiltros(TextBuscador.text.toString()) }
+        checkBoxDomicilio.setOnCheckedChangeListener { _, _ -> aplicarFiltros(TextBuscador.text.toString()) }
+        // Repite esto para cada CheckBox
     }
+
+    private fun aplicarFiltros(textoBusqueda: String) {
+        val serviciosSeleccionados = ArrayList<String>()
+        if (checkBoxItaliana.isChecked) serviciosSeleccionados.add("Italiana")
+        if (checkBoxMexicana.isChecked) serviciosSeleccionados.add("Mexicana")
+        if (checkBoxDomicilio.isChecked) serviciosSeleccionados.add("Domicilio")
+        // Repite esto para cada CheckBox
+
+        listAdapter.filtrar(textoBusqueda, serviciosSeleccionados)
+    }
+
+
+
+
+
+
+
+
     lateinit var listAdapter : RestauranteAdapterFiltro
 
     private fun obtenerRestaurantesDesdeDB() {
@@ -94,6 +130,11 @@ class Busqueda : AppCompatActivity() {
     }
 
     private fun moveToDescription(item: Restaurante?) {
-        //aca es para ir detalle restaurante a su actividad o aca tambien puedes acceder a toda la informacion del restaurante
+
+        val detalle = Intent(this, DetalleMenu::class.java).apply {
+            putExtra("restaurante", item)
+            putExtra("usuario",usuario)
+        }
+        startActivity(detalle)
     }
 }

@@ -74,6 +74,62 @@ public class RestauranteAdapterFiltro extends RecyclerView.Adapter<RestauranteAd
         }
         notifyDataSetChanged();
     }
+/* //filtrado por "O"
+    public void filtrar(String texto, List<String> serviciosSeleccionados) {
+        if (texto.isEmpty() && serviciosSeleccionados.isEmpty()) {
+            mData = mDataOriginal;
+        } else {
+            List<Restaurante> filtrada = new ArrayList<>();
+            for (Restaurante restaurante : mDataOriginal) {
+                boolean coincideTexto = restaurante.getNombreRestaurante().toLowerCase().contains(texto.toLowerCase());
+
+                // Verifica si algún servicio seleccionado coincide con los servicios del restaurante
+                boolean coincideServicios = false;
+                for (String servicio : serviciosSeleccionados) {
+                    if (restaurante.getServicios() != null && restaurante.getServicios().contains(servicio)) {
+                        coincideServicios = true;
+                        break;
+                    }
+                }
+
+                // Agrega el restaurante si coincide el texto o los servicios seleccionados
+                if (coincideTexto || coincideServicios) {
+                    filtrada.add(restaurante);
+                }
+            }
+            mData = filtrada;
+        }
+        notifyDataSetChanged();
+    }
+*/
+public void filtrar(String texto, List<String> serviciosSeleccionados) {
+    if (texto.isEmpty() && serviciosSeleccionados.isEmpty()) {
+        mData = mDataOriginal;
+    } else {
+        List<Restaurante> filtrada = new ArrayList<>();
+        for (Restaurante restaurante : mDataOriginal) {
+            boolean coincideTexto = restaurante.getNombreRestaurante().toLowerCase().contains(texto.toLowerCase());
+
+            // Verifica si el restaurante contiene todos los servicios seleccionados
+            boolean coincideServicios = true;
+            for (String servicio : serviciosSeleccionados) {
+                if (restaurante.getServicios() == null || !restaurante.getServicios().contains(servicio)) {
+                    coincideServicios = false;
+                    break;
+                }
+            }
+
+            // Agrega el restaurante solo si coincide el texto y los servicios seleccionados
+            if (coincideTexto && coincideServicios) {
+                filtrada.add(restaurante);
+            }
+        }
+        mData = filtrada;
+    }
+    notifyDataSetChanged();
+}
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView iconImage;

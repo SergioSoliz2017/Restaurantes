@@ -33,6 +33,7 @@ import java.util.Locale
 class MiRestaurante : AppCompatActivity() {
 
     lateinit var usuario: Usuario
+    lateinit var restaurante: Restaurante
     val db = FirebaseFirestore.getInstance()
 
     override fun onBackPressed() {
@@ -52,29 +53,35 @@ class MiRestaurante : AppCompatActivity() {
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         usuario = intent.getParcelableExtra("usuario")!!
+        restaurante =intent.getParcelableExtra("restaurante")!!
         title = usuario.nombre
-        textNombreRestaurante.text = usuario.nombreRestaurante
-        db.collection("Restaurante").document(usuario.nombreRestaurante).get().addOnCompleteListener { documentTask ->
-            if (documentTask.isSuccessful) {
-                val document = documentTask.result
-                val horariosAtencion = document.get("horarioAtencion") as Map<*, *>
-                val ubicacion = document?.get("ubicacion") as? Map<*, *>
-                val latitud = (ubicacion?.get("latitude") as? Number)?.toDouble()
-                val longitud = (ubicacion?.get("longitude") as? Number)?.toDouble()
-                descripcion = document?.getString("descripcion").toString()
-                val ingredientesPrincipal = document.get("categoria.IngredientePrincipal") as List<String>
-                val regiones = document.get("categoria.Region") as List<String>
-                val tiposPlato = document.get("categoria.TipoPlato") as List<String>
-                if (descripcion != ""){
-                    TextoDescripcionRestaurante.text = descripcion
+        if(restaurante == null){
+            textNombreRestaurante.text = usuario.nombreRestaurante
+            db.collection("Restaurante").document(usuario.nombreRestaurante).get().addOnCompleteListener { documentTask ->
+                if (documentTask.isSuccessful) {
+                    val document = documentTask.result
+                    val horariosAtencion = document.get("horarioAtencion") as Map<*, *>
+                    val ubicacion = document?.get("ubicacion") as? Map<*, *>
+                    val latitud = (ubicacion?.get("latitude") as? Number)?.toDouble()
+                    val longitud = (ubicacion?.get("longitude") as? Number)?.toDouble()
+                    descripcion = document?.getString("descripcion").toString()
+                    val ingredientesPrincipal = document.get("categoria.IngredientePrincipal") as List<String>
+                    val regiones = document.get("categoria.Region") as List<String>
+                    val tiposPlato = document.get("categoria.TipoPlato") as List<String>
+                    if (descripcion != ""){
+                        TextoDescripcionRestaurante.text = descripcion
+                    }
+                    crearHorarioAtencion(horariosAtencion)
+                    crearCategorias(ingredientesPrincipal,regiones,tiposPlato)
+                    obtenerDireccion(latitud!!, longitud!!)
+                    crearServicios(document.get("servicios") as List<String>)
+                    cargarLogo(usuario.nombreRestaurante)
                 }
-                crearHorarioAtencion(horariosAtencion)
-                crearCategorias(ingredientesPrincipal,regiones,tiposPlato)
-                obtenerDireccion(latitud!!, longitud!!)
-                crearServicios(document.get("servicios") as List<String>)
-                cargarLogo(usuario.nombreRestaurante)
             }
+        }else{
+
         }
+
         BotonVerMenu.setOnClickListener {
             val inicio = Intent(this, VerMenu:: class.java).apply {
                 putExtra("usuario", usuario)
