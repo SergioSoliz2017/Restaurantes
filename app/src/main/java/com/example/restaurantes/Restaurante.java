@@ -72,7 +72,9 @@ public class Restaurante implements Parcelable {
     public String getNombreRestaurante() {
         return nombreRestaurante;
     }
-
+    public ArrayList<String> getServicios() {
+        return servicios;
+    }
     public void setNombreRestaurante(String nombreRestaurante) {
         this.nombreRestaurante = nombreRestaurante;
     }

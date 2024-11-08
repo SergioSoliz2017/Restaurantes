@@ -6,10 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,12 +19,14 @@ public class RestauranteAdapterFiltro extends RecyclerView.Adapter<RestauranteAd
     private LayoutInflater mInflater;
     private Context context;
     final RestauranteAdapterFiltro.OnItemClickListener listener;
+    private List<Restaurante> mDataOriginal;
 
     public interface OnItemClickListener {
         void onItemClick (Restaurante item);
     }
     public RestauranteAdapterFiltro(List<Restaurante> itemList, Context context, RestauranteAdapterFiltro.OnItemClickListener listener) {
         this.mData = itemList;
+        this.mDataOriginal = itemList;
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.listener = listener;
@@ -43,7 +46,34 @@ public class RestauranteAdapterFiltro extends RecyclerView.Adapter<RestauranteAd
         holder.bindData(mData.get(position));
     }
 
-    public void setItems(List<Restaurante> items){mData=items;}
+    public void setItems(List<Restaurante> items){mData=items;mDataOriginal=items;
+        notifyDataSetChanged();
+    }
+
+    public void filtrar(String texto) {
+        if (texto.isEmpty()) {
+            mData = mDataOriginal;
+        } else {
+            List<Restaurante> filtrada = new ArrayList<>();
+            for (Restaurante restaurante : mDataOriginal) {
+                if (restaurante.getNombreRestaurante().toLowerCase().contains(texto.toLowerCase())) {
+                    filtrada.add(restaurante);
+
+                }
+                //aqui obtenemos el array del restaurante y luego buscamos en el array si el valor es == al texto
+                ArrayList<String> serviciosRestaurante = restaurante.getServicios();
+                for (int i = 0 ; i < serviciosRestaurante.size() ; i ++){
+                    if (serviciosRestaurante.get(i).toLowerCase().contains(texto.toLowerCase())){
+                        filtrada.add(restaurante);
+                    }
+                }
+
+                //aca agregas logica de busqueda y los demas filtros
+            }
+            mData = filtrada;
+        }
+        notifyDataSetChanged();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView iconImage;

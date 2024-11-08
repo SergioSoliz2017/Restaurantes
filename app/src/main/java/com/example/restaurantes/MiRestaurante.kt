@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.location.Geocoder
 import android.os.Bundle
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,14 +13,20 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.activity_inicio.usuario
+import kotlinx.android.synthetic.main.activity_mi_restaurante.BotonGuardarMiRestaurante
 import kotlinx.android.synthetic.main.activity_mi_restaurante.BotonVerMenu
+import kotlinx.android.synthetic.main.activity_mi_restaurante.LayoutEditarMiRestaurante
+import kotlinx.android.synthetic.main.activity_mi_restaurante.LayoutMiRestaurante
 import kotlinx.android.synthetic.main.activity_mi_restaurante.TextoDescripcionRestaurante
+import kotlinx.android.synthetic.main.activity_mi_restaurante.TextoDescripcionRestauranteEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.TextoDireccion
+import kotlinx.android.synthetic.main.activity_mi_restaurante.botonEditarMiRestaurante
 import kotlinx.android.synthetic.main.activity_mi_restaurante.imageViewLogo
 import kotlinx.android.synthetic.main.activity_mi_restaurante.linearLayoutCategorias
 import kotlinx.android.synthetic.main.activity_mi_restaurante.linearLayoutHorarios
+import kotlinx.android.synthetic.main.activity_mi_restaurante.linearLayoutServicios
 import kotlinx.android.synthetic.main.activity_mi_restaurante.textNombreRestaurante
+import kotlinx.android.synthetic.main.activity_mi_restaurante.textNombreRestauranteEdit
 import www.sanju.motiontoast.MotionToast
 import java.util.Locale
 
@@ -29,10 +36,16 @@ class MiRestaurante : AppCompatActivity() {
     val db = FirebaseFirestore.getInstance()
 
     override fun onBackPressed() {
-        super.onBackPressed()
 
+        if (botonEditarMiRestaurante.visibility == View.INVISIBLE){
+            LayoutMiRestaurante.visibility = View.VISIBLE
+            LayoutEditarMiRestaurante.visibility = View.GONE
+            botonEditarMiRestaurante.visibility = View.VISIBLE
+        }else{
+            super.onBackPressed()
+        }
     }
-
+    lateinit var descripcion : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mi_restaurante)
@@ -41,7 +54,6 @@ class MiRestaurante : AppCompatActivity() {
         usuario = intent.getParcelableExtra("usuario")!!
         title = usuario.nombre
         textNombreRestaurante.text = usuario.nombreRestaurante
-
         db.collection("Restaurante").document(usuario.nombreRestaurante).get().addOnCompleteListener { documentTask ->
             if (documentTask.isSuccessful) {
                 val document = documentTask.result
@@ -49,7 +61,7 @@ class MiRestaurante : AppCompatActivity() {
                 val ubicacion = document?.get("ubicacion") as? Map<*, *>
                 val latitud = (ubicacion?.get("latitude") as? Number)?.toDouble()
                 val longitud = (ubicacion?.get("longitude") as? Number)?.toDouble()
-                val descripcion = document?.getString("descripcion")
+                descripcion = document?.getString("descripcion").toString()
                 val ingredientesPrincipal = document.get("categoria.IngredientePrincipal") as List<String>
                 val regiones = document.get("categoria.Region") as List<String>
                 val tiposPlato = document.get("categoria.TipoPlato") as List<String>
@@ -59,6 +71,7 @@ class MiRestaurante : AppCompatActivity() {
                 crearHorarioAtencion(horariosAtencion)
                 crearCategorias(ingredientesPrincipal,regiones,tiposPlato)
                 obtenerDireccion(latitud!!, longitud!!)
+                crearServicios(document.get("servicios") as List<String>)
                 cargarLogo(usuario.nombreRestaurante)
             }
         }
@@ -68,8 +81,37 @@ class MiRestaurante : AppCompatActivity() {
             }
             startActivity(inicio)
         }
+        botonEditarMiRestaurante.setOnClickListener {
+            LayoutMiRestaurante.visibility = View.GONE
+            LayoutEditarMiRestaurante.visibility = View.VISIBLE
+            botonEditarMiRestaurante.visibility = View.INVISIBLE
+            textNombreRestauranteEdit.text = usuario.nombreRestaurante
+            TextoDescripcionRestauranteEdit.setText(descripcion)
+        }
+        BotonGuardarMiRestaurante.setOnClickListener {
+            LayoutMiRestaurante.visibility = View.VISIBLE
+            LayoutEditarMiRestaurante.visibility = View.GONE
+            botonEditarMiRestaurante.visibility = View.VISIBLE
+            TextoDescripcionRestaurante.text = TextoDescripcionRestauranteEdit.text.toString()
+        }
+    }
 
-
+    private fun crearServicios(listaServicios: List<String>?) {
+        val servicioLayout = LinearLayout(this)
+        servicioLayout.orientation = LinearLayout.VERTICAL
+        servicioLayout.setPadding(75, -20, 8, 8)
+        for (servicio in listaServicios!!) {
+            val textView = TextView(this).apply {
+                text =  "- $servicio"
+                textSize = 18f
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            }
+            servicioLayout.addView(textView)
+        }
+        linearLayoutServicios.addView(servicioLayout)
     }
 
     private fun cargarLogo(nombreRestaurante: String) {
