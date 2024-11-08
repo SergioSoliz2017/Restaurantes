@@ -2,9 +2,14 @@ package com.example.restaurantes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.firebase.database.PropertyName;
+
 import java.util.Date;
 
 public class Oferta implements Parcelable {
+    @PropertyName("id")
+    private String id;
     private String descripcion;
     private long fechaFin;
     private long fechaInicio;
@@ -15,6 +20,7 @@ public class Oferta implements Parcelable {
     private String titulo;
 
     public Oferta() {
+        this.id = "";
         this.descripcion = "";
         this.fechaFin = new Date().getTime();
         this.fechaInicio = new Date().getTime();
@@ -25,7 +31,8 @@ public class Oferta implements Parcelable {
         this.titulo = "";
     }
 
-    public Oferta(String descripcion, long fechaFin, long fechaInicio, String imagen, String menuId, double precio, String restauranteId, String titulo) {
+    public Oferta(String id,String descripcion, long fechaFin, long fechaInicio, String imagen, String menuId, double precio, String restauranteId, String titulo) {
+        this.id = id;
         this.descripcion = descripcion;
         this.fechaFin = fechaFin;
         this.fechaInicio = fechaInicio;
@@ -37,6 +44,14 @@ public class Oferta implements Parcelable {
     }
 
     // Getters y setters
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -123,6 +138,7 @@ public class Oferta implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
         dest.writeString(this.descripcion);
         dest.writeLong(this.fechaFin);
         dest.writeLong(this.fechaInicio);
@@ -146,6 +162,7 @@ public class Oferta implements Parcelable {
     };
 
     private Oferta(Parcel in) {
+        this.id = in.readString();
         this.descripcion = in.readString();
         this.fechaFin = in.readLong();
         this.fechaInicio = in.readLong();

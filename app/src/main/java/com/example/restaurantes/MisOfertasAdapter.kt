@@ -14,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 
-class OfertaAdapter(var ofertas: List<Oferta>,
-                    private val listener: OnOfertaClickListener) :
-    RecyclerView.Adapter<OfertaAdapter.OfertaViewHolder>() {
+class MisOfertasAdapter(var ofertas: List<Oferta>) : RecyclerView.Adapter<MisOfertasAdapter.OfertaViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OfertaViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_oferta, parent, false)
@@ -31,21 +29,16 @@ class OfertaAdapter(var ofertas: List<Oferta>,
             setSpan(
                 StyleSpan(Typeface.BOLD),
                 0,
-                10, // longitud del texto "Precio Bs: "
+                10,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
-
         val storage = FirebaseStorage.getInstance()
         val imagenRef = storage.getReferenceFromUrl(oferta.imagen)
         imagenRef.downloadUrl.addOnSuccessListener { url ->
             Picasso.get().load(url).into(holder.imagen)
         }.addOnFailureListener { e ->
             Log.d("Imagen", "Error al cargar imagen: ${e.message}")
-        }
-
-        holder.itemView.setOnClickListener {
-            listener.onOfertaClick(ofertas[position])
         }
     }
 
