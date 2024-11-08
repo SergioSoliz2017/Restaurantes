@@ -1,18 +1,26 @@
 package com.example.restaurantes
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.activity_detalle_menu.textNombrePlatoEditar
+import kotlinx.android.synthetic.main.activity_detalle_menu.textPrecioPlatoEditar
 import kotlinx.android.synthetic.main.activity_mi_restaurante.BotonGuardarMiRestaurante
 import kotlinx.android.synthetic.main.activity_mi_restaurante.BotonVerMenu
 import kotlinx.android.synthetic.main.activity_mi_restaurante.LayoutEditarMiRestaurante
@@ -22,11 +30,14 @@ import kotlinx.android.synthetic.main.activity_mi_restaurante.TextoDescripcionRe
 import kotlinx.android.synthetic.main.activity_mi_restaurante.TextoDireccion
 import kotlinx.android.synthetic.main.activity_mi_restaurante.botonEditarMiRestaurante
 import kotlinx.android.synthetic.main.activity_mi_restaurante.imageViewLogo
+import kotlinx.android.synthetic.main.activity_mi_restaurante.imageViewLogoEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.linearLayoutCategorias
 import kotlinx.android.synthetic.main.activity_mi_restaurante.linearLayoutHorarios
 import kotlinx.android.synthetic.main.activity_mi_restaurante.linearLayoutServicios
+import kotlinx.android.synthetic.main.activity_mi_restaurante.subirFotoRestauranteEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.textNombreRestaurante
 import kotlinx.android.synthetic.main.activity_mi_restaurante.textNombreRestauranteEdit
+import kotlinx.android.synthetic.main.activity_ver_menu.ImagenPlato
 import www.sanju.motiontoast.MotionToast
 import java.util.Locale
 
@@ -37,8 +48,7 @@ class MiRestaurante : AppCompatActivity() {
     val db = FirebaseFirestore.getInstance()
 
     override fun onBackPressed() {
-
-        if (botonEditarMiRestaurante.visibility == View.INVISIBLE){
+        if (botonEditarMiRestaurante.visibility == View.INVISIBLE && usuario.tieneRestaurante){
             LayoutMiRestaurante.visibility = View.VISIBLE
             LayoutEditarMiRestaurante.visibility = View.GONE
             botonEditarMiRestaurante.visibility = View.VISIBLE
@@ -55,9 +65,20 @@ class MiRestaurante : AppCompatActivity() {
         usuario = intent.getParcelableExtra("usuario")!!
         restaurante =intent.getParcelableExtra("restaurante")!!
         title = usuario.nombre
-        if(restaurante == null){
+        val esRestauranteVacio = restaurante.nombreRestaurante.isNullOrEmpty()
+        var documento = ""
+        if (usuario.tieneRestaurante){
+            documento = usuario.nombreRestaurante
             textNombreRestaurante.text = usuario.nombreRestaurante
-            db.collection("Restaurante").document(usuario.nombreRestaurante).get().addOnCompleteListener { documentTask ->
+            cargarLogo(usuario.nombreRestaurante)
+
+        }else{
+            documento = restaurante.nombreRestaurante
+            botonEditarMiRestaurante.visibility = View.INVISIBLE
+            textNombreRestaurante.text = restaurante.nombreRestaurante
+            cargarLogo(restaurante.nombreRestaurante)
+        }
+            db.collection("Restaurante").document(documento).get().addOnCompleteListener { documentTask ->
                 if (documentTask.isSuccessful) {
                     val document = documentTask.result
                     val horariosAtencion = document.get("horarioAtencion") as Map<*, *>
@@ -75,16 +96,13 @@ class MiRestaurante : AppCompatActivity() {
                     crearCategorias(ingredientesPrincipal,regiones,tiposPlato)
                     obtenerDireccion(latitud!!, longitud!!)
                     crearServicios(document.get("servicios") as List<String>)
-                    cargarLogo(usuario.nombreRestaurante)
                 }
             }
-        }else{
-
-        }
 
         BotonVerMenu.setOnClickListener {
             val inicio = Intent(this, VerMenu:: class.java).apply {
                 putExtra("usuario", usuario)
+                putExtra("restaurante", restaurante)
             }
             startActivity(inicio)
         }
@@ -94,15 +112,92 @@ class MiRestaurante : AppCompatActivity() {
             botonEditarMiRestaurante.visibility = View.INVISIBLE
             textNombreRestauranteEdit.text = usuario.nombreRestaurante
             TextoDescripcionRestauranteEdit.setText(descripcion)
+
         }
         BotonGuardarMiRestaurante.setOnClickListener {
-            LayoutMiRestaurante.visibility = View.VISIBLE
-            LayoutEditarMiRestaurante.visibility = View.GONE
-            botonEditarMiRestaurante.visibility = View.VISIBLE
-            TextoDescripcionRestaurante.text = TextoDescripcionRestauranteEdit.text.toString()
+            if (uri != null){
+                storageReference = FirebaseStorage.getInstance().getReference("Restaurante/${usuario.nombreRestaurante}")
+                storageReference.putFile((uri) as Uri).addOnSuccessListener { snapshot ->
+                    val uriTask: Task<Uri> = snapshot.getStorage().getDownloadUrl()
+                    uriTask.addOnSuccessListener { uri ->
+                        db.collection("Restaurante").document(usuario.nombreRestaurante).update(
+                            mapOf(
+                                "descripcion" to TextoDescripcionRestauranteEdit.text.toString(),
+                                "logo" to uri.toString()
+                            )).addOnCompleteListener {
+                            LayoutMiRestaurante.visibility = View.VISIBLE
+                            LayoutEditarMiRestaurante.visibility = View.GONE
+                            botonEditarMiRestaurante.visibility = View.VISIBLE
+                            TextoDescripcionRestaurante.text = TextoDescripcionRestauranteEdit.text.toString()
+                            Glide.with(this)
+                                .load(uri)
+                                .circleCrop()
+                                .into(imageViewLogo)
+                            MotionToast.createToast(
+                                this, "Operación Exitosa", "Se guardaron los datos correctamente", MotionToast.TOAST_SUCCESS,
+                                MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null
+                            )
+                        }
+                    }
+                }
+            }else{
+                db.collection("Restaurante").document(usuario.nombreRestaurante).update(
+                    mapOf(
+                        "descripcion" to TextoDescripcionRestauranteEdit.text.toString()
+                    )).addOnCompleteListener {
+                    LayoutMiRestaurante.visibility = View.VISIBLE
+                    LayoutEditarMiRestaurante.visibility = View.GONE
+                    botonEditarMiRestaurante.visibility = View.VISIBLE
+                    TextoDescripcionRestaurante.text = TextoDescripcionRestauranteEdit.text.toString()
+                    MotionToast.createToast(
+                        this, "Operación Exitosa", "Se guardaron los datos correctamente", MotionToast.TOAST_SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null
+                    )
+                }
+            }
+
+        }
+        subirFotoRestauranteEdit.setOnClickListener {
+            abrirGaleria()
         }
     }
 
+    private fun convertirHorarioAHashMap(horarioAtencionList: ArrayList<Horario>): Map<String, Map<String, String>> {
+        val horarioMap = mutableMapOf<String, Map<String, String>>()
+
+        horarioAtencionList.forEach { horario ->
+            val horarioInfo = mapOf(
+                "abrir" to horario.Abrir,
+                "cerrar" to horario.Cerrar
+            )
+            horarioMap[horario.Dia] = horarioInfo
+        }
+
+        return horarioMap
+    }
+
+    private val PICK_IMAGE_REQUEST = 1
+    private var uri: Uri? = null
+    lateinit var storageReference : StorageReference
+    private fun abrirGaleria() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            uri = data.data
+            if (uri != null) {
+                this?.let {
+                    Glide.with(it)
+                        .load(uri)
+                        .circleCrop()
+                        .into(imageViewLogoEdit)
+                }
+            }
+        }
+    }
     private fun crearServicios(listaServicios: List<String>?) {
         val servicioLayout = LinearLayout(this)
         servicioLayout.orientation = LinearLayout.VERTICAL
@@ -120,7 +215,6 @@ class MiRestaurante : AppCompatActivity() {
         }
         linearLayoutServicios.addView(servicioLayout)
     }
-
     private fun cargarLogo(nombreRestaurante: String) {
         val storageRef = FirebaseStorage.getInstance().reference
         val imageRef = storageRef.child("Restaurante/$nombreRestaurante")
@@ -130,7 +224,12 @@ class MiRestaurante : AppCompatActivity() {
                 .load(imageUrl)
                 .circleCrop()
                 .into(imageViewLogo)
+            Glide.with(this)
+                .load(imageUrl)
+                .circleCrop()
+                .into(imageViewLogoEdit)
         }
+
     }
 
     private fun obtenerDireccion(latitud: Double, longitud: Double) {

@@ -8,9 +8,10 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Restaurante implements Parcelable {
+public class Restaurante implements  Parcelable{
     String nombreRestaurante;
     ArrayList<Horario> horarioAtencion;
     String celularreferencia;
@@ -22,7 +23,6 @@ public class Restaurante implements Parcelable {
     ArrayList<String> servicios;
     String direccionLogo;
     String descripcion;
-
     public Restaurante(){}
 
     public Restaurante(String nombreRestaurante, ArrayList<Horario> horarioAtencion, String celularreferencia,
@@ -39,6 +39,7 @@ public class Restaurante implements Parcelable {
         this.descripcion = descripcion;
     }
 
+
     protected Restaurante(Parcel in) {
         nombreRestaurante = in.readString();
         celularreferencia = in.readString();
@@ -47,6 +48,8 @@ public class Restaurante implements Parcelable {
         numero = in.readInt();
         menus = in.createTypedArrayList(MenuItem.CREATOR);
         servicios = in.createStringArrayList();
+        direccionLogo = in.readString();
+        descripcion = in.readString();
     }
 
     public static final Creator<Restaurante> CREATOR = new Creator<Restaurante>() {
@@ -95,12 +98,12 @@ public class Restaurante implements Parcelable {
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeString(nombreRestaurante);
         parcel.writeString(celularreferencia);
-        parcel.writeString(direccionLogo);
         parcel.writeParcelable(ubicacion, i);
         parcel.writeParcelable(logo, i);
         parcel.writeInt(numero);
         parcel.writeTypedList(menus);
         parcel.writeStringList(servicios);
+        parcel.writeString(direccionLogo);
+        parcel.writeString(descripcion);
     }
-
 }

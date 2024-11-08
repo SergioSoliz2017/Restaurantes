@@ -38,7 +38,7 @@ class VerMenu : AppCompatActivity() {
     val db = FirebaseFirestore.getInstance()
 
     override fun onBackPressed() {
-        if (botonAñadirPlato.visibility == View.INVISIBLE) {
+        if (botonAñadirPlato.visibility == View.INVISIBLE && usuario.tieneRestaurante) {
             botonAñadirPlato.visibility = View.VISIBLE
             ListaMenu.visibility = View.VISIBLE
             AñadirPlato.visibility = View.GONE
@@ -48,6 +48,7 @@ class VerMenu : AppCompatActivity() {
         }
     }
 val listaMenu = ArrayList<Menu>()
+    lateinit var restaurante: Restaurante
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +56,13 @@ val listaMenu = ArrayList<Menu>()
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         usuario = intent.getParcelableExtra("usuario")!!
+        restaurante =intent.getParcelableExtra("restaurante")!!
+
         title = usuario.nombreRestaurante
         crearMenu()
+        if (!usuario.tieneRestaurante){
+            botonAñadirPlato.visibility = View.INVISIBLE
+        }
         botonAñadirPlato.setOnClickListener {
             ListaMenu.visibility = View.GONE
             AñadirPlato.visibility = View.VISIBLE
@@ -194,17 +200,26 @@ val listaMenu = ArrayList<Menu>()
     }
 
     private fun moveToDescription(item: Menu) {
-        val detalle = Intent(this, DetalleMenu::class.java).apply {
-            putExtra("menu", item)
-            putExtra("usuario",usuario)
+        if (usuario.tieneRestaurante){
+            val detalle = Intent(this, DetalleMenu::class.java).apply {
+                putExtra("menu", item)
+                putExtra("usuario",usuario)
+            }
+            startActivity(detalle)
+            finish()
         }
-        startActivity(detalle)
-        finish()
+
     }
 
     private fun crearMenu() {
+        var documento = ""
+        if (usuario.tieneRestaurante){
+            documento = usuario.nombreRestaurante
+        }else{
+            documento = restaurante.nombreRestaurante
+        }
         val db = FirebaseFirestore.getInstance()
-        db.collection("Menu").document(usuario.nombreRestaurante)
+        db.collection("Menu").document(documento)
             .get()
             .addOnSuccessListener { document ->
                 if (document != null && document.data != null) {

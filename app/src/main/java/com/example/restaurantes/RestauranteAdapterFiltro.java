@@ -58,7 +58,6 @@ public class RestauranteAdapterFiltro extends RecyclerView.Adapter<RestauranteAd
             for (Restaurante restaurante : mDataOriginal) {
                 if (restaurante.getNombreRestaurante().toLowerCase().contains(texto.toLowerCase())) {
                     filtrada.add(restaurante);
-
                 }
                 //aqui obtenemos el array del restaurante y luego buscamos en el array si el valor es == al texto
                 ArrayList<String> serviciosRestaurante = restaurante.getServicios();

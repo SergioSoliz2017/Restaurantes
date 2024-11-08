@@ -10,6 +10,7 @@ import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_busqueda.TextBuscador
@@ -54,6 +55,7 @@ class Busqueda : AppCompatActivity() {
     }
 
     private fun buscar() {
+
         // si check obtener text del check y listAdapter.filtrar(textoBusqueda)
         /*if (pollo.isCkeck){
             listAdapter.filtrar(pollo.text.toString)
@@ -84,13 +86,6 @@ class Busqueda : AppCompatActivity() {
         listAdapter.filtrar(textoBusqueda, serviciosSeleccionados)
     }
 
-
-
-
-
-
-
-
     lateinit var listAdapter : RestauranteAdapterFiltro
 
     private fun obtenerRestaurantesDesdeDB() {
@@ -105,21 +100,13 @@ class Busqueda : AppCompatActivity() {
                         var servicios = restaurante.data["servicios"]
                         val storageRef = FirebaseStorage.getInstance().reference
                         val imageRef = storageRef.child("Restaurante/$nombreRestaurante")
-                        //aca obtienes valores
                         imageRef.downloadUrl.addOnSuccessListener { uri ->
                             val imageUrl = uri.toString()
                             val restaurante = Restaurante().apply {
                                 this.nombreRestaurante = nombreRestaurante
+                                this.logo = uri
                                 this.dirLogo = imageUrl
                                 this.servicios = servicios as java.util.ArrayList<String>?
-                                //luego aca agregas el valor que sacaste
-                            }
-                            if (restaurante.servicios != null ){
-                                Toast.makeText(this, "hay", Toast.LENGTH_SHORT).show()
-
-                            }else{
-                                Toast.makeText(this, "no hay", Toast.LENGTH_SHORT).show()
-
                             }
                             listaRestaurantes.add(restaurante)
                             listAdapter.notifyDataSetChanged()
@@ -130,8 +117,7 @@ class Busqueda : AppCompatActivity() {
     }
 
     private fun moveToDescription(item: Restaurante?) {
-
-        val detalle = Intent(this, DetalleMenu::class.java).apply {
+        val detalle = Intent(this, MiRestaurante::class.java).apply {
             putExtra("restaurante", item)
             putExtra("usuario",usuario)
         }

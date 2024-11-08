@@ -27,7 +27,7 @@ class PantallaPrincipal : AppCompatActivity() {
         setContentView(R.layout.activity_pantalla_principal)
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        title = "Menu's Here"
+        title = "FOOTABLE"
         val email = intent.getStringExtra("email") ?: ""
         guardarDatos(email)
         db.collection("Usuarios").document(email).get().addOnCompleteListener { documentTask ->
@@ -100,6 +100,7 @@ class PantallaPrincipal : AppCompatActivity() {
         MiRestauranteBoton.setOnClickListener {
             val inicio = Intent(this, MiRestaurante:: class.java).apply {
                 putExtra("usuario", usuario)
+                putExtra("restaurante",Restaurante())
             }
             startActivity(inicio)
         }
