@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.activity_ver_menu.botonAñadirIngrediente
 import kotlinx.android.synthetic.main.activity_ver_menu.botonAñadirPlato
 import kotlinx.android.synthetic.main.activity_ver_menu.textNombrePlatoAñadir
 import kotlinx.android.synthetic.main.activity_ver_menu.textPrecioPlatoAñadir
-import kotlinx.android.synthetic.main.fragment_busqueda.recyclerRestaurantes
 import www.sanju.motiontoast.MotionToast
 
 class VerMenu : AppCompatActivity() {

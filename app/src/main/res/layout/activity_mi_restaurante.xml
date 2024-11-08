@@ -15,151 +15,358 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:id="@+id/imageViewLogo"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:gravity="center"
-                tools:srcCompat="@tools:sample/avatars" />
-        </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Nombre restaurante:"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="serif"
-                android:layout_marginStart="40dp"
-
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/textNombreRestaurante"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="40dp"
-                android:drawablePadding="10dp"
-                android:textSize="20sp"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="10dp"
-                android:text="Descripcion del restaurante:"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="serif"
-                tools:ignore="MissingConstraints" />
-            <TextView
-                android:id="@+id/TextoDescripcionRestaurante"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="40dp"
-                android:drawablePadding="10dp"
-                android:ellipsize="none"
-                android:inputType="textMultiLine"
-                android:maxLines="5"
-                android:scrollbars="vertical"
-                android:text="Añadir descripción "
-                android:textSize="20sp"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="10dp"
-                android:text="Horario de atencion:"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="serif"
-                tools:ignore="MissingConstraints" />
-            <LinearLayout
-                android:id="@+id/linearLayoutHorarios"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="16dp" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:text="Ubicacion:"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="serif"
-                tools:ignore="MissingConstraints" />
-            <TextView
-                android:id="@+id/TextoDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="40dp"
-                android:drawablePadding="10dp"
-                android:ellipsize="none"
-                android:inputType="textMultiLine"
-                android:maxLines="5"
-                android:scrollbars="vertical"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:text="Categorias:"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="serif"
-                tools:ignore="MissingConstraints" />
 
             <LinearLayout
-                android:id="@+id/linearLayoutCategorias"
+                android:id="@+id/LayoutEditarMiRestaurante"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="20dp"
-                tools:ignore="MissingConstraints" >
+                android:visibility="gone">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageViewLogoEdit"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:gravity="center"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Nombre restaurante:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/textNombreRestauranteEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:drawablePadding="10dp"
+                    android:textSize="20sp"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Descripcion del restaurante:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <EditText
+                    android:id="@+id/TextoDescripcionRestauranteEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:drawablePadding="10dp"
+                    android:ellipsize="none"
+                    android:background="@drawable/recuadro"
+                    android:ems="10"
+                    android:paddingLeft="10dp"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:scrollbars="vertical"
+                    android:text="Añadir descripción "
+                    android:textSize="20sp"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Horario de atencion:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutHorariosEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:text="Ubicacion:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/TextoDireccionEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:drawablePadding="10dp"
+                    android:ellipsize="none"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:scrollbars="vertical"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:text="Categorias:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutCategoriasEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    tools:ignore="MissingConstraints">
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/BotonGuardarMiRestaurante"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/black"
+                    android:text="Guardar"
+                    android:textColor="@color/white" />
             </LinearLayout>
-            <Button
-                android:id="@+id/BotonVerMenu"
+
+            <LinearLayout
+                android:id="@+id/LayoutMiRestaurante"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="30dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/black"
-                android:textColor="@color/white"
-                android:text="Ver menu" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageViewLogo"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:gravity="center"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Nombre restaurante:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/textNombreRestaurante"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:drawablePadding="10dp"
+                    android:textSize="20sp"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Descripcion del restaurante:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/TextoDescripcionRestaurante"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:drawablePadding="10dp"
+                    android:ellipsize="none"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:scrollbars="vertical"
+                    android:text="Añadir descripción "
+                    android:textSize="20sp"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Horario de atencion:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutHorarios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:text="Ubicacion:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/TextoDireccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:drawablePadding="10dp"
+                    android:ellipsize="none"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:scrollbars="vertical"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:text="Categorias:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutCategorias"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    tools:ignore="MissingConstraints">
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:text="Servicios:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutServicios"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    tools:ignore="MissingConstraints">
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/BotonVerMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/black"
+                    android:text="Ver menu"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/botonEditarMiRestaurante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/baseline_edit_24"
+        app:backgroundTint="@color/white"
+        app:borderWidth="25dp"
+        app:fabCustomSize="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="50dp"
+        app:tint="@color/black"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

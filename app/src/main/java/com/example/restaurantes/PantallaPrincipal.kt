@@ -1,6 +1,5 @@
 package com.example.restaurantes
 
-import BusquedaFiltrador
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -92,7 +91,10 @@ class PantallaPrincipal : AppCompatActivity() {
         }
 
         BuscarCliente.setOnClickListener {
-            abrirFragment(BusquedaFiltrador())
+            val inicio = Intent(this, Busqueda:: class.java).apply {
+                putExtra("usuario", usuario)
+            }
+            startActivity(inicio)
         }
 
         MiRestauranteBoton.setOnClickListener {
