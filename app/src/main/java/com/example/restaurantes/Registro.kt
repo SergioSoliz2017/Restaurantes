@@ -70,6 +70,7 @@ class Registro : AppCompatActivity() {
                 }else{
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(usuarioRegistro.text.toString(),contraseñaRegistro.text.toString()).addOnCompleteListener {
                         if (it.isSuccessful){
+
                             db.collection("Usuarios").document(usuarioRegistro.text.toString()).set(
                                 hashMapOf(
                                     "Nombre" to NombreRegistro.text.toString(),
@@ -79,7 +80,9 @@ class Registro : AppCompatActivity() {
                                     "FotoPerfil" to ""
                                 )
                             )
-                            val inicio = Intent(this, PantallaPrincipal:: class.java)
+                            val inicio = Intent(this, PantallaPrincipal:: class.java).apply {
+                                putExtra("email", usuarioRegistro.text.toString())
+                            }
                             startActivity(inicio)
                             MotionToast.createToast(this,"Operacion Exitosa", "Registro exitoso",MotionToast.TOAST_SUCCESS,
                                 MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)

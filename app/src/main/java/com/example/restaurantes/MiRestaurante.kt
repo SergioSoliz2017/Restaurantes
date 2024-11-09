@@ -65,19 +65,19 @@ class MiRestaurante : AppCompatActivity() {
         usuario = intent.getParcelableExtra("usuario")!!
         restaurante =intent.getParcelableExtra("restaurante")!!
         title = usuario.nombre
-        val esRestauranteVacio = restaurante.nombreRestaurante.isNullOrEmpty()
-        var documento = ""
-        if (usuario.tieneRestaurante){
-            documento = usuario.nombreRestaurante
-            textNombreRestaurante.text = usuario.nombreRestaurante
-            cargarLogo(usuario.nombreRestaurante)
+        if (restaurante != null){
+            var documento = ""
+            if (usuario.tieneRestaurante){
+                documento = usuario.nombreRestaurante
+                textNombreRestaurante.text = usuario.nombreRestaurante
+                cargarLogo(usuario.nombreRestaurante)
 
-        }else{
-            documento = restaurante.nombreRestaurante
-            botonEditarMiRestaurante.visibility = View.INVISIBLE
-            textNombreRestaurante.text = restaurante.nombreRestaurante
-            cargarLogo(restaurante.nombreRestaurante)
-        }
+            }else{
+                documento = restaurante.nombreRestaurante
+                botonEditarMiRestaurante.visibility = View.INVISIBLE
+                textNombreRestaurante.text = restaurante.nombreRestaurante
+                cargarLogo(restaurante.nombreRestaurante)
+            }
             db.collection("Restaurante").document(documento).get().addOnCompleteListener { documentTask ->
                 if (documentTask.isSuccessful) {
                     val document = documentTask.result
@@ -99,67 +99,69 @@ class MiRestaurante : AppCompatActivity() {
                 }
             }
 
-        BotonVerMenu.setOnClickListener {
-            val inicio = Intent(this, VerMenu:: class.java).apply {
-                putExtra("usuario", usuario)
-                putExtra("restaurante", restaurante)
+            BotonVerMenu.setOnClickListener {
+                val inicio = Intent(this, VerMenu:: class.java).apply {
+                    putExtra("usuario", usuario)
+                    putExtra("restaurante", restaurante)
+                }
+                startActivity(inicio)
             }
-            startActivity(inicio)
-        }
-        botonEditarMiRestaurante.setOnClickListener {
-            LayoutMiRestaurante.visibility = View.GONE
-            LayoutEditarMiRestaurante.visibility = View.VISIBLE
-            botonEditarMiRestaurante.visibility = View.INVISIBLE
-            textNombreRestauranteEdit.text = usuario.nombreRestaurante
-            TextoDescripcionRestauranteEdit.setText(descripcion)
+            botonEditarMiRestaurante.setOnClickListener {
+                LayoutMiRestaurante.visibility = View.GONE
+                LayoutEditarMiRestaurante.visibility = View.VISIBLE
+                botonEditarMiRestaurante.visibility = View.INVISIBLE
+                textNombreRestauranteEdit.text = usuario.nombreRestaurante
+                TextoDescripcionRestauranteEdit.setText(descripcion)
 
-        }
-        BotonGuardarMiRestaurante.setOnClickListener {
-            if (uri != null){
-                storageReference = FirebaseStorage.getInstance().getReference("Restaurante/${usuario.nombreRestaurante}")
-                storageReference.putFile((uri) as Uri).addOnSuccessListener { snapshot ->
-                    val uriTask: Task<Uri> = snapshot.getStorage().getDownloadUrl()
-                    uriTask.addOnSuccessListener { uri ->
-                        db.collection("Restaurante").document(usuario.nombreRestaurante).update(
-                            mapOf(
-                                "descripcion" to TextoDescripcionRestauranteEdit.text.toString(),
-                                "logo" to uri.toString()
-                            )).addOnCompleteListener {
-                            LayoutMiRestaurante.visibility = View.VISIBLE
-                            LayoutEditarMiRestaurante.visibility = View.GONE
-                            botonEditarMiRestaurante.visibility = View.VISIBLE
-                            TextoDescripcionRestaurante.text = TextoDescripcionRestauranteEdit.text.toString()
-                            Glide.with(this)
-                                .load(uri)
-                                .circleCrop()
-                                .into(imageViewLogo)
-                            MotionToast.createToast(
-                                this, "Operación Exitosa", "Se guardaron los datos correctamente", MotionToast.TOAST_SUCCESS,
-                                MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null
-                            )
+            }
+            BotonGuardarMiRestaurante.setOnClickListener {
+                if (uri != null){
+                    storageReference = FirebaseStorage.getInstance().getReference("Restaurante/${usuario.nombreRestaurante}")
+                    storageReference.putFile((uri) as Uri).addOnSuccessListener { snapshot ->
+                        val uriTask: Task<Uri> = snapshot.getStorage().getDownloadUrl()
+                        uriTask.addOnSuccessListener { uri ->
+                            db.collection("Restaurante").document(usuario.nombreRestaurante).update(
+                                mapOf(
+                                    "descripcion" to TextoDescripcionRestauranteEdit.text.toString(),
+                                    "logo" to uri.toString()
+                                )).addOnCompleteListener {
+                                LayoutMiRestaurante.visibility = View.VISIBLE
+                                LayoutEditarMiRestaurante.visibility = View.GONE
+                                botonEditarMiRestaurante.visibility = View.VISIBLE
+                                TextoDescripcionRestaurante.text = TextoDescripcionRestauranteEdit.text.toString()
+                                Glide.with(this)
+                                    .load(uri)
+                                    .circleCrop()
+                                    .into(imageViewLogo)
+                                MotionToast.createToast(
+                                    this, "Operación Exitosa", "Se guardaron los datos correctamente", MotionToast.TOAST_SUCCESS,
+                                    MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null
+                                )
+                            }
                         }
                     }
+                }else{
+                    db.collection("Restaurante").document(usuario.nombreRestaurante).update(
+                        mapOf(
+                            "descripcion" to TextoDescripcionRestauranteEdit.text.toString()
+                        )).addOnCompleteListener {
+                        LayoutMiRestaurante.visibility = View.VISIBLE
+                        LayoutEditarMiRestaurante.visibility = View.GONE
+                        botonEditarMiRestaurante.visibility = View.VISIBLE
+                        TextoDescripcionRestaurante.text = TextoDescripcionRestauranteEdit.text.toString()
+                        MotionToast.createToast(
+                            this, "Operación Exitosa", "Se guardaron los datos correctamente", MotionToast.TOAST_SUCCESS,
+                            MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null
+                        )
+                    }
                 }
-            }else{
-                db.collection("Restaurante").document(usuario.nombreRestaurante).update(
-                    mapOf(
-                        "descripcion" to TextoDescripcionRestauranteEdit.text.toString()
-                    )).addOnCompleteListener {
-                    LayoutMiRestaurante.visibility = View.VISIBLE
-                    LayoutEditarMiRestaurante.visibility = View.GONE
-                    botonEditarMiRestaurante.visibility = View.VISIBLE
-                    TextoDescripcionRestaurante.text = TextoDescripcionRestauranteEdit.text.toString()
-                    MotionToast.createToast(
-                        this, "Operación Exitosa", "Se guardaron los datos correctamente", MotionToast.TOAST_SUCCESS,
-                        MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null
-                    )
-                }
-            }
 
+            }
+            subirFotoRestauranteEdit.setOnClickListener {
+                abrirGaleria()
+            }
         }
-        subirFotoRestauranteEdit.setOnClickListener {
-            abrirGaleria()
-        }
+
     }
 
     private fun convertirHorarioAHashMap(horarioAtencionList: ArrayList<Horario>): Map<String, Map<String, String>> {
