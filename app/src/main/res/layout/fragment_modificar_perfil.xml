@@ -37,7 +37,7 @@
             android:contentDescription="@string/btn_editar_imagen"
             app:layout_constraintBottom_toBottomOf="@+id/imgUsr"
             app:layout_constraintEnd_toEndOf="@+id/imgUsr"
-            app:tint="@color/white" />
+            app:tint="@color/orange" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -57,14 +57,16 @@
                 android:text="Nombre:"
                 android:textSize="20sp"
                 android:textStyle="bold|italic" />
-            <TextView
+
+            <EditText
                 android:id="@+id/editNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/estilo_borde_texto"
                 android:hint="Nombre"
-                android:textSize="20sp"
+                android:minHeight="48dp"
                 android:padding="10dp"
-                android:background="@drawable/estilo_borde_texto" />
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -84,14 +86,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Número:"
+                android:text="Fecha Nacimiento:"
                 android:textSize="20sp"
                 android:textStyle="bold|italic" />
-            <TextView
-                android:id="@+id/editNumero"
+            <EditText
+                android:id="@+id/mostrarFechaNac"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Número"
+                android:hint="Fecha nacimiento"
+                android:minHeight="48dp"
                 android:textSize="20sp"
                 android:padding="10dp"
                 android:background="@drawable/estilo_borde_texto"/>

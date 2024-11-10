@@ -12,24 +12,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
+import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 
 class ModificarPerfilFragment : Fragment() {
 
-    private lateinit var imgUsr: ImageView
-    private lateinit var editNombre: TextView
+    private lateinit var imgUsr: RoundedImageView
+    private lateinit var editNombre: EditText
     private lateinit var editCorreo: TextView
-    private lateinit var editNumero: TextView
+    private lateinit var mostrarFechaNac: EditText
     private lateinit var btnGuardar: Button
     private lateinit var btnCancelar: Button
-    private lateinit var btnEditarImagen: Button
+    private lateinit var btnEditarImagen: ImageButton
     private var imageUri: Uri? = null
 
     companion object {
@@ -50,7 +54,7 @@ class ModificarPerfilFragment : Fragment() {
         imgUsr = view.findViewById(R.id.imgUsr)
         editNombre = view.findViewById(R.id.editNombre)
         editCorreo = view.findViewById(R.id.editCorreo)
-        editNumero = view.findViewById(R.id.editNumero)
+        mostrarFechaNac = view.findViewById(R.id.mostrarFechaNac)
         btnGuardar = view.findViewById(R.id.btnGuardar)
         btnCancelar = view.findViewById(R.id.btnCancelar)
         btnEditarImagen = view.findViewById(R.id.btnEditarImagen)
@@ -84,38 +88,46 @@ class ModificarPerfilFragment : Fragment() {
             .get()
             .addOnSuccessListener { documento ->
                 val nombreUsr = documento.data?.get("Nombre").toString()
-                val correoUsr = documento.data?.get("Correo").toString()
-                val numeroUsr = documento.data?.get("Número").toString()
+                val correoUsr = documento.id
+                val fechaNacUsr = documento.data?.get("FechaNacimiento").toString()
 
-                editNombre.text = nombreUsr
+                editNombre.setText(nombreUsr)
                 editCorreo.text = correoUsr
-                editNumero.text = numeroUsr
+                mostrarFechaNac.setText(fechaNacUsr)
 
-                cargarImagenPerfil(nombreUsr, imgUsr)
+                cargarImagenPerfil(correoUsr, imgUsr)
             }
             .addOnFailureListener { exception ->
                 println("Error al recuperar datos: ${exception.message}")
             }
     }
 
-    private fun cargarImagenPerfil(nombreUsr: String, imageView: ImageView) {
+    private fun cargarImagenPerfil(correoUsr: String, imageView: ImageView) {
         val storageReference = FirebaseStorage.getInstance().reference
-        val imagenReference = storageReference.child("Usuarios/$nombreUsr/perfil.jpg")
-        val contexto = imageView.context
+        val imagenReference = storageReference.child("Usuario/$correoUsr")
 
-        imagenReference.downloadUrl.addOnSuccessListener { uri ->
-            Picasso.get()
-                .load(uri)
-                .into(imageView)
+        imagenReference.getBytes(Long.MAX_VALUE).addOnSuccessListener {
+            imagenReference.downloadUrl.addOnSuccessListener { uri ->
+                Picasso.get()
+                    .load(uri)
+                    .into(imageView)
+            }.addOnFailureListener { exception ->
+                Toast.makeText(imageView.context, "Error al cargar imagen: ${exception.message}", Toast.LENGTH_LONG).show()
+            }
         }.addOnFailureListener { exception ->
-            Toast.makeText(contexto, "Error al cargar imagen: ${exception.message}", Toast.LENGTH_LONG).show()
+            // La imagen no existe, muestra la imagen predeterminada
+            if (exception is StorageException && exception.errorCode == StorageException.ERROR_OBJECT_NOT_FOUND) {
+                imageView.setImageResource(R.drawable.banner)
+            } else {
+                Toast.makeText(imageView.context, "Error al verificar imagen: ${exception.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
     private fun guardarCambios() {
         val nombreActualizado = editNombre.text.toString()
-        val correoActualizado = editCorreo.text.toString()
-        val numeroActualizado = editNumero.text.toString()
+        //val correoActualizado = editCorreo.text.toString()
+        val fechaActualizado = mostrarFechaNac.text.toString()
 
         val actividad = activity as? PantallaPrincipal
         val usuario = actividad?.usuario
@@ -126,29 +138,53 @@ class ModificarPerfilFragment : Fragment() {
 
             val updates = mutableMapOf<String, Any>(
                 "Nombre" to nombreActualizado,
-                "Correo" to correoActualizado,
-                "Número" to numeroActualizado
+                //"Correo" to correoActualizado,
+                "Número" to fechaActualizado
             )
 
             // Subir imagen si está seleccionada
             imageUri?.let { uri ->
                 val storageReference = FirebaseStorage.getInstance().reference
-                    .child("Usuarios/${usuario.correo}/perfil.jpg")
-                storageReference.putFile(uri)
-                    .addOnSuccessListener {
-                        storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
-                            updates["ImagenURL"] = downloadUri.toString()
-                            usuarioDocRef.update(updates)
-                                .addOnSuccessListener {
-                                    Toast.makeText(context, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show()
-                                }
-                                .addOnFailureListener { exception ->
-                                    Toast.makeText(context, "Error al actualizar perfil: ${exception.message}", Toast.LENGTH_LONG).show()
-                                }
+                    .child("Usuario/${usuario.correo}")
+
+                storageReference.delete().addOnSuccessListener {
+                    storageReference.putFile(uri)
+                        .addOnSuccessListener { taskSnapshot ->
+                            storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
+                                updates["FotoPerfil"] = downloadUri.toString()
+                                usuarioDocRef.update(updates)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(context, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show()
+                                        requireActivity().onBackPressed()
+                                    }
+                                    .addOnFailureListener { exception ->
+                                        Toast.makeText(context, "Error al actualizar perfil: ${exception.message}", Toast.LENGTH_LONG).show()
+                                    }
+                            }
                         }
-                    }
+                        .addOnFailureListener { exception ->
+                            Toast.makeText(context, "Error al subir imagen: ${exception.message}", Toast.LENGTH_LONG).show()
+                        }
+                }
                     .addOnFailureListener { exception ->
-                        Toast.makeText(context, "Error al subir imagen: ${exception.message}", Toast.LENGTH_LONG).show()
+                        // Si la imagen no existe, no hay problema, sigue con la subida
+                        storageReference.putFile(uri)
+                            .addOnSuccessListener { taskSnapshot ->
+                                storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
+                                    updates["FotoPerfil"] = downloadUri.toString()
+                                    usuarioDocRef.update(updates)
+                                        .addOnSuccessListener {
+                                            Toast.makeText(context, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show()
+                                            requireActivity().onBackPressed()
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            Toast.makeText(context, "Error al actualizar perfil: ${exception.message}", Toast.LENGTH_LONG).show()
+                                        }
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Toast.makeText(context, "Error al subir imagen: ${exception.message}", Toast.LENGTH_LONG).show()
+                            }
                     }
             } ?: usuarioDocRef.update(updates) // Si no hay imagen, actualiza solo el texto
         } else {

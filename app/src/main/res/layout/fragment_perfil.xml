@@ -44,7 +44,7 @@
                 android:text="Nombre:"
                 android:textSize="20sp"
                 android:textStyle="bold|italic" />
-            <EditText
+            <TextView
                 android:id="@+id/outNombre"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -62,7 +62,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold|italic"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/outCorreo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold|italic"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/outNumero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
