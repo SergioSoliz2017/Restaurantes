@@ -85,7 +85,7 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
                                 "FechaNacimiento" to usuario.fechaNacimiento,
                                 "TieneRestaurante" to true,
                                 "Restaurante" to restaurante.nombreRestaurante,
-                                "FotoPerfil" to ""
+                                "FotoPerfil" to usuario.fotoPerfil
                             )
                         )
                         val categoriasMap: MutableMap<String, Any> = HashMap()

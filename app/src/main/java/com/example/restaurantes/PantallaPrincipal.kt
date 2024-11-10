@@ -48,7 +48,8 @@ class PantallaPrincipal : AppCompatActivity() {
                         fechaNacimiento ?: "",
                         tieneRestaurante,
                         nombreRestaurante,
-                        fotoPerfil ?: ""
+                        fotoPerfil ?: "",
+                        null
                     )
                     MotionToast.createToast(
                         this, "Operación Exitosa", "Inicio exitoso", MotionToast.TOAST_SUCCESS,
@@ -111,6 +112,16 @@ class PantallaPrincipal : AppCompatActivity() {
         val editor : SharedPreferences.Editor = preferencias.edit()
         editor.putString("email",user)
         editor.apply()
+    }
+    fun BorrarDatos() {
+        val preferencias : SharedPreferences = getSharedPreferences("Credenciales",Context.MODE_PRIVATE)
+        val editor : SharedPreferences.Editor = preferencias.edit()
+        editor.putString("email",null)
+        editor.apply()
+        MotionToast.createToast(
+            this, "Operación Exitosa", "Se cerro sesion", MotionToast.TOAST_SUCCESS,
+            MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null
+        )
     }
 
     private fun abrirFragment(fragment: Fragment) {

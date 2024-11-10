@@ -1,5 +1,6 @@
 package com.example.restaurantes;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -17,9 +18,9 @@ public class Usuario implements Parcelable {
     boolean tieneRestaurante;
     String nombreRestaurante;
     String fotoPerfil;
-
+    Uri fotoPerfilUri;
     public  Usuario (){}
-    public Usuario(String nombre, String correo, String contraseña, String fechaNacimiento, boolean tieneRestaurante,String nombreRestaurante,String fotoPerfil) {
+    public Usuario(String nombre, String correo, String contraseña, String fechaNacimiento, boolean tieneRestaurante,String nombreRestaurante,String fotoPerfil, Uri fotoPerfilUri) {
         this.nombre = nombre;
         this.correo = correo;
         this.contraseña = contraseña;
@@ -27,6 +28,7 @@ public class Usuario implements Parcelable {
         this.tieneRestaurante = tieneRestaurante;
         this.nombreRestaurante = nombreRestaurante;
         this.fotoPerfil=fotoPerfil;
+        this.fotoPerfilUri = fotoPerfilUri;
     }
 
 
@@ -38,6 +40,7 @@ public class Usuario implements Parcelable {
         tieneRestaurante = in.readByte() != 0;
         nombreRestaurante = in.readString();
         fotoPerfil = in.readString();
+        fotoPerfilUri = in.readParcelable(Uri.class.getClassLoader());
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
@@ -66,5 +69,6 @@ public class Usuario implements Parcelable {
         parcel.writeByte((byte) (tieneRestaurante ? 1 : 0));
         parcel.writeString(nombreRestaurante);
         parcel.writeString(fotoPerfil);
+        parcel.writeParcelable(fotoPerfilUri, i);
     }
 }

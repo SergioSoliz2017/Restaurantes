@@ -1,6 +1,9 @@
 package com.example.restaurantes
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +16,7 @@ import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_perfil.cerrarSesion
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,8 +64,14 @@ class Perfil : Fragment() {
         modificarButton.setOnClickListener {
             modificarPerfil()
         }
-    }
+        cerrarSesion.setOnClickListener {
+            (activity as PantallaPrincipal).BorrarDatos()
+            val inicio = Intent(this.context, InicioSesion::class.java)
+            startActivity(inicio)
 
+            requireActivity().finish()
+        }
+    }
 
     companion object {
         /**
@@ -92,12 +102,11 @@ class Perfil : Fragment() {
             .get()
             .addOnSuccessListener { documento ->
                 val nombreUsr = documento.data?.get("Nombre").toString()
-                val correoUsr = documento.data?.get("Correo").toString()
-                val numeroUsr = documento.data?.get("Número").toString()
+                val correoUsr = documento.id
+                val numeroUsr = documento.data?.get("FechaNacimiento").toString()
                 val imageView: ImageView? = view?.findViewById(R.id.imageView3)
 
-                cargarImagenPerfil(nombreUsr, imageView!!) //predetermindo
-                //Toast.makeText(context, "nombre BD: $nombreUsuario", Toast.LENGTH_SHORT).show()
+                cargarImagenPerfil(correoUsuario, imageView!!) //predetermindo
 
                 val outNombre: TextView = view?.findViewById(R.id.outNombre)!!
                 val outCorreo: TextView = view?.findViewById(R.id.outCorreo)!!
@@ -114,7 +123,7 @@ class Perfil : Fragment() {
 
     private fun cargarImagenPerfil(usrNombre: String?, imageView: ImageView) {
         val storageReference = FirebaseStorage.getInstance().reference
-        val imagenReference = storageReference.child("Restaurante/$usrNombre")//cambiar la direccion de la carpeta donde se va a guarda la foto de usuario
+        val imagenReference = storageReference.child("Usuario/$usrNombre")//cambiar la direccion de la carpeta donde se va a guarda la foto de usuario
         val contexto = imageView.context
         imagenReference.downloadUrl.addOnSuccessListener { uri ->
             Picasso.get()

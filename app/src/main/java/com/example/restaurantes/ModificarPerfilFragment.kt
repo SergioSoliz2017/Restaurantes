@@ -18,13 +18,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 
 class ModificarPerfilFragment : Fragment() {
 
-    private lateinit var imgUsr: RoundedImageView
+    private lateinit var imgUsr: ImageView
     private lateinit var editNombre: TextView
     private lateinit var editCorreo: TextView
     private lateinit var editNumero: TextView

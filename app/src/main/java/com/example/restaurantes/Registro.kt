@@ -1,23 +1,32 @@
 package com.example.restaurantes
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_inicio.usuario
 import kotlinx.android.synthetic.main.activity_registro.EsRestaurante
+import kotlinx.android.synthetic.main.activity_registro.ImagenFotoPerfil
 import kotlinx.android.synthetic.main.activity_registro.NombreRegistro
 import kotlinx.android.synthetic.main.activity_registro.Registrar
+import kotlinx.android.synthetic.main.activity_registro.SubirFotoPerfil
 import kotlinx.android.synthetic.main.activity_registro.contraseñaRegistro
 import kotlinx.android.synthetic.main.activity_registro.fechaRegistro
 import kotlinx.android.synthetic.main.activity_registro.usuarioRegistro
+import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.ImagenLogoRe
 import www.sanju.motiontoast.MotionToast
 import java.util.Calendar
 
@@ -32,6 +41,8 @@ class Registro : AppCompatActivity() {
         startActivity(inicio)
         finish()
     }
+    lateinit var storageReference : StorageReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
@@ -42,6 +53,9 @@ class Registro : AppCompatActivity() {
         usuarioRegistro.setText(email)
         NombreRegistro.setText(nombre)
         fecha()
+        SubirFotoPerfil.setOnClickListener {
+            abrirGaleria()
+        }
         Registrar.setOnClickListener {
             if (Verificar()){
                 if (EsRestaurante.isChecked){
@@ -52,16 +66,23 @@ class Registro : AppCompatActivity() {
                         fechaRegistro.text.toString(),
                         true,
                         "",
-                        ""
+                        uri.toString(),
+                        uri
                     )
-                    //hablar si se va modificar (aca cabiar consultar si el correo ya existe y seguna  eso verificar y esto poner al final)
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(usuarioRegistro.text.toString(),contraseñaRegistro.text.toString()).addOnCompleteListener {
                         if (it.isSuccessful){
-                            val inicio = Intent(this, RegistroRestaurante::class.java).apply {
-                                putExtra("usuario", user)
+                            storageReference = FirebaseStorage.getInstance().getReference("Usuario/${usuarioRegistro.text.toString()}")
+                            storageReference.putFile(uri!!).addOnSuccessListener { snapshot ->
+                                val uriTask: Task<Uri> = snapshot.getStorage().getDownloadUrl()
+                                uriTask.addOnSuccessListener { uri ->
+                                    val inicio =
+                                        Intent(this, RegistroRestaurante::class.java).apply {
+                                            putExtra("usuario", user)
+                                        }
+                                    finish()
+                                    startActivity(inicio)
+                                }
                             }
-                            finish()
-                            startActivity(inicio)
                         }else{
                             MotionToast.createToast(this,"Operacion Fallida", "Algo salio mal",MotionToast.TOAST_ERROR,
                                 MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
@@ -70,23 +91,36 @@ class Registro : AppCompatActivity() {
                 }else{
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(usuarioRegistro.text.toString(),contraseñaRegistro.text.toString()).addOnCompleteListener {
                         if (it.isSuccessful){
-
-                            db.collection("Usuarios").document(usuarioRegistro.text.toString()).set(
-                                hashMapOf(
-                                    "Nombre" to NombreRegistro.text.toString(),
-                                    "Contraseña" to contraseñaRegistro.text.toString(),
-                                    "FechaNacimiento" to fechaRegistro.text.toString(),
-                                    "TieneRestaurante" to false,
-                                    "FotoPerfil" to ""
-                                )
-                            )
-                            val inicio = Intent(this, PantallaPrincipal:: class.java).apply {
-                                putExtra("email", usuarioRegistro.text.toString())
+                            storageReference = FirebaseStorage.getInstance().getReference("Usuario/${usuarioRegistro.text.toString()}")
+                            storageReference.putFile(uri!!).addOnSuccessListener { snapshot ->
+                                val uriTask: Task<Uri> = snapshot.getStorage().getDownloadUrl()
+                                uriTask.addOnSuccessListener { uri ->
+                                    db.collection("Usuarios")
+                                        .document(usuarioRegistro.text.toString()).set(
+                                            hashMapOf(
+                                                "Nombre" to NombreRegistro.text.toString(),
+                                                "Contraseña" to contraseñaRegistro.text.toString(),
+                                                "FechaNacimiento" to fechaRegistro.text.toString(),
+                                                "TieneRestaurante" to false,
+                                                "FotoPerfil" to uri.toString()
+                                            )
+                                        )
+                                    val inicio = Intent(this, PantallaPrincipal::class.java).apply {
+                                        putExtra("email", usuarioRegistro.text.toString())
+                                    }
+                                    startActivity(inicio)
+                                    MotionToast.createToast(
+                                        this,
+                                        "Operacion Exitosa",
+                                        "Registro exitoso",
+                                        MotionToast.TOAST_SUCCESS,
+                                        MotionToast.GRAVITY_BOTTOM,
+                                        MotionToast.LONG_DURATION,
+                                        null
+                                    )
+                                    finish()
+                                }
                             }
-                            startActivity(inicio)
-                            MotionToast.createToast(this,"Operacion Exitosa", "Registro exitoso",MotionToast.TOAST_SUCCESS,
-                                MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
-                            finish()
                         }else{
                             MotionToast.createToast(this,"Operacion Fallida", "Algo salio mal",MotionToast.TOAST_ERROR,
                                 MotionToast.GRAVITY_BOTTOM,MotionToast.LONG_DURATION,null)
@@ -97,7 +131,28 @@ class Registro : AppCompatActivity() {
             }
         }
     }
+    private val PICK_IMAGE_REQUEST = 1
+    private var uri: Uri? = null
+    private fun abrirGaleria() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            uri = data.data // Obtiene la URI de la imagen seleccionada
+            if (uri != null) {
+                this?.let {
+                    Glide.with(it)
+                        .load(uri)
+                        .circleCrop()
+                        .into(ImagenFotoPerfil)
+                }
+            }
+        }
+    }
     private fun fecha () {
         fechaRegistro.setOnClickListener {
             val calendar = Calendar.getInstance()
