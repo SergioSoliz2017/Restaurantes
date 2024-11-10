@@ -33,8 +33,8 @@ class MisOfertas : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_mis_ofertas, container, false)
 
-        val fab = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
-        fab.setOnClickListener {
+        val btnAgregarOferta = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        btnAgregarOferta.setOnClickListener {
             agregarOferta()
         }
 

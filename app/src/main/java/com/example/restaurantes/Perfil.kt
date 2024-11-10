@@ -1,10 +1,12 @@
 package com.example.restaurantes
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -54,6 +56,10 @@ class Perfil : Fragment() {
         } else {
             Toast.makeText(context, "Error al cargar la información", Toast.LENGTH_SHORT).show()
         }
+        val modificarButton = view.findViewById<Button>(R.id.btnModificar)
+        modificarButton.setOnClickListener {
+            modificarPerfil()
+        }
     }
 
 
@@ -77,6 +83,7 @@ class Perfil : Fragment() {
             }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun obtenerDatosUsuarioDesdeDB(usuario: Usuario) {
         val db = FirebaseFirestore.getInstance()
         val correoUsuario = usuario.correo
@@ -85,43 +92,29 @@ class Perfil : Fragment() {
             .get()
             .addOnSuccessListener { documento ->
                 val nombreUsr = documento.data?.get("Nombre").toString()
-                val fechaNacUsr = documento.data?.get("FechaNacimiento").toString()
-                val restauranteNombre = documento.data?.get("Restaurante") as? String
+                val correoUsr = documento.data?.get("Correo").toString()
+                val numeroUsr = documento.data?.get("Número").toString()
                 val imageView: ImageView? = view?.findViewById(R.id.imageView3)
 
-                if (restauranteNombre != null) {
-                    db.collection("Restaurante").document(restauranteNombre)
-                        .get()
-                        .addOnSuccessListener { documento ->
-                            val nombreRestaurante = documento.data?.get("nombreRestaurante").toString()
-
-                            val outRes: TextView = view?.findViewById(R.id.outRes)!!
-
-                            outRes.text = nombreRestaurante
-                        }
-                }else{
-                    val outRes: TextView = view?.findViewById(R.id.outRes)!!
-
-                    outRes.text = "Sin Informacion"
-                }
+                cargarImagenPerfil(nombreUsr, imageView!!) //predetermindo
                 //Toast.makeText(context, "nombre BD: $nombreUsuario", Toast.LENGTH_SHORT).show()
 
                 val outNombre: TextView = view?.findViewById(R.id.outNombre)!!
-                val fechaNac: TextView = view?.findViewById(R.id.fechaNac)!!
-
-                cargarImagenRestaurante(restauranteNombre, imageView!!)
+                val outCorreo: TextView = view?.findViewById(R.id.outCorreo)!!
+                val outNumero: TextView = view?.findViewById(R.id.outNumero)!!
 
                 outNombre.text = nombreUsr
-                fechaNac.text = fechaNacUsr
+                outCorreo.text = correoUsr
+                outNumero.text = numeroUsr
             }
             .addOnFailureListener { exception ->
                 println("Error al recuperar datos: ${exception.message}")
             }
     }
 
-    private fun cargarImagenRestaurante(restauranteNombre: String?, imageView: ImageView) {
+    private fun cargarImagenPerfil(usrNombre: String?, imageView: ImageView) {
         val storageReference = FirebaseStorage.getInstance().reference
-        val imagenReference = storageReference.child("Restaurante/$restauranteNombre")
+        val imagenReference = storageReference.child("Restaurante/$usrNombre")//cambiar la direccion de la carpeta donde se va a guarda la foto de usuario
         val contexto = imageView.context
         imagenReference.downloadUrl.addOnSuccessListener { uri ->
             Picasso.get()
@@ -130,5 +123,14 @@ class Perfil : Fragment() {
         }.addOnFailureListener { exception ->
             Toast.makeText(contexto, "Error al cargar imagen: ${exception.message}", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun modificarPerfil() {
+        val fragment = ModificarPerfilFragment()
+        val actividad = activity as PantallaPrincipal
+        val transaction = actividad.supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.containerView, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

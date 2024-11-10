@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AgregarOfertaFragment"
+    tools:context=".ModificarPerfilFragment"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,32 +54,29 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/nombre"
+                android:text="Nombre:"
                 android:textSize="20sp"
                 android:textStyle="bold|italic" />
-
-            <EditText
+            <TextView
                 android:id="@+id/editNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/estilo_borde_texto"
-                android:minHeight="48dp"
+                android:hint="Nombre"
+                android:textSize="20sp"
                 android:padding="10dp"
-                android:hint="Nombre plato"
-                android:textSize="20sp" />
+                android:background="@drawable/estilo_borde_texto" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/descripci_n"
+                android:text="Correo:"
                 android:textSize="20sp"
                 android:textStyle="bold|italic" />
-            <EditText
-                android:id="@+id/editDescripcion"
+            <TextView
+                android:id="@+id/editCorreo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:minHeight="48dp"
-                android:hint="Descripción"
+                android:hint="Correo"
                 android:textSize="20sp"
                 android:padding="10dp"
                 android:background="@drawable/estilo_borde_texto"/>
@@ -87,47 +84,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Precio Oferta:"
+                android:text="Número:"
                 android:textSize="20sp"
                 android:textStyle="bold|italic" />
-            <EditText
-                android:id="@+id/editPrecioOferta"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="48dp"
-                android:hint="Precio"
-                android:textSize="20sp"
-                android:padding="10dp"
-                android:background="@drawable/estilo_borde_texto"/>
-
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Fecha Inicio:"
-                android:textSize="20sp"
-                android:textStyle="bold|italic" />
-            <EditText
-                android:id="@+id/editFechaIni"
+                android:id="@+id/editNumero"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:minHeight="48dp"
-                android:hint="Fecha inicio"
-                android:textSize="20sp"
-                android:padding="10dp"
-                android:background="@drawable/estilo_borde_texto"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Fecha Fin:"
-                android:textSize="20sp"
-                android:textStyle="bold|italic" />
-            <EditText
-                android:id="@+id/editFechaFin"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="48dp"
-                android:hint="Fehca fin"
+                android:hint="Número"
                 android:textSize="20sp"
                 android:padding="10dp"
                 android:background="@drawable/estilo_borde_texto"/>

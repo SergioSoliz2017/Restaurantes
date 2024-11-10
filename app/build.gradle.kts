@@ -68,6 +68,8 @@ dependencies {
     implementation("com.itextpdf:itextg:5.5.10")
     implementation("com.google.android.gms:play-services-maps:19.0.0")
     implementation("com.google.android.gms:play-services-location:19.0.1")
+
+    implementation ("com.makeramen:roundedimageview:2.3.0")
     // Glide
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")

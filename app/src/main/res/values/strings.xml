@@ -9,4 +9,9 @@
     <string name="editar_la_oferta_selecionada">Editar la oferta selecionada</string>
     <string name="button">Button</string>
     <string name="cerrar">Cerrar</string>
+    <string name="guardar">Guardar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="btn_editar_imagen">Editar imagen</string>
+    <string name="nombre">Nombre:</string>
+    <string name="descripci_n">Descripción:</string>
 </resources>

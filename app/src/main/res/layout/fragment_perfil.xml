@@ -10,26 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/imageView3"
-            android:layout_width="157dp"
-            android:layout_height="154dp"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/banner"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/banner" />
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/baseline_settings_24"
-            android:contentDescription="@string/Btn_config"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:riv_border_color="#FF8A65"
+            app:riv_border_width="3dp"
+            app:riv_corner_radius="15dp" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -50,42 +44,51 @@
                 android:text="Nombre:"
                 android:textSize="20sp"
                 android:textStyle="bold|italic" />
-            <TextView
+            <EditText
                 android:id="@+id/outNombre"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:minHeight="48dp"
                 android:text="Nombre"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:background="@drawable/estilo_borde_texto"/>
 
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fecha de nacimiento:"
+                android:text="Correo:"
                 android:textSize="20sp"
                 android:textStyle="bold|italic"/>
 
-            <TextView
-                android:id="@+id/fechaNac"
+            <EditText
+                android:id="@+id/outCorreo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="FechaNac"
-                android:textSize="20sp" />
+                android:minHeight="48dp"
+                android:text="correo"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:background="@drawable/estilo_borde_texto"/>
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nombre restaurante:"
+                android:text="Número:"
                 android:textSize="20sp"
                 android:textStyle="bold|italic"/>
 
-            <TextView
-                android:id="@+id/outRes"
+            <EditText
+                android:id="@+id/outNumero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Restaurante"
-                android:textSize="20sp" />
+                android:minHeight="48dp"
+                android:text="Número"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:background="@drawable/estilo_borde_texto"/>
 
         </LinearLayout>
 
@@ -104,24 +107,26 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/btnModificar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/green"
+                android:backgroundTint="@color/orange"
                 android:text="Modificar Datos"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="17dp"
+                android:textStyle="bold"
                 tools:ignore="HardcodedText,SpUsage" />
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/cerrarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/green"
-                android:text="Eliminar cuenta"
+                android:backgroundTint="@color/orange"
+                android:text="Cerrar Sesión"
                 tools:ignore="HardcodedText,SpUsage"
                 android:textSize="17dp"
-                android:textColor="@color/white"/>
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
