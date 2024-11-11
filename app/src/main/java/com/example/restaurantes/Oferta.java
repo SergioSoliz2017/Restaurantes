@@ -5,14 +5,16 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.PropertyName;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Oferta implements Parcelable {
     @PropertyName("id")
     private String id;
     private String descripcion;
-    private long fechaFin;
-    private long fechaInicio;
+    private String fechaFin;
+    private String fechaInicio;
     private String imagen;
     private String menuId;
     private double precio;
@@ -22,8 +24,8 @@ public class Oferta implements Parcelable {
     public Oferta() {
         this.id = "";
         this.descripcion = "";
-        this.fechaFin = new Date().getTime();
-        this.fechaInicio = new Date().getTime();
+        this.fechaFin = getCurrentDate();
+        this.fechaInicio = getCurrentDate();
         this.imagen = "";
         this.menuId = "";
         this.precio = 0.0;
@@ -31,7 +33,7 @@ public class Oferta implements Parcelable {
         this.titulo = "";
     }
 
-    public Oferta(String id,String descripcion, long fechaFin, long fechaInicio, String imagen, String menuId, double precio, String restauranteId, String titulo) {
+    public Oferta(String id,String descripcion, String fechaFin, String fechaInicio, String imagen, String menuId, double precio, String restauranteId, String titulo) {
         this.id = id;
         this.descripcion = descripcion;
         this.fechaFin = fechaFin;
@@ -60,19 +62,19 @@ public class Oferta implements Parcelable {
         this.descripcion = descripcion;
     }
 
-    public long getFechaFin() {
+    public String getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(long fechaFin) {
+    public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
     }
 
-    public long getFechaInicio() {
+    public String getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(long fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
@@ -140,8 +142,8 @@ public class Oferta implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
         dest.writeString(this.descripcion);
-        dest.writeLong(this.fechaFin);
-        dest.writeLong(this.fechaInicio);
+        dest.writeString(this.fechaFin);
+        dest.writeString(this.fechaInicio);
         dest.writeString(this.imagen);
         dest.writeString(this.menuId);
         dest.writeDouble(this.precio);
@@ -164,12 +166,18 @@ public class Oferta implements Parcelable {
     private Oferta(Parcel in) {
         this.id = in.readString();
         this.descripcion = in.readString();
-        this.fechaFin = in.readLong();
-        this.fechaInicio = in.readLong();
+        this.fechaFin = in.readString();
+        this.fechaInicio = in.readString();
         this.imagen = in.readString();
         this.menuId = in.readString();
         this.precio = in.readDouble();
         this.restauranteId = in.readString();
         this.titulo = in.readString();
+    }
+
+    private String getCurrentDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Date date = new Date();
+        return sdf.format(date);
     }
 }

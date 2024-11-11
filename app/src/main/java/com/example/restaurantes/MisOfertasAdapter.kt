@@ -23,6 +23,9 @@ class MisOfertasAdapter(var ofertas: List<Oferta>) : RecyclerView.Adapter<MisOfe
 
     override fun onBindViewHolder(holder: OfertaViewHolder, position: Int) {
         val oferta = ofertas[position]
+
+        Log.d("Oferta", "Titulo: ${oferta.titulo}, Descripcion: ${oferta.descripcion}, Precio: ${oferta.precio}")
+
         holder.titulo.text = oferta.titulo
         holder.descripcion.text = oferta.descripcion
         holder.precio.text = SpannableString("Precio oferta (bs): ${oferta.precio.toString()}").apply {
@@ -33,12 +36,20 @@ class MisOfertasAdapter(var ofertas: List<Oferta>) : RecyclerView.Adapter<MisOfe
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
-        val storage = FirebaseStorage.getInstance()
-        val imagenRef = storage.getReferenceFromUrl(oferta.imagen)
-        imagenRef.downloadUrl.addOnSuccessListener { url ->
-            Picasso.get().load(url).into(holder.imagen)
-        }.addOnFailureListener { e ->
-            Log.d("Imagen", "Error al cargar imagen: ${e.message}")
+
+        // Verificar si la URL de la imagen está vacía o nula
+        if (oferta.imagen.isNullOrEmpty()) {
+            // Si la URL está vacía, cargar una imagen predeterminada
+            Picasso.get().load(R.drawable.banner).into(holder.imagen)  // Imagen predeterminada
+        } else {
+            // Si la URL es válida, cargar la imagen desde Firebase Storage
+            val storage = FirebaseStorage.getInstance()
+            val imagenRef = storage.getReferenceFromUrl(oferta.imagen)
+            imagenRef.downloadUrl.addOnSuccessListener { url ->
+                Picasso.get().load(url).into(holder.imagen)
+            }.addOnFailureListener { e ->
+                Log.d("Imagen", "Error al cargar imagen: ${e.message}")
+            }
         }
     }
 

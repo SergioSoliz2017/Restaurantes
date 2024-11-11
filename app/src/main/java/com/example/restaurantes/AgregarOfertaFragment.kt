@@ -14,6 +14,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -28,14 +30,14 @@ import java.util.Calendar
 class AgregarOfertaFragment : Fragment() {
 
     private lateinit var imgUsr: RoundedImageView
-    private lateinit var editNombre: TextView
-    private lateinit var editDescripcion: TextView
-    private lateinit var editPrecioOferta: TextView
-    private lateinit var editFechaIni: TextView
-    private lateinit var editFechaFin: TextView
+    private lateinit var editNombre: EditText
+    private lateinit var editDescripcion: EditText
+    private lateinit var editPrecioOferta: EditText
+    private lateinit var editFechaIni: EditText
+    private lateinit var editFechaFin: EditText
     private lateinit var btnGuardar: Button
     private lateinit var btnCancelar: Button
-    private lateinit var btnEditarImagen: Button
+    private lateinit var btnEditarImagen: ImageButton
     private var imageUri: Uri? = null
 
     companion object {
@@ -81,7 +83,14 @@ class AgregarOfertaFragment : Fragment() {
     private fun guardarCambios() {
         val nombre = editNombre.text.toString()
         val descripcion = editDescripcion.text.toString()
-        val precio = editPrecioOferta.text.toString()
+        // Comprobamos si el precio es un número válido
+        val precio = editPrecioOferta.text.toString().toDoubleOrNull()
+
+        if (precio == null) {
+            Toast.makeText(context, "El precio debe ser un número válido.", Toast.LENGTH_SHORT).show()
+            return // Evitamos que continúe el flujo si el precio no es válido
+        }
+
         val fechaIni = editFechaIni.text.toString()
         val fechaFin = editFechaFin.text.toString()
 
@@ -97,18 +106,18 @@ class AgregarOfertaFragment : Fragment() {
 
             // Crear el mapa de datos para la oferta
             val ofertaData = mutableMapOf<String, Any>(
-                "Nombre" to nombre,
-                "Descripción" to descripcion,
-                "Precio" to precio,
-                "Fecha Inicio" to fechaIni,
-                "Fecha Fin" to fechaFin,
+                "titulo" to nombre,
+                "descripcion" to descripcion,
+                "precio" to precio,
+                "fechaInicio" to fechaIni,
+                "fechaFin" to fechaFin,
                 "restauranteId" to restauranteId
             )
 
             // Subir imagen si está seleccionada
             imageUri?.let { uri ->
                 val storageReference = FirebaseStorage.getInstance().reference
-                    .child("Ofertas/${usuario.correo}/${System.currentTimeMillis()}.jpg") //cambiar el nombre con que se guarda la imagen para hacer la referencia facil
+                    .child("Ofertas/${usuario.correo}/${System.currentTimeMillis()}.jpg")
 
                 // Subimos la imagen a Firebase Storage
                 storageReference.putFile(uri)
@@ -121,6 +130,7 @@ class AgregarOfertaFragment : Fragment() {
                             ofertasRef.add(ofertaData)
                                 .addOnSuccessListener {
                                     Toast.makeText(context, "Oferta creada correctamente", Toast.LENGTH_SHORT).show()
+                                    requireActivity().onBackPressed()
                                 }
                                 .addOnFailureListener { exception ->
                                     Toast.makeText(context, "Error al crear oferta: ${exception.message}", Toast.LENGTH_LONG).show()
@@ -131,10 +141,14 @@ class AgregarOfertaFragment : Fragment() {
                         Toast.makeText(context, "Error al subir imagen: ${exception.message}", Toast.LENGTH_LONG).show()
                     }
             } ?: run {
-                // Si no hay imagen seleccionada, guardamos los datos de la oferta sin imagen
+                // Si no hay imagen seleccionada, agregamos el campo imagen vacío
+                ofertaData["imagen"] = "" // O también puedes usar null si prefieres manejarlo así.
+
+                // Guardamos los datos de la oferta sin imagen
                 ofertasRef.add(ofertaData)
                     .addOnSuccessListener {
                         Toast.makeText(context, "Oferta creada correctamente", Toast.LENGTH_SHORT).show()
+                        requireActivity().onBackPressed()
                     }
                     .addOnFailureListener { exception ->
                         Toast.makeText(context, "Error al crear oferta: ${exception.message}", Toast.LENGTH_LONG).show()
@@ -144,6 +158,7 @@ class AgregarOfertaFragment : Fragment() {
             Toast.makeText(context, "Error: usuario no disponible", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun editarImagen() {
         val options = arrayOf("Galería", "Cámara")

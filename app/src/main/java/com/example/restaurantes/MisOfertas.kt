@@ -145,13 +145,13 @@ class MisOfertas : Fragment() {
         val actividad = activity as? PantallaPrincipal
         if (actividad != null) {
             val usuario = actividad.usuario
-            obtenerOfertas(usuario)
+            obtenerMisOfertas(usuario)
         } else {
             Toast.makeText(context, "Error al cargar la información", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun obtenerOfertas(usuario: Usuario) {
+    private fun obtenerMisOfertas(usuario: Usuario) {
         val db = FirebaseFirestore.getInstance()
         val userId = usuario.correo
 
@@ -199,6 +199,13 @@ class MisOfertas : Fragment() {
         db.collection("Ofertas").document(oferta.id).delete()
             .addOnSuccessListener {
                 Log.d("EliminarOferta", "Oferta eliminada correctamente")
+                // Recargar el fragmento actual
+                val actividad = activity as? PantallaPrincipal
+                actividad?.supportFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.containerView, MisOfertas())
+                    addToBackStack(null)
+                    commit()
+                }
             }
             .addOnFailureListener { e ->
                 Log.w("EliminarOferta", "Error al eliminar oferta", e)

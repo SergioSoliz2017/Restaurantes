@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +34,7 @@ class OfertasFragment : Fragment(), OnOfertaClickListener {
 
     private fun obtenerOfertas() {
         val db = FirebaseFirestore.getInstance()
+
         db.collection("Ofertas")
             .addSnapshotListener(object : EventListener<QuerySnapshot> {
                 override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
@@ -43,6 +45,10 @@ class OfertasFragment : Fragment(), OnOfertaClickListener {
 
                     value?.let {
                         val ofertas = it.toObjects(Oferta::class.java)
+                        for (i in ofertas.indices) {
+                            ofertas[i].id = it.documents[i].id
+                        }
+
                         if (ofertaAdapter != null && ofertas.isNotEmpty()) {
                             ofertaAdapter.ofertas = ofertas
                             ofertaAdapter.notifyDataSetChanged()
@@ -60,6 +66,6 @@ class OfertasFragment : Fragment(), OnOfertaClickListener {
         val args = Bundle()
         args.putParcelable("oferta", oferta)
         dialog.arguments = args
-        dialog.show(childFragmentManager, "DetalleOfertaDialogFragment")
+        dialog.show((activity as AppCompatActivity).supportFragmentManager, "DetalleOfertaDialogFragment")
     }
 }
