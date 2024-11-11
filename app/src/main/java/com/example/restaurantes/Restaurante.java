@@ -78,6 +78,10 @@ public class Restaurante implements  Parcelable{
     public ArrayList<String> getServicios() {
         return servicios;
     }
+
+
+
+
     public void setNombreRestaurante(String nombreRestaurante) {
         this.nombreRestaurante = nombreRestaurante;
     }
@@ -88,6 +92,15 @@ public class Restaurante implements  Parcelable{
     }
     public Uri getLogo() {return logo;}
     public void setLogo(Uri logo) {this.logo = logo;}
+    public ArrayList<String> getCategoria(String subcategoria) {
+        ArrayList<String> resultado = new ArrayList<>();
+            for(int i=0;i<categoria.size();i++){
+                if(categoria.get(i).getNombre()==subcategoria){
+                    resultado=categoria.get(i).getSubCategorias();
+                }
+            }
+        return resultado;
+    }
 
     @Override
     public int describeContents() {

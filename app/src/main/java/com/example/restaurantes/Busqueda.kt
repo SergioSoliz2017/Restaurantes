@@ -19,21 +19,51 @@ import kotlinx.android.synthetic.main.activity_busqueda.recyclerRestaurantes
 class Busqueda : AppCompatActivity() {
 
     private val listaRestaurantes = ArrayList<Restaurante>()
-    //mis check box
+    //CHeck box del filtrador
+    //Region
     private lateinit var checkBoxItaliana: CheckBox
     private lateinit var checkBoxMexicana: CheckBox
+    private lateinit var checkBoxAsiatica: CheckBox
+    private lateinit var checkBoxColombiana: CheckBox
+    private lateinit var checkBoxBoliviana: CheckBox
+    private lateinit var checkBoxOtros: CheckBox
+    //Tipo de servicio
     private lateinit var checkBoxDomicilio: CheckBox
+    private lateinit var checkBoxParaLlevar: CheckBox
+    private lateinit var checkBoxBuffetLibre: CheckBox
+    private lateinit var checkBoxComedorInterno: CheckBox
+    //Tipo de servicio
+
+
+    private var checkBoxes: List<CheckBox> = emptyList()
+    private var serviciosSeleccionados = ArrayList<String>()
+    private var regionesSeleccionadas = ArrayList<String>()
+
+
     private lateinit var usuario: Usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_busqueda)
-        //inicializar os check
+        //inicializar los check
         usuario = intent.getParcelableExtra("usuario")!!
         checkBoxItaliana = findViewById(R.id.checkBoxItaliana)
         checkBoxMexicana = findViewById(R.id.checkBoxMexicana)
-        checkBoxDomicilio = findViewById(R.id.checkBoxDomicilio)
+        checkBoxAsiatica = findViewById(R.id.checkBoxAsiatica)
+        checkBoxColombiana = findViewById(R.id.checkBoxColombiana)
+        checkBoxBoliviana = findViewById(R.id.checkBoxBoliviana)
+        checkBoxOtros = findViewById(R.id.checkBoxOtros)
 
+        checkBoxDomicilio = findViewById(R.id.checkBoxDomicilio)
+        checkBoxParaLlevar = findViewById(R.id.checkBoxParaLlevar)
+        checkBoxBuffetLibre = findViewById(R.id.checkBoxBuffetLibre)
+        checkBoxComedorInterno = findViewById(R.id.checkBoxComedorInterno)
+
+
+        checkBoxes = listOf(
+            checkBoxItaliana, checkBoxMexicana, checkBoxAsiatica, checkBoxColombiana, checkBoxBoliviana, checkBoxOtros,
+            checkBoxDomicilio ,checkBoxParaLlevar ,checkBoxBuffetLibre ,checkBoxComedorInterno
+        )
 
         window.statusBarColor = Color.parseColor("#000000")
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -55,11 +85,6 @@ class Busqueda : AppCompatActivity() {
     }
 
     private fun buscar() {
-
-        // si check obtener text del check y listAdapter.filtrar(textoBusqueda)
-        /*if (pollo.isCkeck){
-            listAdapter.filtrar(pollo.text.toString)
-        }*/
         TextBuscador.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -67,23 +92,32 @@ class Busqueda : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 val textoBusqueda = s.toString()
-                listAdapter.filtrar(textoBusqueda)
+                aplicarFiltros(textoBusqueda)
             }
         })
-        checkBoxItaliana.setOnCheckedChangeListener { _, _ -> aplicarFiltros(TextBuscador.text.toString()) }
-        checkBoxMexicana.setOnCheckedChangeListener { _, _ -> aplicarFiltros(TextBuscador.text.toString()) }
-        checkBoxDomicilio.setOnCheckedChangeListener { _, _ -> aplicarFiltros(TextBuscador.text.toString()) }
-        // Repite esto para cada CheckBox
+        checkBoxes.forEach { checkBox ->
+            checkBox.setOnCheckedChangeListener { _, _ ->
+                aplicarFiltros(TextBuscador.text.toString())
+            }
+        }
+        //checkBoxItaliana.setOnCheckedChangeListener { _, _ -> aplicarFiltros(TextBuscador.text.toString()) }
     }
 
     private fun aplicarFiltros(textoBusqueda: String) {
-        val serviciosSeleccionados = ArrayList<String>()
-        if (checkBoxItaliana.isChecked) serviciosSeleccionados.add("Italiana")
-        if (checkBoxMexicana.isChecked) serviciosSeleccionados.add("Mexicana")
-        if (checkBoxDomicilio.isChecked) serviciosSeleccionados.add("Domicilio")
-        // Repite esto para cada CheckBox
+        serviciosSeleccionados.clear()
+        regionesSeleccionadas.clear()
+        if (checkBoxItaliana.isChecked) regionesSeleccionadas.add("Italiana")
+        if (checkBoxMexicana.isChecked) regionesSeleccionadas.add("Mexicana")
+        if (checkBoxAsiatica.isChecked) regionesSeleccionadas.add("Asiatica")
+        if (checkBoxColombiana.isChecked) regionesSeleccionadas.add("Colombiana")
+        if (checkBoxBoliviana.isChecked) regionesSeleccionadas.add("Boliviana")
+        if (checkBoxOtros.isChecked) regionesSeleccionadas.add("Otros")
 
-        listAdapter.filtrar(textoBusqueda, serviciosSeleccionados)
+        if (checkBoxDomicilio.isChecked) serviciosSeleccionados.add("Domicilio")
+        if (checkBoxParaLlevar.isChecked) serviciosSeleccionados.add("Para llevar")
+        if (checkBoxBuffetLibre.isChecked) serviciosSeleccionados.add("Buffet Libre")
+        if (checkBoxComedorInterno.isChecked) serviciosSeleccionados.add("Comeedor Interno")
+        listAdapter.filtrar(textoBusqueda, serviciosSeleccionados, regionesSeleccionadas)
     }
 
     lateinit var listAdapter : RestauranteAdapterFiltro
@@ -98,6 +132,19 @@ class Busqueda : AppCompatActivity() {
                     for (restaurante in document) {
                         val nombreRestaurante = restaurante.data["nombreRestaurante"].toString()
                         var servicios = restaurante.data["servicios"]
+                        var region = restaurante.get("categoria.Region") as java.util.ArrayList<String>?
+                        var ingrediente = restaurante.get("categoria.IngredientePrincipal")  as java.util.ArrayList<String>?
+                        var tipoPlato = restaurante.get("categoria.TipoPlato")  as java.util.ArrayList<String>?
+                        val listaCategorias = ArrayList<Categoria>()
+
+                        var catRegion = Categoria("Region", region)
+                        var catIngrediente = Categoria("IngredientePrincipal", ingrediente)
+                        var catTipoPlato = Categoria("TipoPlato", region)
+
+                        listaCategorias.add(catRegion)
+                        listaCategorias.add(catIngrediente)
+                        listaCategorias.add(catTipoPlato)
+
                         val storageRef = FirebaseStorage.getInstance().reference
                         val imageRef = storageRef.child("Restaurante/$nombreRestaurante")
                         imageRef.downloadUrl.addOnSuccessListener { uri ->
@@ -106,6 +153,7 @@ class Busqueda : AppCompatActivity() {
                                 this.nombreRestaurante = nombreRestaurante
                                 this.logo = uri
                                 this.dirLogo = imageUrl
+                                this.categoria = listaCategorias
                                 this.servicios = servicios as java.util.ArrayList<String>?
                             }
                             listaRestaurantes.add(restaurante)

@@ -1,6 +1,7 @@
 package com.example.restaurantes;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,57 +51,7 @@ public class RestauranteAdapterFiltro extends RecyclerView.Adapter<RestauranteAd
         notifyDataSetChanged();
     }
 
-    public void filtrar(String texto) {
-        if (texto.isEmpty()) {
-            mData = mDataOriginal;
-        } else {
-            List<Restaurante> filtrada = new ArrayList<>();
-            for (Restaurante restaurante : mDataOriginal) {
-                if (restaurante.getNombreRestaurante().toLowerCase().contains(texto.toLowerCase())) {
-                    filtrada.add(restaurante);
-                }
-                //aqui obtenemos el array del restaurante y luego buscamos en el array si el valor es == al texto
-                ArrayList<String> serviciosRestaurante = restaurante.getServicios();
-                for (int i = 0 ; i < serviciosRestaurante.size() ; i ++){
-                    if (serviciosRestaurante.get(i).toLowerCase().contains(texto.toLowerCase())){
-                        filtrada.add(restaurante);
-                    }
-                }
-
-                //aca agregas logica de busqueda y los demas filtros
-            }
-            mData = filtrada;
-        }
-        notifyDataSetChanged();
-    }
-/* //filtrado por "O"
-    public void filtrar(String texto, List<String> serviciosSeleccionados) {
-        if (texto.isEmpty() && serviciosSeleccionados.isEmpty()) {
-            mData = mDataOriginal;
-        } else {
-            List<Restaurante> filtrada = new ArrayList<>();
-            for (Restaurante restaurante : mDataOriginal) {
-                boolean coincideTexto = restaurante.getNombreRestaurante().toLowerCase().contains(texto.toLowerCase());
-
-                // Verifica si algún servicio seleccionado coincide con los servicios del restaurante
-                boolean coincideServicios = false;
-                for (String servicio : serviciosSeleccionados) {
-                    if (restaurante.getServicios() != null && restaurante.getServicios().contains(servicio)) {
-                        coincideServicios = true;
-                        break;
-                    }
-                }
-
-                // Agrega el restaurante si coincide el texto o los servicios seleccionados
-                if (coincideTexto || coincideServicios) {
-                    filtrada.add(restaurante);
-                }
-            }
-            mData = filtrada;
-        }
-        notifyDataSetChanged();
-    }
-*/
+   /*
 public void filtrar(String texto, List<String> serviciosSeleccionados) {
     if (texto.isEmpty() && serviciosSeleccionados.isEmpty()) {
         mData = mDataOriginal;
@@ -109,7 +60,8 @@ public void filtrar(String texto, List<String> serviciosSeleccionados) {
         for (Restaurante restaurante : mDataOriginal) {
             boolean coincideTexto = restaurante.getNombreRestaurante().toLowerCase().contains(texto.toLowerCase());
 
-            // Verifica si el restaurante contiene todos los servicios seleccionados
+            // verificación de los check
+            //servicios
             boolean coincideServicios = true;
             for (String servicio : serviciosSeleccionados) {
                 if (restaurante.getServicios() == null || !restaurante.getServicios().contains(servicio)) {
@@ -117,6 +69,14 @@ public void filtrar(String texto, List<String> serviciosSeleccionados) {
                     break;
                 }
             }
+            //region
+            //for (String servicio : serviciosSeleccionados) {
+            //  if (restaurante.getCategoria("Region") == null || !restaurante.getCategoria("Region").contains(servicio)) {
+            //      coincideServicios = false;
+            //      break;
+            //  }
+            //}
+
 
             // Agrega el restaurante solo si coincide el texto y los servicios seleccionados
             if (coincideTexto && coincideServicios) {
@@ -127,6 +87,35 @@ public void filtrar(String texto, List<String> serviciosSeleccionados) {
     }
     notifyDataSetChanged();
 }
+*/
+
+    public void filtrar(String texto, List<String> serviciosSeleccionados, List<String> regionesSeleccionadas) {
+        if (texto.isEmpty() && serviciosSeleccionados.isEmpty() && regionesSeleccionadas.isEmpty()) {
+            mData = mDataOriginal;
+        } else {
+            List<Restaurante> filtrada = new ArrayList<>();
+            for (Restaurante restaurante : mDataOriginal) {
+                boolean coincideTexto = restaurante.getNombreRestaurante().toLowerCase().contains(texto.toLowerCase());
+
+                // Verificación de los check
+                // Servicios
+                boolean coincideServicios = serviciosSeleccionados.isEmpty() || serviciosSeleccionados.stream()
+                        .allMatch(servicio -> restaurante.getServicios() != null && restaurante.getServicios().contains(servicio));
+
+                // Regiones
+                boolean coincideRegiones = regionesSeleccionadas.isEmpty() || regionesSeleccionadas.stream()
+                        .anyMatch(region -> restaurante.getCategoria("Region") != null && restaurante.getCategoria("Region").contains(region));
+
+                // Agrega el restaurante solo si coincide el texto, los servicios y las regiones seleccionadas
+                if (coincideTexto && coincideServicios && coincideRegiones) {
+                    filtrada.add(restaurante);
+                }
+            }
+            Log.d("este valor tieneeeee", String.valueOf(regionesSeleccionadas));
+            mData = filtrada;
+        }
+        notifyDataSetChanged();
+    }
 
 
 
