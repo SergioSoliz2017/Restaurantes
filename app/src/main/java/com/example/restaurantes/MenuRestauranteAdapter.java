@@ -67,8 +67,15 @@ public class MenuRestauranteAdapter extends RecyclerView.Adapter<MenuRestaurante
                     .into(iconImage);
             nombrePlato.setText(item.getNombrePlato());
             precio.setText("Precio: " +item.getPrecioPlato() + "Bs.");
+            StringBuilder ingredientesConcatenados = new StringBuilder();
 
-
+            for (String ingrediente : item.getIngredientes()) {
+                ingredientesConcatenados.append(ingrediente).append(", ");
+            }
+            if (ingredientesConcatenados.length() > 0) {
+                ingredientesConcatenados.setLength(ingredientesConcatenados.length() - 2);
+            }
+            ingrediente.setText(ingredientesConcatenados.toString());
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
