@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.activity_detalle_menu.ListaIngredientesEdit
 import kotlinx.android.synthetic.main.activity_ver_menu.AñadirPlato
 import kotlinx.android.synthetic.main.activity_ver_menu.BotonGuardarPlato
 import kotlinx.android.synthetic.main.activity_ver_menu.ImagenPlato
@@ -168,7 +167,7 @@ val listaMenu = ArrayList<Menu>()
                 }
                 setBackgroundResource(R.drawable.recuadro)
                 setPadding(17.dpToPx(), 0, 0, 0)
-                textSize = 20f  // Tamaño de texto explícito
+                textSize = 20f
                 inputType = InputType.TYPE_CLASS_TEXT
             }
             nuevoLayout.addView(nuevoEditText)

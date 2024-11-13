@@ -6,13 +6,11 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_inicio.usuario
 import kotlinx.android.synthetic.main.activity_pantalla_principal.BuscarCliente
 import kotlinx.android.synthetic.main.activity_pantalla_principal.MiRestauranteBoton
 import kotlinx.android.synthetic.main.activity_pantalla_principal.bottomNavigationView

@@ -10,17 +10,13 @@ import android.text.TextWatcher
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_busqueda.TextBuscador
 import kotlinx.android.synthetic.main.activity_busqueda.recyclerRestaurantes
-//import com.google.firebase.database.core.view.View
-import android.view.View // Importación estándar para trabajar con visibilidad
-import com.google.firebase.database.core.view.View as FirebaseView // Alias para evitar el conflicto
+import android.view.View
 
 
 
@@ -29,7 +25,7 @@ import com.google.firebase.database.core.view.View as FirebaseView // Alias para
 class Busqueda : AppCompatActivity() {
 
     private val listaRestaurantes = ArrayList<Restaurante>()
-    //CHeck box del filtrador
+
     //Region
     private lateinit var checkBoxItaliana: CheckBox
     private lateinit var checkBoxMexicana: CheckBox
@@ -123,21 +119,6 @@ class Busqueda : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@Busqueda)
             adapter = listAdapter
         }
-        //para el dichoso desplegable de mier
-        /*
-        val toggleButton: TextView = findViewById(R.id.toggleButton1)
-        val checkboxContainer: LinearLayout = findViewById(R.id.checkboxContainer1)
-        toggleButton.setOnClickListener {
-            if (checkboxContainer.visibility == View.GONE) {
-                checkboxContainer.visibility = View.VISIBLE
-                toggleButton.text = "Región ↑"
-            } else {
-                checkboxContainer.visibility = View.GONE
-                toggleButton.text = "Región ↓"
-            }
-        }
-        */
-        // Mapa que asocia cada botón con su texto inicial que contiene la flecha
         val buttonTextMap = mapOf(
             R.id.toggleButton1 to "Región ↓",
             R.id.toggleButton2 to "Tipo de Servicios ↓",
@@ -192,7 +173,6 @@ class Busqueda : AppCompatActivity() {
                 aplicarFiltros(TextBuscador.text.toString())
             }
         }
-        //checkBoxItaliana.setOnCheckedChangeListener { _, _ -> aplicarFiltros(TextBuscador.text.toString()) }
     }
 
     private fun aplicarFiltros(textoBusqueda: String) {

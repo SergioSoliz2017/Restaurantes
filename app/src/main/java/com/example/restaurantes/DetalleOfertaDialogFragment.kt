@@ -11,7 +11,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.dialog_detalle_oferta.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 

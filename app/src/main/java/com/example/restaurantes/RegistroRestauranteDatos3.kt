@@ -59,7 +59,6 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
         val mapFragment = childFragmentManager.findFragmentById(R.id.Mapa) as SupportMapFragment
         mapFragment.getMapAsync(this)
         Adelante3.setOnClickListener {
-            // Asegúrate de que al menos una ubicación esté disponible
             val ubicacion: LatLng? = ubicacionSeleccionada ?: ubicacionActual
 
             if (ubicacion != null) {
@@ -113,7 +112,6 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
                     }
                 }
             } else {
-                // Manejo de caso cuando no hay ubicación seleccionada ni actual
                 Toast.makeText(requireContext(), "Por favor selecciona una ubicación", Toast.LENGTH_SHORT).show()
             }
         }
@@ -154,12 +152,10 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
             if (location != null) {
                 ubicacionActual = LatLng(location.latitude, location.longitude)
 
-                // Si ya hay un marcador de ubicación actual, lo eliminamos
                 if (marcadorActual != null) {
                     marcadorActual!!.remove()
                 }
 
-                // Agregar el marcador de la ubicación actual
                 marcadorActual = mMap.addMarker(MarkerOptions().position(ubicacionActual!!).title("Ubicación Actual"))
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual!!, 15f)) // Zoom nivel 15
             }
@@ -167,18 +163,13 @@ class RegistroRestauranteDatos3 : Fragment(), OnMapReadyCallback, GoogleMap.OnMa
     }
 
     override fun onMapClick(latLng: LatLng) {
-        // Si ya hay un marcador de ubicación seleccionada, lo movemos
         if (marcador != null) {
             marcador!!.position = latLng
         } else {
-            // Si no hay marcador, creamos uno nuevo
             marcador = mMap.addMarker(MarkerOptions().position(latLng).title("Ubicación seleccionada"))
         }
-
-        // Guardar la nueva ubicación
         ubicacionSeleccionada = latLng
 
-        // Eliminar el marcador de la ubicación actual
         if (marcadorActual != null) {
             marcadorActual!!.remove()
             marcadorActual = null

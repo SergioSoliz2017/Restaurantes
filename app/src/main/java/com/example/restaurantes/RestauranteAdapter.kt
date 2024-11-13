@@ -27,9 +27,8 @@ class RestauranteAdapter(
         val restaurante = restaurantes[position]
         holder.tvRestauranteNombre.text = restaurante.nombreRestaurante
 
-        // Configurar el RecyclerView de los menús
         holder.recyclerMenus.layoutManager = LinearLayoutManager(holder.recyclerMenus.context, LinearLayoutManager.HORIZONTAL, false)
-        holder.recyclerMenus.adapter = MenuAdapter(restaurante.menus) // Suponiendo que tienes una lista de menús
+        holder.recyclerMenus.adapter = MenuAdapter(restaurante.menus)
     }
 
     override fun getItemCount(): Int = restaurantes.size

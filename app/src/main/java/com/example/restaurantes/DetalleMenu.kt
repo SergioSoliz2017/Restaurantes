@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.model.FieldPath
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_detalle_menu.BotonGuardarPlatoEditar
@@ -26,15 +25,6 @@ import kotlinx.android.synthetic.main.activity_detalle_menu.SubirFotoPlatoEditar
 import kotlinx.android.synthetic.main.activity_detalle_menu.botonAñadirIngredienteEditar
 import kotlinx.android.synthetic.main.activity_detalle_menu.textNombrePlatoEditar
 import kotlinx.android.synthetic.main.activity_detalle_menu.textPrecioPlatoEditar
-import kotlinx.android.synthetic.main.activity_ver_menu.AñadirPlato
-import kotlinx.android.synthetic.main.activity_ver_menu.ImagenPlato
-import kotlinx.android.synthetic.main.activity_ver_menu.ListaIngredientesText
-import kotlinx.android.synthetic.main.activity_ver_menu.ListaMenu
-import kotlinx.android.synthetic.main.activity_ver_menu.SubirFotoPlato
-import kotlinx.android.synthetic.main.activity_ver_menu.botonAñadirIngrediente
-import kotlinx.android.synthetic.main.activity_ver_menu.botonAñadirPlato
-import kotlinx.android.synthetic.main.activity_ver_menu.textNombrePlatoAñadir
-import kotlinx.android.synthetic.main.activity_ver_menu.textPrecioPlatoAñadir
 import www.sanju.motiontoast.MotionToast
 
 class DetalleMenu : AppCompatActivity() {
