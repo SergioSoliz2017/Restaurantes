@@ -1,5 +1,6 @@
 package com.example.restaurantes
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,8 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.CheckBox
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +18,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_busqueda.TextBuscador
 import kotlinx.android.synthetic.main.activity_busqueda.recyclerRestaurantes
+//import com.google.firebase.database.core.view.View
+import android.view.View // Importación estándar para trabajar con visibilidad
+import com.google.firebase.database.core.view.View as FirebaseView // Alias para evitar el conflicto
+
+
+
+
 
 class Busqueda : AppCompatActivity() {
 
@@ -58,6 +68,7 @@ class Busqueda : AppCompatActivity() {
 
     private lateinit var usuario: Usuario
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_busqueda)
@@ -112,7 +123,55 @@ class Busqueda : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@Busqueda)
             adapter = listAdapter
         }
+        //para el dichoso desplegable de mier
+        /*
+        val toggleButton: TextView = findViewById(R.id.toggleButton1)
+        val checkboxContainer: LinearLayout = findViewById(R.id.checkboxContainer1)
+        toggleButton.setOnClickListener {
+            if (checkboxContainer.visibility == View.GONE) {
+                checkboxContainer.visibility = View.VISIBLE
+                toggleButton.text = "Región ↑"
+            } else {
+                checkboxContainer.visibility = View.GONE
+                toggleButton.text = "Región ↓"
+            }
+        }
+        */
+        // Mapa que asocia cada botón con su texto inicial que contiene la flecha
+        val buttonTextMap = mapOf(
+            R.id.toggleButton1 to "Región ↓",
+            R.id.toggleButton2 to "Tipo de Servicios ↓",
+            R.id.toggleButton3 to "Tipo de Plato ↓",
+            R.id.toggleButton4 to "Ingrediente Principal ↓"
+        )
 
+        // Lista de contenedores correspondientes a cada botón
+        val checkboxContainers: List<LinearLayout> = listOf(
+            findViewById(R.id.checkboxContainer1),
+            findViewById(R.id.checkboxContainer2),
+            findViewById(R.id.checkboxContainer3),
+            findViewById(R.id.checkboxContainer4)
+        )
+
+        // Configurar solo los botones en buttonTextMap
+        buttonTextMap.forEach { (buttonId, initialText) ->
+            val toggleButton: TextView = findViewById(buttonId)
+            toggleButton.text = initialText
+
+            toggleButton.setOnClickListener {
+                // Obtener el contenedor correspondiente
+                val checkboxContainer = checkboxContainers[buttonTextMap.keys.indexOf(buttonId)]
+
+                // visibilidad de los check
+                if (checkboxContainer.visibility == View.GONE) {
+                    checkboxContainer.visibility = View.VISIBLE
+                    toggleButton.text = initialText.replace("↓", "↑")
+                } else {
+                    checkboxContainer.visibility = View.GONE
+                    toggleButton.text = initialText
+                }
+            }
+        }
         obtenerRestaurantesDesdeDB()
         buscar()
     }
@@ -151,15 +210,15 @@ class Busqueda : AppCompatActivity() {
 
         if (checkBoxDomicilio.isChecked) serviciosSeleccionados.add("Domicilio")
         if (checkBoxParaLlevar.isChecked) serviciosSeleccionados.add("Para llevar")
-        if (checkBoxBuffetLibre.isChecked) serviciosSeleccionados.add("Buffet Libre")
-        if (checkBoxComedorInterno.isChecked) serviciosSeleccionados.add("Comeedor Interno")
+        if (checkBoxBuffetLibre.isChecked) serviciosSeleccionados.add("Buffet libre")
+        if (checkBoxComedorInterno.isChecked) serviciosSeleccionados.add("Comeedor interno")
 
         if (checkBoxDesayuno.isChecked) tipoPlatoSeleccionadas.add("Desayuno")
         if (checkBoxEntrante.isChecked) tipoPlatoSeleccionadas.add("Entrante")
-        if (checkBoxPlatoPrincipal.isChecked) tipoPlatoSeleccionadas.add("Plato Principal")
+        if (checkBoxPlatoPrincipal.isChecked) tipoPlatoSeleccionadas.add("Plato principal")
         if (checkBoxPostres.isChecked) tipoPlatoSeleccionadas.add("Postres")
         if (checkBoxBebidas.isChecked) tipoPlatoSeleccionadas.add("Bebidas")
-        if (checkBoxSnack.isChecked) tipoPlatoSeleccionadas.add("Snak")
+        if (checkBoxSnack.isChecked) tipoPlatoSeleccionadas.add("Comida rapida")
         if (checkBoxEnsaladas.isChecked) tipoPlatoSeleccionadas.add("Ensaladas")
 
         if (checkBoxPollo.isChecked) ingredientePrincipalSeleccionadas.add("Pollo")
@@ -224,4 +283,5 @@ class Busqueda : AppCompatActivity() {
         }
         startActivity(detalle)
     }
+
 }
