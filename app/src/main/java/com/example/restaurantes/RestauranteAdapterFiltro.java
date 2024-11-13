@@ -51,46 +51,9 @@ public class RestauranteAdapterFiltro extends RecyclerView.Adapter<RestauranteAd
         notifyDataSetChanged();
     }
 
-   /*
-public void filtrar(String texto, List<String> serviciosSeleccionados) {
-    if (texto.isEmpty() && serviciosSeleccionados.isEmpty()) {
-        mData = mDataOriginal;
-    } else {
-        List<Restaurante> filtrada = new ArrayList<>();
-        for (Restaurante restaurante : mDataOriginal) {
-            boolean coincideTexto = restaurante.getNombreRestaurante().toLowerCase().contains(texto.toLowerCase());
 
-            // verificación de los check
-            //servicios
-            boolean coincideServicios = true;
-            for (String servicio : serviciosSeleccionados) {
-                if (restaurante.getServicios() == null || !restaurante.getServicios().contains(servicio)) {
-                    coincideServicios = false;
-                    break;
-                }
-            }
-            //region
-            //for (String servicio : serviciosSeleccionados) {
-            //  if (restaurante.getCategoria("Region") == null || !restaurante.getCategoria("Region").contains(servicio)) {
-            //      coincideServicios = false;
-            //      break;
-            //  }
-            //}
-
-
-            // Agrega el restaurante solo si coincide el texto y los servicios seleccionados
-            if (coincideTexto && coincideServicios) {
-                filtrada.add(restaurante);
-            }
-        }
-        mData = filtrada;
-    }
-    notifyDataSetChanged();
-}
-*/
-
-    public void filtrar(String texto, List<String> serviciosSeleccionados, List<String> regionesSeleccionadas) {
-        if (texto.isEmpty() && serviciosSeleccionados.isEmpty() && regionesSeleccionadas.isEmpty()) {
+    public void filtrar(String texto, List<String> serviciosSeleccionados, List<String> regionesSeleccionadas, List<String> tipoPlatoSeleccionadas, List<String> ingredientePrincipalSeleccionadas) {
+        if (texto.isEmpty() && serviciosSeleccionados.isEmpty() && regionesSeleccionadas.isEmpty() && tipoPlatoSeleccionadas.isEmpty() && ingredientePrincipalSeleccionadas.isEmpty()) {
             mData = mDataOriginal;
         } else {
             List<Restaurante> filtrada = new ArrayList<>();
@@ -101,13 +64,17 @@ public void filtrar(String texto, List<String> serviciosSeleccionados) {
                 // Servicios
                 boolean coincideServicios = serviciosSeleccionados.isEmpty() || serviciosSeleccionados.stream()
                         .allMatch(servicio -> restaurante.getServicios() != null && restaurante.getServicios().contains(servicio));
-
                 // Regiones
                 boolean coincideRegiones = regionesSeleccionadas.isEmpty() || regionesSeleccionadas.stream()
-                        .anyMatch(region -> restaurante.getCategoria("Region") != null && restaurante.getCategoria("Region").contains(region));
+                        .allMatch(region -> restaurante.getCategoria("Region") != null && restaurante.getCategoria("Region").contains(region));
+                // Tipo de Plato
+                boolean coincideTipoPlato = tipoPlatoSeleccionadas.isEmpty() || tipoPlatoSeleccionadas.stream()
+                        .allMatch(plato -> restaurante.getCategoria("TipoPlato") != null && restaurante.getCategoria("TipoPlato").contains(plato));
+                // Ingrediente principal
+                boolean coincideIngredientePrincipal = ingredientePrincipalSeleccionadas.isEmpty() || ingredientePrincipalSeleccionadas.stream()
+                        .allMatch(ingrediente -> restaurante.getCategoria("IngredientePrincipal") != null && restaurante.getCategoria("IngredientePrincipal").contains(ingrediente));
 
-                // Agrega el restaurante solo si coincide el texto, los servicios y las regiones seleccionadas
-                if (coincideTexto && coincideServicios && coincideRegiones) {
+                if (coincideTexto && coincideServicios && coincideRegiones && coincideTipoPlato && coincideIngredientePrincipal) {
                     filtrada.add(restaurante);
                 }
             }

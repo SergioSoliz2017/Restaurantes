@@ -32,12 +32,28 @@ class Busqueda : AppCompatActivity() {
     private lateinit var checkBoxParaLlevar: CheckBox
     private lateinit var checkBoxBuffetLibre: CheckBox
     private lateinit var checkBoxComedorInterno: CheckBox
-    //Tipo de servicio
-
+    //Tipo de plato
+    private lateinit var checkBoxDesayuno: CheckBox
+    private lateinit var checkBoxEntrante: CheckBox
+    private lateinit var checkBoxPlatoPrincipal: CheckBox
+    private lateinit var checkBoxPostres: CheckBox
+    private lateinit var checkBoxBebidas: CheckBox
+    private lateinit var checkBoxSnack: CheckBox
+    private lateinit var checkBoxEnsaladas: CheckBox
+    //Ingrediente Pirncipal
+    private lateinit var checkBoxPollo: CheckBox
+    private lateinit var checkBoxPescado: CheckBox
+    private lateinit var checkBoxCarneRes: CheckBox
+    private lateinit var checkBoxCarneCerdo: CheckBox
+    private lateinit var checkBoxVerduras: CheckBox
+    private lateinit var checkBoxMariscos: CheckBox
+    private lateinit var checkBoxConejo: CheckBox
 
     private var checkBoxes: List<CheckBox> = emptyList()
     private var serviciosSeleccionados = ArrayList<String>()
     private var regionesSeleccionadas = ArrayList<String>()
+    private var tipoPlatoSeleccionadas = ArrayList<String>()
+    private var ingredientePrincipalSeleccionadas = ArrayList<String>()
 
 
     private lateinit var usuario: Usuario
@@ -45,8 +61,8 @@ class Busqueda : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_busqueda)
-        //inicializar los check
         usuario = intent.getParcelableExtra("usuario")!!
+        //inicializar los check
         checkBoxItaliana = findViewById(R.id.checkBoxItaliana)
         checkBoxMexicana = findViewById(R.id.checkBoxMexicana)
         checkBoxAsiatica = findViewById(R.id.checkBoxAsiatica)
@@ -59,10 +75,27 @@ class Busqueda : AppCompatActivity() {
         checkBoxBuffetLibre = findViewById(R.id.checkBoxBuffetLibre)
         checkBoxComedorInterno = findViewById(R.id.checkBoxComedorInterno)
 
+        checkBoxDesayuno = findViewById(R.id.checkBoxDesayuno)
+        checkBoxEntrante = findViewById(R.id.checkBoxEntrante)
+        checkBoxPlatoPrincipal = findViewById(R.id.checkBoxPlatoPrincipal)
+        checkBoxPostres = findViewById(R.id.checkBoxPostres)
+        checkBoxBebidas = findViewById(R.id.checkBoxBebidas)
+        checkBoxSnack = findViewById(R.id.checkBoxSnack)
+        checkBoxEnsaladas = findViewById(R.id.checkBoxEnsaladas)
+
+        checkBoxPollo = findViewById(R.id.checkBoxPollo)
+        checkBoxPescado = findViewById(R.id.checkBoxPescado)
+        checkBoxCarneRes = findViewById(R.id.checkBoxCarneRes)
+        checkBoxCarneCerdo = findViewById(R.id.checkBoxCarneCerdo)
+        checkBoxVerduras = findViewById(R.id.checkBoxVerduras)
+        checkBoxMariscos = findViewById(R.id.checkBoxMariscos)
+        checkBoxConejo = findViewById(R.id.checkBoxConejo)
 
         checkBoxes = listOf(
             checkBoxItaliana, checkBoxMexicana, checkBoxAsiatica, checkBoxColombiana, checkBoxBoliviana, checkBoxOtros,
-            checkBoxDomicilio ,checkBoxParaLlevar ,checkBoxBuffetLibre ,checkBoxComedorInterno
+            checkBoxDomicilio ,checkBoxParaLlevar ,checkBoxBuffetLibre ,checkBoxComedorInterno,
+            checkBoxDesayuno, checkBoxEntrante, checkBoxPlatoPrincipal, checkBoxPostres, checkBoxBebidas, checkBoxSnack, checkBoxEnsaladas,
+            checkBoxPollo, checkBoxPescado, checkBoxCarneRes, checkBoxCarneCerdo, checkBoxVerduras, checkBoxMariscos, checkBoxConejo
         )
 
         window.statusBarColor = Color.parseColor("#000000")
@@ -106,6 +139,9 @@ class Busqueda : AppCompatActivity() {
     private fun aplicarFiltros(textoBusqueda: String) {
         serviciosSeleccionados.clear()
         regionesSeleccionadas.clear()
+        tipoPlatoSeleccionadas.clear()
+        ingredientePrincipalSeleccionadas.clear()
+
         if (checkBoxItaliana.isChecked) regionesSeleccionadas.add("Italiana")
         if (checkBoxMexicana.isChecked) regionesSeleccionadas.add("Mexicana")
         if (checkBoxAsiatica.isChecked) regionesSeleccionadas.add("Asiatica")
@@ -117,7 +153,24 @@ class Busqueda : AppCompatActivity() {
         if (checkBoxParaLlevar.isChecked) serviciosSeleccionados.add("Para llevar")
         if (checkBoxBuffetLibre.isChecked) serviciosSeleccionados.add("Buffet Libre")
         if (checkBoxComedorInterno.isChecked) serviciosSeleccionados.add("Comeedor Interno")
-        listAdapter.filtrar(textoBusqueda, serviciosSeleccionados, regionesSeleccionadas)
+
+        if (checkBoxDesayuno.isChecked) tipoPlatoSeleccionadas.add("Desayuno")
+        if (checkBoxEntrante.isChecked) tipoPlatoSeleccionadas.add("Entrante")
+        if (checkBoxPlatoPrincipal.isChecked) tipoPlatoSeleccionadas.add("Plato Principal")
+        if (checkBoxPostres.isChecked) tipoPlatoSeleccionadas.add("Postres")
+        if (checkBoxBebidas.isChecked) tipoPlatoSeleccionadas.add("Bebidas")
+        if (checkBoxSnack.isChecked) tipoPlatoSeleccionadas.add("Snak")
+        if (checkBoxEnsaladas.isChecked) tipoPlatoSeleccionadas.add("Ensaladas")
+
+        if (checkBoxPollo.isChecked) ingredientePrincipalSeleccionadas.add("Pollo")
+        if (checkBoxPescado.isChecked) ingredientePrincipalSeleccionadas.add("Pescado")
+        if (checkBoxCarneRes.isChecked) ingredientePrincipalSeleccionadas.add("Carne de res")
+        if (checkBoxCarneCerdo.isChecked) ingredientePrincipalSeleccionadas.add("Carne de cerdo")
+        if (checkBoxVerduras.isChecked) ingredientePrincipalSeleccionadas.add("Verduras")
+        if (checkBoxMariscos.isChecked) ingredientePrincipalSeleccionadas.add("Mariscos")
+        if (checkBoxConejo.isChecked) ingredientePrincipalSeleccionadas.add("Conejo")
+
+        listAdapter.filtrar(textoBusqueda, serviciosSeleccionados, regionesSeleccionadas, tipoPlatoSeleccionadas, ingredientePrincipalSeleccionadas)
     }
 
     lateinit var listAdapter : RestauranteAdapterFiltro
@@ -134,12 +187,12 @@ class Busqueda : AppCompatActivity() {
                         var servicios = restaurante.data["servicios"]
                         var region = restaurante.get("categoria.Region") as java.util.ArrayList<String>?
                         var ingrediente = restaurante.get("categoria.IngredientePrincipal")  as java.util.ArrayList<String>?
-                        var tipoPlato = restaurante.get("categoria.TipoPlato")  as java.util.ArrayList<String>?
+                        var plato = restaurante.get("categoria.TipoPlato")  as java.util.ArrayList<String>?
                         val listaCategorias = ArrayList<Categoria>()
 
                         var catRegion = Categoria("Region", region)
                         var catIngrediente = Categoria("IngredientePrincipal", ingrediente)
-                        var catTipoPlato = Categoria("TipoPlato", region)
+                        var catTipoPlato = Categoria("TipoPlato", plato)
 
                         listaCategorias.add(catRegion)
                         listaCategorias.add(catIngrediente)

@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
+        android:background="#a5d6a7"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
