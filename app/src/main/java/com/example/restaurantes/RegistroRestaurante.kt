@@ -34,7 +34,7 @@ class RegistroRestaurante : AppCompatActivity() {
                 3 -> {
                     val fragmento3 = RegistroRestauranteDatos3()
                     val bundle = Bundle()
-                    bundle.putParcelable("usuario", usuario) // Pasar el objeto usuario
+                    bundle.putParcelable("usuario", usuario)
                     fragmento3.arguments = bundle
                     fragmento3
                 }

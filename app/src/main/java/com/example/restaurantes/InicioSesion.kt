@@ -1,16 +1,12 @@
 package com.example.restaurantes
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -108,13 +104,11 @@ class InicioSesion : AppCompatActivity() {
             val account = task.getResult(ApiException::class.java)
             if (account != null) {
                 val email = account.email
-                // Verificar si el correo está registrado en Firestore
                 val firestore = FirebaseFirestore.getInstance()
                 firestore.collection("Usuarios").document(email.toString()).get().addOnCompleteListener { documentTask ->
                     if (documentTask.isSuccessful) {
                         val document = documentTask.result
                         if (document != null && document.exists()) {
-                            // El correo está registrado, iniciar sesión con Firebase
                             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
                             FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                                 if (it.isSuccessful) {

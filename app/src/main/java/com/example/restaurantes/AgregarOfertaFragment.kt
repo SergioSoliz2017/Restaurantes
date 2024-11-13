@@ -16,14 +16,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import com.example.restaurantes.ModificarPerfilFragment.Companion
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.makeramen.roundedimageview.RoundedImageView
-import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 import java.util.Calendar
 
@@ -83,12 +79,11 @@ class AgregarOfertaFragment : Fragment() {
     private fun guardarCambios() {
         val nombre = editNombre.text.toString()
         val descripcion = editDescripcion.text.toString()
-        // Comprobamos si el precio es un número válido
         val precio = editPrecioOferta.text.toString().toDoubleOrNull()
 
         if (precio == null) {
             Toast.makeText(context, "El precio debe ser un número válido.", Toast.LENGTH_SHORT).show()
-            return // Evitamos que continúe el flujo si el precio no es válido
+            return
         }
 
         val fechaIni = editFechaIni.text.toString()
@@ -101,10 +96,8 @@ class AgregarOfertaFragment : Fragment() {
             val db = FirebaseFirestore.getInstance()
             val ofertasRef = db.collection("Ofertas")
 
-            // Obtener el restauranteId desde el usuario
             val restauranteId = usuario.nombreRestaurante
 
-            // Crear el mapa de datos para la oferta
             val ofertaData = mutableMapOf<String, Any>(
                 "titulo" to nombre,
                 "descripcion" to descripcion,
@@ -114,19 +107,15 @@ class AgregarOfertaFragment : Fragment() {
                 "restauranteId" to restauranteId
             )
 
-            // Subir imagen si está seleccionada
             imageUri?.let { uri ->
                 val storageReference = FirebaseStorage.getInstance().reference
                     .child("Ofertas/${usuario.correo}/${System.currentTimeMillis()}.jpg")
 
-                // Subimos la imagen a Firebase Storage
                 storageReference.putFile(uri)
                     .addOnSuccessListener {
                         storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
-                            // Agregamos la URL de la imagen al mapa de la oferta
                             ofertaData["imagen"] = downloadUri.toString()
 
-                            // Guardamos los datos de la oferta en Firestore
                             ofertasRef.add(ofertaData)
                                 .addOnSuccessListener {
                                     Toast.makeText(context, "Oferta creada correctamente", Toast.LENGTH_SHORT).show()
@@ -141,10 +130,8 @@ class AgregarOfertaFragment : Fragment() {
                         Toast.makeText(context, "Error al subir imagen: ${exception.message}", Toast.LENGTH_LONG).show()
                     }
             } ?: run {
-                // Si no hay imagen seleccionada, agregamos el campo imagen vacío
-                ofertaData["imagen"] = "" // O también puedes usar null si prefieres manejarlo así.
+                ofertaData["imagen"] = ""
 
-                // Guardamos los datos de la oferta sin imagen
                 ofertasRef.add(ofertaData)
                     .addOnSuccessListener {
                         Toast.makeText(context, "Oferta creada correctamente", Toast.LENGTH_SHORT).show()
@@ -209,38 +196,34 @@ class AgregarOfertaFragment : Fragment() {
     }
 
     private fun fecha() {
-        // Para el campo de fecha de inicio
         editFechaIni.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            // Creamos el DatePickerDialog para la fecha de inicio
             val datePickerDialog = DatePickerDialog(
                 requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
                     val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-                    editFechaIni.setText(selectedDate)  // Establecer la fecha en el EditText
+                    editFechaIni.setText(selectedDate)
                 }, year, month, day
             )
-            datePickerDialog.show()  // Mostrar el DatePickerDialog
+            datePickerDialog.show()
         }
 
-        // Para el campo de fecha de fin
         editFechaFin.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            // Creamos el DatePickerDialog para la fecha de fin
             val datePickerDialog = DatePickerDialog(
                 requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
                     val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-                    editFechaFin.setText(selectedDate)  // Establecer la fecha en el EditText
+                    editFechaFin.setText(selectedDate)
                 }, year, month, day
             )
-            datePickerDialog.show()  // Mostrar el DatePickerDialog
+            datePickerDialog.show()
         }
     }
 }

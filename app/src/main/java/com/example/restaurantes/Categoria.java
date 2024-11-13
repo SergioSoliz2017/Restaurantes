@@ -16,4 +16,10 @@ public class Categoria {
         map.put(nombre, subCategorias);
         return map;
     }
+    public String getNombre(){
+        return nombre;
+    }
+    public ArrayList<String> getSubCategorias(){
+        return subCategorias;
+    }
 }

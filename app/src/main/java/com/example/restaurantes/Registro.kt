@@ -7,17 +7,13 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.activity_inicio.usuario
 import kotlinx.android.synthetic.main.activity_registro.EsRestaurante
 import kotlinx.android.synthetic.main.activity_registro.ImagenFotoPerfil
 import kotlinx.android.synthetic.main.activity_registro.NombreRegistro
@@ -26,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_registro.SubirFotoPerfil
 import kotlinx.android.synthetic.main.activity_registro.contraseñaRegistro
 import kotlinx.android.synthetic.main.activity_registro.fechaRegistro
 import kotlinx.android.synthetic.main.activity_registro.usuarioRegistro
-import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.ImagenLogoRe
 import www.sanju.motiontoast.MotionToast
 import java.util.Calendar
 
@@ -142,7 +137,7 @@ class Registro : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            uri = data.data // Obtiene la URI de la imagen seleccionada
+            uri = data.data
             if (uri != null) {
                 this?.let {
                     Glide.with(it)

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     tools:context=".MiRestaurante">
 
     <ScrollView
@@ -21,7 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -61,7 +63,7 @@
 
                     tools:ignore="MissingConstraints" />
 
-                <TextView
+                <EditText
                     android:id="@+id/textNombreRestauranteEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -69,8 +71,15 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="40dp"
                     android:drawablePadding="10dp"
+                    android:ellipsize="none"
+                    android:background="@drawable/recuadro"
+                    android:ems="10"
+                    android:paddingLeft="10dp"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:scrollbars="vertical"
                     android:textSize="20sp"
-                    tools:ignore="MissingConstraints" />
+                    tools:ignore="MissingConstraints"  />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -100,6 +109,35 @@
                     android:maxLines="5"
                     android:scrollbars="vertical"
                     android:text="Añadir descripción "
+                    android:textSize="20sp"
+                    tools:ignore="MissingConstraints" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Celular del restaurante:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <EditText
+                    android:id="@+id/TextoCelularRestauranteEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:drawablePadding="10dp"
+                    android:ellipsize="none"
+                    android:background="@drawable/recuadro"
+                    android:ems="10"
+                    android:paddingLeft="10dp"
+                    android:inputType="number"
+                    android:maxLines="5"
+                    android:scrollbars="vertical"
                     android:textSize="20sp"
                     tools:ignore="MissingConstraints" />
 
@@ -133,20 +171,15 @@
                     android:textStyle="bold"
                     android:typeface="serif"
                     tools:ignore="MissingConstraints" />
-
-                <TextView
-                    android:id="@+id/TextoDireccionEdit"
+                <fragment
+                    android:id="@+id/MapaEdit"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="40dp"
-                    android:drawablePadding="10dp"
-                    android:ellipsize="none"
-                    android:inputType="textMultiLine"
-                    android:maxLines="5"
-                    android:scrollbars="vertical"
-                    android:textSize="20sp" />
+                    android:layout_height="500dp"
+                    android:layout_margin="20dp"
+                    map:cameraZoom="10"
+                    map:uiRotateGestures="true"
+                    map:uiZoomControls="true" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -165,11 +198,270 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
                     tools:ignore="MissingConstraints">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Region:"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:typeface="serif" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/ItalianaEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Italiana" />
+                            <CheckBox
+                                android:id="@+id/MexicanaEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Mexicana" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/BolivianaEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Boliviana" />
+                            <CheckBox
+                                android:id="@+id/AsiaticaEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Asiatica" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/ColombianaEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Colombiana" />
+                            <CheckBox
+                                android:id="@+id/OtroEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Otro" />
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Tipo de plato:"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:typeface="serif" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/DesayunoEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Desayuno" />
+                            <CheckBox
+                                android:id="@+id/EntranteEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Entrante" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/PlatoPrincipalEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Plato principal" />
+                            <CheckBox
+                                android:id="@+id/PostresEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Postres" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/BebidasEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Bebidas" />
+                            <CheckBox
+                                android:id="@+id/ComidaRapidaEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Comida rapida" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/EnsaladasEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Ensaladas" />
+                            <CheckBox
+                                android:id="@+id/OpcionesDiateticasEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Opciones diateticas" />
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Ingrediente principal:"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:typeface="serif" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/PolloEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Pollo" />
+                            <CheckBox
+                                android:id="@+id/CarneResEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Carne de res" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/PescadoEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Pescado" />
+                            <CheckBox
+                                android:id="@+id/CarneCerdoEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Carne de cerdo" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <CheckBox
+                                android:id="@+id/VerdurasEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Verduras" />
+                            <CheckBox
+                                android:id="@+id/MariscosEdit"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Mariscos" />
+                        </LinearLayout>
+                    </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:text="Servicios:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
 
+                <LinearLayout
+                    android:id="@+id/linearLayoutServicioEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    tools:ignore="MissingConstraints">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <CheckBox
+                            android:id="@+id/DomicilioEdit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Domicilio" />
+                        <CheckBox
+                            android:id="@+id/ParaLLevarEdit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Para llevar" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <CheckBox
+                            android:id="@+id/ComedorInternoEdit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Comedor interno" />
+                        <CheckBox
+                            android:id="@+id/BuffetLibreEdit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Buffet libre" />
+                    </LinearLayout>
                 </LinearLayout>
-
                 <Button
                     android:id="@+id/BotonGuardarMiRestaurante"
                     android:layout_width="match_parent"
@@ -256,7 +548,32 @@
                     android:text="Añadir descripción "
                     android:textSize="20sp"
                     tools:ignore="MissingConstraints" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Celular del restaurante:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
 
+                <TextView
+                    android:id="@+id/TextoCelularRestaurante"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:drawablePadding="10dp"
+                    android:ellipsize="none"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:scrollbars="vertical"
+                    android:textSize="20sp"
+                    tools:ignore="MissingConstraints" />
                 <TextView
                     android:id="@+id/textView8"
                     android:layout_width="match_parent"
@@ -361,7 +678,65 @@
                     android:text="Ver menu"
                     android:textColor="@color/white" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/LayoutMiRestauranteReseñas"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listaReseñas"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/LayoutMiRestauranteEscribirReseñas"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:text="Deja tu comentario:"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="serif" />
+
+                <EditText
+                    android:id="@+id/textComentarioReseña"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="40dp"
+                    android:background="@drawable/recuadro"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:paddingLeft="10dp"
+                    android:textSize="20sp"
+                    tools:ignore="MissingConstraints" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/botonEnviarComentario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:backgroundTint="@color/black"
+                        android:text="Subir comentario"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton

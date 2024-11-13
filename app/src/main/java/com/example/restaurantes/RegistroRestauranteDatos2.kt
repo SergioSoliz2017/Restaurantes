@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Adelante2
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Asiatica
 import kotlinx.android.synthetic.main.fragment_registro_restaurante_datos2.Bebidas
@@ -95,7 +94,7 @@ class RegistroRestauranteDatos2 : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            uri = data.data // Obtiene la URI de la imagen seleccionada
+            uri = data.data
             if (uri != null) {
                 this.context?.let {
                     Glide.with(it)

@@ -31,8 +31,7 @@ class MenuAdapter(
         holder.itPrecio.text = "${menuItem.precio} $"
         holder.ratingBar.rating = menuItem.calificacion?.toFloat() ?: 0f
 
-        // Aquí puedes cargar la imagen desde Firebase o recursos
-        // Ejemplo: Glide.with(holder.itemView).load(menuItem.imageUrl).into(holder.itImg)
+
     }
 
     override fun getItemCount(): Int = menus.size

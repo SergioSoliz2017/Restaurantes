@@ -63,4 +63,8 @@ public class Menu implements Parcelable {
         parcel.writeString(precio);
         parcel.writeStringList(ingredientes);
     }
+
+    public ArrayList<String> getIngredientes (){
+        return ingredientes;
+    }
 }
