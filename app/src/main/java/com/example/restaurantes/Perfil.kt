@@ -31,8 +31,6 @@ class Perfil : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    //val usuario = (activity as? PantallaPrincipal)?.usuario //para obtener la info del usuario y obtener en firebase
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -45,7 +43,6 @@ class Perfil : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_perfil, container, false)
     }
 

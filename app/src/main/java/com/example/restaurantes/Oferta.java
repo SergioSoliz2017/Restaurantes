@@ -45,7 +45,6 @@ public class Oferta implements Parcelable {
         this.titulo = titulo;
     }
 
-    // Getters y setters
     public String getId() {
         return id;
     }
@@ -118,7 +117,6 @@ public class Oferta implements Parcelable {
         this.titulo = titulo;
     }
 
-    // Conversión de Long a Date
     public Date getFechaFinDate() {
         return new Date(fechaFin);
     }
@@ -127,12 +125,10 @@ public class Oferta implements Parcelable {
         return new Date(fechaInicio);
     }
 
-    // Conversión de Date a Long
     public static long dateToLong(Date date) {
         return date.getTime();
     }
 
-    // Implementación de Parcelable
     @Override
     public int describeContents() {
         return 0;

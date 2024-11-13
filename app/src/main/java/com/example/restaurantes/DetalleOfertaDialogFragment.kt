@@ -34,22 +34,18 @@ class DetalleOfertaDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Utiliza el objeto Oferta completo
         val titulo = oferta.titulo
         val imagenUrl = oferta.imagen
         val descripcion = oferta.descripcion
         val fechaFin = oferta.fechaFin
         val restauranteId = oferta.restauranteId
 
-        // Asigna los valores a las vistas
         tituloTextView.text = titulo
         descripcionTextView.text = descripcion
         fechaFinTextView.text = formatDate(fechaFin)
         restauranteIdTextView.text = restauranteId
 
-        // Verificar si la URL de la imagen no es nula o vacía
         if (!imagenUrl.isNullOrEmpty()) {
-            // Carga la imagen desde Firebase Storage
             val storage = FirebaseStorage.getInstance()
             val imagenRef = storage.getReferenceFromUrl(imagenUrl)
 
@@ -57,19 +53,15 @@ class DetalleOfertaDialogFragment : DialogFragment() {
                 Picasso.get().load(url).into(imagenImageView)
             }.addOnFailureListener { e ->
                 Log.d("Imagen", "Error al cargar imagen: ${e.message}")
-                // Si falla, puedes cargar una imagen predeterminada
                 Picasso.get().load(R.drawable.banner).into(imagenImageView)
             }
         } else {
-            // Si la URL está vacía o es nula, carga una imagen predeterminada
             Picasso.get().load(R.drawable.banner).into(imagenImageView)
         }
     }
 
     private fun formatDate(fecha: String): String {
-        // Utilizamos el formato adecuado para la fecha que recibimos en Firebase
         val formatoEntrada = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        // Formato de salida, lo puedes cambiar según lo necesites
         val formatoSalida = SimpleDateFormat("dd MMM yyyy, hh:mm:ss a", Locale.getDefault())
         val zonaHoraria = TimeZone.getTimeZone("UTC-4")
 
@@ -77,7 +69,6 @@ class DetalleOfertaDialogFragment : DialogFragment() {
         formatoSalida.timeZone = zonaHoraria
 
         try {
-            // Parseamos la fecha con el formato de entrada adecuado
             val fechaParseada = formatoEntrada.parse(fecha)
             return formatoSalida.format(fechaParseada)
         } catch (e: ParseException) {

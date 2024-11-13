@@ -115,7 +115,6 @@ class ModificarPerfilFragment : Fragment() {
                 Toast.makeText(imageView.context, "Error al cargar imagen: ${exception.message}", Toast.LENGTH_LONG).show()
             }
         }.addOnFailureListener { exception ->
-            // La imagen no existe, muestra la imagen predeterminada
             if (exception is StorageException && exception.errorCode == StorageException.ERROR_OBJECT_NOT_FOUND) {
                 imageView.setImageResource(R.drawable.banner)
             } else {
@@ -126,7 +125,6 @@ class ModificarPerfilFragment : Fragment() {
 
     private fun guardarCambios() {
         val nombreActualizado = editNombre.text.toString()
-        //val correoActualizado = editCorreo.text.toString()
         val fechaActualizado = mostrarFechaNac.text.toString()
 
         val actividad = activity as? PantallaPrincipal
@@ -138,11 +136,9 @@ class ModificarPerfilFragment : Fragment() {
 
             val updates = mutableMapOf<String, Any>(
                 "Nombre" to nombreActualizado,
-                //"Correo" to correoActualizado,
                 "Número" to fechaActualizado
             )
 
-            // Subir imagen si está seleccionada
             imageUri?.let { uri ->
                 val storageReference = FirebaseStorage.getInstance().reference
                     .child("Usuario/${usuario.correo}")
@@ -167,7 +163,7 @@ class ModificarPerfilFragment : Fragment() {
                         }
                 }
                     .addOnFailureListener { exception ->
-                        // Si la imagen no existe, no hay problema, sigue con la subida
+                        // Si la imagen no existe, sigue con la subida
                         storageReference.putFile(uri)
                             .addOnSuccessListener { taskSnapshot ->
                                 storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
@@ -186,7 +182,7 @@ class ModificarPerfilFragment : Fragment() {
                                 Toast.makeText(context, "Error al subir imagen: ${exception.message}", Toast.LENGTH_LONG).show()
                             }
                     }
-            } ?: usuarioDocRef.update(updates) // Si no hay imagen, actualiza solo el texto
+            } ?: usuarioDocRef.update(updates)
         } else {
             Toast.makeText(context, "Error: usuario no disponible", Toast.LENGTH_SHORT).show()
         }

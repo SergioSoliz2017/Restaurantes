@@ -63,7 +63,6 @@ class EditarOfertaFragment : Fragment() {
         btnCancelar = view.findViewById(R.id.btnCancelar)
         btnEditarImagen = view.findViewById(R.id.btnEditarImagen)
 
-        // Obtener el ID de la oferta desde los argumentos
         val oferta = arguments?.getParcelable("oferta") as? Oferta
         if (oferta != null) {
             val id = oferta.id
@@ -114,12 +113,9 @@ class EditarOfertaFragment : Fragment() {
     }
 
     private fun cargarImagenOferta(imageOfertaUrl: String, imageView: ImageView) {
-        // Verificar si la URL es válida
         if (imageOfertaUrl.isNullOrEmpty()) {
-            // Si la URL está vacía o nula, cargar una imagen predeterminada
             Picasso.get().load(R.drawable.banner).into(imageView)
         } else {
-            // Si la URL no es vacía, intentar obtener la referencia desde Firebase Storage
             try {
                 val storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageOfertaUrl)
 
@@ -128,15 +124,11 @@ class EditarOfertaFragment : Fragment() {
                         .load(uri.toString())
                         .into(imageView)
                 }.addOnFailureListener { exception ->
-                    // Si ocurre un error al cargar la imagen desde Firebase
                     Toast.makeText(imageView.context, "Error al cargar imagen: ${exception.message}", Toast.LENGTH_LONG).show()
-                    // Opcionalmente, cargar una imagen predeterminada en caso de error
                     Picasso.get().load(R.drawable.banner).into(imageView)
                 }
             } catch (e: IllegalArgumentException) {
-                // Manejar el caso cuando la URL es incorrecta (nula o mal formada)
                 Log.e("ImagenOferta", "URL de imagen es inválida: $imageOfertaUrl")
-                // Cargar una imagen predeterminada en caso de URL inválida
                 Picasso.get().load(R.drawable.banner).into(imageView)
             }
         }
@@ -151,7 +143,6 @@ class EditarOfertaFragment : Fragment() {
 
         val oferta = arguments?.getParcelable("oferta") as? Oferta
 
-        // Verificar si el id de la oferta no es nulo
         if (oferta != null) {
             val id = oferta.id
             val db = FirebaseFirestore.getInstance()
@@ -165,16 +156,13 @@ class EditarOfertaFragment : Fragment() {
                 "fechaFin" to fechaFin
             )
 
-            // Subir o actualizar imagen si está seleccionada
             imageUri?.let { uri ->
                 val storageReference = FirebaseStorage.getInstance().reference.child("Ofertas/$id")
 
-                // Intentar eliminar la imagen anterior antes de subir la nueva
                 storageReference.delete().addOnSuccessListener {
                     storageReference.putFile(uri)
                         .addOnSuccessListener {
                             storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
-                                // Actualizar la URL de la imagen en Firestore
                                 updates["imagen"] = downloadUri.toString()
                                 ofertaDocRef.update(updates)
                                     .addOnSuccessListener {
@@ -190,7 +178,6 @@ class EditarOfertaFragment : Fragment() {
                             Toast.makeText(context, "Error al subir imagen: ${exception.message}", Toast.LENGTH_LONG).show()
                         }
                 }.addOnFailureListener { exception ->
-                    // Si la eliminación falla, intentamos subir la imagen directamente
                     storageReference.putFile(uri)
                         .addOnSuccessListener {
                             storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
@@ -210,7 +197,6 @@ class EditarOfertaFragment : Fragment() {
                         }
                 }
             } ?: run {
-                // Si no hay imagen seleccionada, solo se actualizan los datos sin la imagen
                 ofertaDocRef.update(updates)
                     .addOnSuccessListener {
                         Toast.makeText(context, "Oferta actualizada correctamente", Toast.LENGTH_SHORT).show()

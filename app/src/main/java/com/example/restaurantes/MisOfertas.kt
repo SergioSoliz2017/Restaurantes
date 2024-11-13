@@ -55,11 +55,9 @@ class MisOfertas : Fragment() {
                 val oferta = misOfertasAdapter.ofertas[posicion]
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
-                        // Eliminar oferta
                         eliminarOferta(oferta)
                     }
                     ItemTouchHelper.RIGHT -> {
-                        // Editar oferta
                         editarOferta(oferta)
                     }
                 }
@@ -82,7 +80,6 @@ class MisOfertas : Fragment() {
 
                 when {
                     dX > 0 -> {
-                        // Deslizar a la derecha
                         paint.color = Color.GREEN
                         canvas.drawRect(
                             itemView.left.toFloat(),
@@ -92,9 +89,8 @@ class MisOfertas : Fragment() {
                             paint
                         )
 
-                        // Dibujar icono
                         val drawable = ContextCompat.getDrawable(recyclerView.context, R.drawable.baseline_edit_24)
-                        val scale = 2f // Ajusta este valor para cambiar el tamaño
+                        val scale = 2f
                         val width = (drawable?.intrinsicWidth!! * scale).toInt()
                         val height = (drawable.intrinsicHeight * scale).toInt()
                         drawable.setBounds(
@@ -106,7 +102,6 @@ class MisOfertas : Fragment() {
                         drawable?.draw(canvas)
                     }
                     dX < 0 -> {
-                        // Deslizar a la izquierda
                         paint.color = Color.RED
                         canvas.drawRect(
                             itemView.right + dX,
@@ -115,13 +110,12 @@ class MisOfertas : Fragment() {
                             itemView.bottom.toFloat(),
                             paint
                         )
-                        // Dibujar icono
                         val drawable = ContextCompat.getDrawable(recyclerView.context, R.drawable.icon_eliminar)
                         val scale = 2f
                         val width = (drawable?.intrinsicWidth!! * scale).toInt()
                         val height = (drawable.intrinsicHeight * scale).toInt()
                         drawable.setBounds(
-                            itemView.right - 16 - width, // Ajusta la posición x
+                            itemView.right - 16 - width,
                             (itemView.top + (itemView.height / 2) - (height / 2)).toInt(),
                             itemView.right - 16,
                             (itemView.top + (itemView.height / 2) + (height / 2)).toInt()
@@ -199,7 +193,6 @@ class MisOfertas : Fragment() {
         db.collection("Ofertas").document(oferta.id).delete()
             .addOnSuccessListener {
                 Log.d("EliminarOferta", "Oferta eliminada correctamente")
-                // Recargar el fragmento actual
                 val actividad = activity as? PantallaPrincipal
                 actividad?.supportFragmentManager?.beginTransaction()?.apply {
                     replace(R.id.containerView, MisOfertas())
@@ -218,7 +211,6 @@ class MisOfertas : Fragment() {
         args.putParcelable("oferta", oferta)
         fragment.setArguments(args)
 
-        // Utiliza supportFragmentManager de la actividad principal
         val actividad = activity as PantallaPrincipal
         val transaction = actividad.supportFragmentManager.beginTransaction()
         transaction.replace(R.id.containerView, fragment)

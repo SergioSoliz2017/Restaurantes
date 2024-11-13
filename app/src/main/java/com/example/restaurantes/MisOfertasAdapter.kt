@@ -37,12 +37,9 @@ class MisOfertasAdapter(var ofertas: List<Oferta>) : RecyclerView.Adapter<MisOfe
             )
         }
 
-        // Verificar si la URL de la imagen está vacía o nula
         if (oferta.imagen.isNullOrEmpty()) {
-            // Si la URL está vacía, cargar una imagen predeterminada
-            Picasso.get().load(R.drawable.banner).into(holder.imagen)  // Imagen predeterminada
+            Picasso.get().load(R.drawable.banner).into(holder.imagen)
         } else {
-            // Si la URL es válida, cargar la imagen desde Firebase Storage
             val storage = FirebaseStorage.getInstance()
             val imagenRef = storage.getReferenceFromUrl(oferta.imagen)
             imagenRef.downloadUrl.addOnSuccessListener { url ->

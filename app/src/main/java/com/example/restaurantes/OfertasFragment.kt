@@ -26,7 +26,7 @@ class OfertasFragment : Fragment(), OnOfertaClickListener {
         val view = inflater.inflate(R.layout.fragment_ofertas, container, false)
         recyclerRestaurantes = view.findViewById(R.id.recycler_view)
         recyclerRestaurantes.layoutManager = LinearLayoutManager(context)
-        ofertaAdapter = OfertaAdapter(emptyList(), this) // Pasamos el fragmento como listener
+        ofertaAdapter = OfertaAdapter(emptyList(), this)
         recyclerRestaurantes.adapter = ofertaAdapter
         obtenerOfertas()
         return view
