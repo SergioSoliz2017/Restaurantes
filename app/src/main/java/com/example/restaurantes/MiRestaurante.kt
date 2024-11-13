@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -29,6 +30,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_inicio.usuario
 import kotlinx.android.synthetic.main.activity_mi_restaurante.AsiaticaEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.BebidasEdit
@@ -48,6 +50,7 @@ import kotlinx.android.synthetic.main.activity_mi_restaurante.EntranteEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.ItalianaEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.LayoutEditarMiRestaurante
 import kotlinx.android.synthetic.main.activity_mi_restaurante.LayoutMiRestaurante
+import kotlinx.android.synthetic.main.activity_mi_restaurante.LayoutMiRestauranteEscribirReseñas
 import kotlinx.android.synthetic.main.activity_mi_restaurante.MariscosEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.MexicanaEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.OpcionesDiateticasEdit
@@ -64,15 +67,23 @@ import kotlinx.android.synthetic.main.activity_mi_restaurante.TextoDescripcionRe
 import kotlinx.android.synthetic.main.activity_mi_restaurante.TextoDireccion
 import kotlinx.android.synthetic.main.activity_mi_restaurante.VerdurasEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.botonEditarMiRestaurante
+import kotlinx.android.synthetic.main.activity_mi_restaurante.botonEnviarComentario
 import kotlinx.android.synthetic.main.activity_mi_restaurante.imageViewLogo
 import kotlinx.android.synthetic.main.activity_mi_restaurante.imageViewLogoEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.linearLayoutCategorias
 import kotlinx.android.synthetic.main.activity_mi_restaurante.linearLayoutHorarios
 import kotlinx.android.synthetic.main.activity_mi_restaurante.linearLayoutHorariosEdit
 import kotlinx.android.synthetic.main.activity_mi_restaurante.linearLayoutServicios
+import kotlinx.android.synthetic.main.activity_mi_restaurante.listaReseñas
 import kotlinx.android.synthetic.main.activity_mi_restaurante.subirFotoRestauranteEdit
+import kotlinx.android.synthetic.main.activity_mi_restaurante.textComentarioReseña
 import kotlinx.android.synthetic.main.activity_mi_restaurante.textNombreRestaurante
 import kotlinx.android.synthetic.main.activity_mi_restaurante.textNombreRestauranteEdit
+import kotlinx.android.synthetic.main.activity_registro.NombreRegistro
+import kotlinx.android.synthetic.main.activity_registro.contraseñaRegistro
+import kotlinx.android.synthetic.main.activity_registro.fechaRegistro
+import kotlinx.android.synthetic.main.activity_ver_menu.ListaMenu
+import kotlinx.android.synthetic.main.item_resenia_restaurante.comentarioReseña
 import www.sanju.motiontoast.MotionToast
 import java.util.Calendar
 import java.util.Locale
@@ -119,6 +130,7 @@ class MiRestaurante : AppCompatActivity(),OnMapReadyCallback {
         title = usuario.nombre
         if (restaurante != null){
             if (usuario.tieneRestaurante){
+                LayoutMiRestauranteEscribirReseñas.visibility = View.GONE
                 documento = usuario.nombreRestaurante
                 textNombreRestaurante.text = usuario.nombreRestaurante
                 cargarLogo(usuario.nombreRestaurante)
@@ -161,6 +173,9 @@ class MiRestaurante : AppCompatActivity(),OnMapReadyCallback {
             }
             subirFotoRestauranteEdit.setOnClickListener {
                 abrirGaleria()
+            }
+            botonEnviarComentario.setOnClickListener {
+                subirComentario()
             }
         }
 
@@ -527,6 +542,7 @@ class MiRestaurante : AppCompatActivity(),OnMapReadyCallback {
                 crearCategorias(ingredientesPrincipal,regiones,tiposPlato)
                 obtenerDireccion(latitud!!, longitud!!)
                 crearServicios(servicios)
+                obtenerReseñas()
             }
         }
     }
@@ -962,14 +978,11 @@ class MiRestaurante : AppCompatActivity(),OnMapReadyCallback {
         for (dia in diasDeLaSemana) {
             val horarios = horariosAtencion[dia] as? Map<*, *>
 
-            // Si no hay datos para el día, inicializar con valores vacíos
             val abrir = horarios?.get("abrir") as? String ?: ""
             val cerrar = horarios?.get("cerrar") as? String ?: ""
 
-            // Guardar el horario en el mapa
             horariosGuardados[dia] = mutableMapOf("abrir" to abrir, "cerrar" to cerrar)
 
-            // Crear la vista para el día
             val diaLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(75, -20, 8, 8)
@@ -1042,6 +1055,68 @@ class MiRestaurante : AppCompatActivity(),OnMapReadyCallback {
         timePickerDialog.show()
     }
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
+    val listaComentarios = ArrayList<Reseña>()
 
+    private fun subirComentario(){
+        db.collection("Reseñas").document().set(hashMapOf(
+            "nombreUsuario" to usuario.nombre,
+            "nombreRestaurante" to documento,
+            "comentario" to textComentarioReseña.text.toString(),
+            "correo" to usuario.correo,
+            "fotoUsuario" to usuario.fotoPerfil
+        )).addOnCompleteListener {
+            MotionToast.createToast(
+                this, "Operación Exitosa", "Comentario subido", MotionToast.TOAST_SUCCESS,
+                MotionToast.GRAVITY_BOTTOM, MotionToast.LONG_DURATION, null
+            )
+            textComentarioReseña.setText("")
+        }
+    }
 
+    private fun obtenerReseñas (){
+        listaReseñas.removeAllViews()
+        db.collection("Reseñas")
+            .whereEqualTo("nombreRestaurante", documento)
+            .get().addOnCompleteListener { documentTask ->
+                if (documentTask.isSuccessful) {
+                    listaComentarios.clear()
+                    val totalDocuments = documentTask.result.size()
+                    var loadedImages = 0
+
+                    for (document in documentTask.result) {
+                        val nombreUsuario = document.data["nombreUsuario"] as? String
+                        val nombreRestaurante = document.data["nombreRestaurante"] as? String
+                        val comentario = document.data["comentario"] as? String
+                        val id = document.data["correo"] as? String
+                        var fotoUsuario = ""
+
+                        val storageReference = FirebaseStorage.getInstance().reference
+                        val imagenReference = storageReference.child("Usuario/${id}")
+
+                        imagenReference.downloadUrl.addOnSuccessListener { uri ->
+                            fotoUsuario = uri.toString()
+                            val reseña = Reseña(nombreUsuario, nombreRestaurante, id, comentario, fotoUsuario)
+                            listaComentarios.add(reseña)
+
+                            loadedImages++
+                            if (loadedImages == totalDocuments) {
+                                val listAdapter = ReseñaRestauranteAdapter(listaComentarios, this)
+                                listaReseñas.setHasFixedSize(true)
+                                listaReseñas.layoutManager = LinearLayoutManager(this)
+                                listaReseñas.adapter = listAdapter
+                            }
+                        }.addOnFailureListener {
+                            loadedImages++
+                            if (loadedImages == totalDocuments) {
+                                val listAdapter = ReseñaRestauranteAdapter(listaComentarios, this)
+                                listaReseñas.setHasFixedSize(true)
+                                listaReseñas.layoutManager = LinearLayoutManager(this)
+                                listaReseñas.adapter = listAdapter
+                            }
+                        }
+                    }
+                }
+            }
+
+    }
 }
