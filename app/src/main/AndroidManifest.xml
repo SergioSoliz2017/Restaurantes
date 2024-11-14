@@ -87,6 +87,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RestablecerContrasena"
+            android:exported="false"
+            android:theme="@style/Base.Theme.Restaurantes.WithActionBar"
+
+            />
     </application>
 
 </manifest>

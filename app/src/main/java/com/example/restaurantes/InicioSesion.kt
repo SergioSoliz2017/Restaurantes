@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_inicio.BotonGoogle
+import kotlinx.android.synthetic.main.activity_inicio.botonrestablecer
 import kotlinx.android.synthetic.main.activity_inicio.contraseña
 import kotlinx.android.synthetic.main.activity_inicio.entrar
 import kotlinx.android.synthetic.main.activity_inicio.textoRegistrate
@@ -38,6 +39,10 @@ class InicioSesion : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         ColorTexto()
         IniciarSesion()
+        botonrestablecer.setOnClickListener {
+            val inicio = Intent(this, RestablecerContrasena:: class.java)
+            startActivity(inicio)
+        }
         textoRegistrate.setOnClickListener {
             val inicio = Intent(this, Registro:: class.java)
             startActivity(inicio)
