@@ -24,6 +24,8 @@ import com.google.firebase.storage.StorageException
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
+import java.util.Calendar
+import android.app.DatePickerDialog
 
 class ModificarPerfilFragment : Fragment() {
 
@@ -58,6 +60,8 @@ class ModificarPerfilFragment : Fragment() {
         btnGuardar = view.findViewById(R.id.btnGuardar)
         btnCancelar = view.findViewById(R.id.btnCancelar)
         btnEditarImagen = view.findViewById(R.id.btnEditarImagen)
+
+        fechaNac()
 
         val actividad = activity as? PantallaPrincipal
         val usuario = actividad?.usuario
@@ -136,7 +140,7 @@ class ModificarPerfilFragment : Fragment() {
 
             val updates = mutableMapOf<String, Any>(
                 "Nombre" to nombreActualizado,
-                "Número" to fechaActualizado
+                "FechaNacimiento" to fechaActualizado
             )
 
             imageUri?.let { uri ->
@@ -151,7 +155,25 @@ class ModificarPerfilFragment : Fragment() {
                                 usuarioDocRef.update(updates)
                                     .addOnSuccessListener {
                                         Toast.makeText(context, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show()
-                                        requireActivity().onBackPressed()
+                                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                                    }
+                                    .addOnFailureListener { exception ->
+                                        Toast.makeText(context, "Error al actualizar perfil: ${exception.message}", Toast.LENGTH_LONG).show()
+                                    }
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Toast.makeText(context, "Error al subir imagen: ${exception.message}", Toast.LENGTH_LONG).show()
+                        }
+                }.addOnFailureListener { exception ->
+                    storageReference.putFile(uri)
+                        .addOnSuccessListener { taskSnapshot ->
+                            storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
+                                updates["FotoPerfil"] = downloadUri.toString()
+                                usuarioDocRef.update(updates)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(context, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show()
+                                        requireActivity().onBackPressedDispatcher.onBackPressed()
                                     }
                                     .addOnFailureListener { exception ->
                                         Toast.makeText(context, "Error al actualizar perfil: ${exception.message}", Toast.LENGTH_LONG).show()
@@ -162,31 +184,19 @@ class ModificarPerfilFragment : Fragment() {
                             Toast.makeText(context, "Error al subir imagen: ${exception.message}", Toast.LENGTH_LONG).show()
                         }
                 }
-                    .addOnFailureListener { exception ->
-                        // Si la imagen no existe, sigue con la subida
-                        storageReference.putFile(uri)
-                            .addOnSuccessListener { taskSnapshot ->
-                                storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
-                                    updates["FotoPerfil"] = downloadUri.toString()
-                                    usuarioDocRef.update(updates)
-                                        .addOnSuccessListener {
-                                            Toast.makeText(context, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show()
-                                            requireActivity().onBackPressed()
-                                        }
-                                        .addOnFailureListener { exception ->
-                                            Toast.makeText(context, "Error al actualizar perfil: ${exception.message}", Toast.LENGTH_LONG).show()
-                                        }
-                                }
-                            }
-                            .addOnFailureListener { exception ->
-                                Toast.makeText(context, "Error al subir imagen: ${exception.message}", Toast.LENGTH_LONG).show()
-                            }
-                    }
             } ?: usuarioDocRef.update(updates)
+                .addOnSuccessListener {
+                    Toast.makeText(context, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show()
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(context, "Error al actualizar perfil: ${exception.message}", Toast.LENGTH_LONG).show()
+                }
         } else {
             Toast.makeText(context, "Error: usuario no disponible", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun editarImagen() {
         val options = arrayOf("Galería", "Cámara")
@@ -199,6 +209,21 @@ class ModificarPerfilFragment : Fragment() {
                 }
             }
             .show()
+    }
+
+    private fun fechaNac () {
+        mostrarFechaNac.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val datePickerDialog = DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                mostrarFechaNac.setText(selectedDate)
+                mostrarFechaNac.invalidate()
+            }, year, month, day)
+            datePickerDialog.show()
+        }
     }
 
     private fun abrirGaleria() {
