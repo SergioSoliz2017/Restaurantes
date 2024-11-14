@@ -37,7 +37,7 @@
             android:contentDescription="@string/btn_editar_imagen"
             app:layout_constraintBottom_toBottomOf="@+id/imgUsr"
             app:layout_constraintEnd_toEndOf="@+id/imgUsr"
-            app:tint="@color/white" />
+            app:tint="@color/orange" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
