@@ -9,8 +9,8 @@
 
     <!-- Tema Base CON ActionBar -->
     <style name="Base.Theme.Restaurantes.WithActionBar" parent="Theme.Material3.DayNight">
-        <item name="colorPrimary">@color/white</item> <!-- Color del tema -->
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">#FF6B6B</item> <!-- Color del tema -->
+        <item name="colorOnPrimary">#FF6B6B</item>
     </style>
 
     <!-- Tema heredado, en caso de que quieras usar un nombre común para tus temas base -->
@@ -18,7 +18,7 @@
 
     <!-- Personalización para un indicador activo en BottomNavigationView -->
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/white</item>
+        <item name="android:color">#fff7e1</item>
     </style>
 
 </resources>

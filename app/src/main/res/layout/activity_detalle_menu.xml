@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="#fff7e1"
         >
     <TextView
         android:layout_width="match_parent"
@@ -47,7 +48,7 @@
             android:id="@+id/SubirFotoPlatoEditar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/orange"
             android:text="Subir foto"
             android:textColor="@color/white" />
 
@@ -138,7 +139,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:maxImageSize="30dp"
-                    app:tint="@color/black"
+                    app:tint="@color/orange"
                     tools:ignore="MissingConstraints" />
             </LinearLayout>
 
@@ -160,7 +161,7 @@
             android:id="@+id/BotonGuardarPlatoEditar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/orange"
             android:text="Guardar plato"
             android:textColor="@color/white" />
     </LinearLayout>

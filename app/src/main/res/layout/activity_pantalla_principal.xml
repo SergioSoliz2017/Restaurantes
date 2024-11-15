@@ -15,18 +15,20 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:background="#fff7e1"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        app:backgroundTint="@color/orange"
+        app:backgroundTint="#FF6B6B"
         app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:itemIconSize="30dp"
+        app:itemTextColor="#fff7e1"
         app:itemTextAppearanceActive="@style/BottomNavigationText"
         app:itemTextAppearanceInactive="@style/BottomNavigationText"
         >
@@ -38,7 +40,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="0dp"
             android:src="@drawable/baseline_search_24"
-            app:backgroundTint="@color/white"
+            app:backgroundTint="#fff7e1"
             app:borderWidth="25dp"
             app:fabCustomSize="75dp"
             app:maxImageSize="50dp"
@@ -52,7 +54,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="0dp"
             android:src="@drawable/baseline_settings_24"
-            app:backgroundTint="@color/white"
+            app:backgroundTint="#fff7e1"
             app:borderWidth="25dp"
             app:fabCustomSize="75dp"
             app:maxImageSize="50dp"

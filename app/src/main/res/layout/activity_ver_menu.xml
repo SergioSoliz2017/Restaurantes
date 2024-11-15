@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:layout_editor_absoluteY="0dp"
+        android:background="#fff7e1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,7 +75,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:backgroundTint="@color/black"
+                            android:backgroundTint="@color/orange"
                             android:text="Subir foto"
                             android:textColor="@color/white" />
 
@@ -186,7 +187,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:backgroundTint="@color/black"
+                        android:backgroundTint="@color/orange"
                         android:text="Guardar plato"
                         android:textColor="@color/white" />
 
@@ -213,6 +214,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="50dp"
-        app:tint="@color/black"
+        app:tint="@color/orange"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
