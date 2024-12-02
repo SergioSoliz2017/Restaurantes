@@ -120,7 +120,7 @@ class Busqueda : AppCompatActivity() {
             adapter = listAdapter
         }
         val buttonTextMap = mapOf(
-            R.id.toggleButton1 to "Región ↓",
+            R.id.toggleButton1 to "Tipo de Comida ↓",
             R.id.toggleButton2 to "Tipo de Servicios ↓",
             R.id.toggleButton3 to "Tipo de Plato ↓",
             R.id.toggleButton4 to "Ingrediente Principal ↓"
