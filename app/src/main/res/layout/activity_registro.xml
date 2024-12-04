@@ -6,174 +6,177 @@
     android:layout_height="match_parent"
     tools:context=".Registro">
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints"
-        android:background="#fff7e1">
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            >
-            <TextView
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="20dp"                android:layout_width="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Foto perfil:"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <TextView
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="20dp"                android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Foto perfil:"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:typeface="serif"
+                    tools:ignore="MissingConstraints" />
+
+                <ImageView
+                    android:id="@+id/ImagenFotoPerfil"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    tools:src="@tools:sample/avatars" />
+
+                <Button
+                    android:id="@+id/SubirFotoPerfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/black"
+                    android:text="Subir foto" />
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:text="Correo Electronico:"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:typeface="serif"
                 tools:ignore="MissingConstraints" />
 
-            <ImageView
-                android:id="@+id/ImagenFotoPerfil"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                tools:src="@tools:sample/avatars" />
+            <EditText
+                android:id="@+id/usuarioRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/recuadro"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="ejemplo@gmail.com"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textSize="20sp"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="40dp"
+                android:text="Contraseña:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:typeface="serif"
+                tools:ignore="MissingConstraints" />
+
+            <EditText
+                android:id="@+id/contraseñaRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/recuadro"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="*******"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:textSize="20sp"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="40dp"
+                android:text="Nombre:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:typeface="serif"
+                tools:ignore="MissingConstraints" />
+
+            <EditText
+                android:id="@+id/NombreRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/recuadro"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint=""
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textSize="20sp"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="40dp"
+                android:text="Fecha Nacimiento:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:typeface="serif"
+                tools:ignore="MissingConstraints" />
+
+            <EditText
+                android:id="@+id/fechaRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/recuadro"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint=""
+                android:focusable="false"
+                android:clickable="true"
+                android:paddingLeft="10dp"
+                android:textSize="20sp"
+                tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+
+            <CheckBox
+                android:id="@+id/EsRestaurante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
+                android:text="¿Quiere registrar su restaurante?"/>
 
             <Button
-                android:id="@+id/SubirFotoPerfil"
-                android:layout_width="wrap_content"
+                android:id="@+id/Registrar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/black"
-                android:text="Subir foto" />
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="20dp"
+                android:text="Registrar"
+                android:backgroundTint="@color/black" />
         </LinearLayout>
-
-
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:text="Correo Electronico:"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:typeface="serif"
-            tools:ignore="MissingConstraints" />
-
-        <EditText
-            android:id="@+id/usuarioRegistro"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="40dp"
-            android:background="@drawable/recuadro"
-            android:drawablePadding="10dp"
-            android:ems="10"
-            android:hint="ejemplo@gmail.com"
-            android:inputType="text"
-            android:paddingLeft="10dp"
-            android:textSize="20sp"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="40dp"
-            android:text="Contraseña:"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:typeface="serif"
-            tools:ignore="MissingConstraints" />
-
-        <EditText
-            android:id="@+id/contraseñaRegistro"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:background="@drawable/recuadro"
-            android:drawablePadding="10dp"
-            android:ems="10"
-            android:hint="*******"
-            android:inputType="textPassword"
-            android:paddingLeft="10dp"
-            android:textSize="20sp"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="40dp"
-            android:text="Nombre:"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:typeface="serif"
-            tools:ignore="MissingConstraints" />
-
-        <EditText
-            android:id="@+id/NombreRegistro"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:background="@drawable/recuadro"
-            android:drawablePadding="10dp"
-            android:ems="10"
-            android:hint=""
-            android:inputType="text"
-            android:paddingLeft="10dp"
-            android:textSize="20sp"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="40dp"
-            android:text="Fecha Nacimiento:"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:typeface="serif"
-            tools:ignore="MissingConstraints" />
-
-        <EditText
-            android:id="@+id/fechaRegistro"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:background="@drawable/recuadro"
-            android:drawablePadding="10dp"
-            android:ems="10"
-            android:hint=""
-            android:focusable="false"
-            android:clickable="true"
-            android:paddingLeft="10dp"
-            android:textSize="20sp"
-            tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
-
-        <CheckBox
-            android:id="@+id/EsRestaurante"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginTop="20dp"
-            android:textAlignment="center"
-            android:text="¿Quiere registrar su restaurante?"/>
-
-    <Button
-        android:id="@+id/Registrar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginTop="20dp"
-        android:text="Registrar"
-        android:backgroundTint="@color/black" />
-</LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

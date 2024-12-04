@@ -282,7 +282,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
-                    android:text="ingrediente Principal ↓"
+                    android:text="Ingrediente Principal ↓"
                     android:textSize="18sp"
                     android:textStyle="bold" />
                 <LinearLayout

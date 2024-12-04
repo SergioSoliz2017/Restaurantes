@@ -793,7 +793,7 @@ class MiRestaurante : AppCompatActivity(),OnMapReadyCallback {
             categoriaLayout.addView(textView)
         }
         val regionTextView = TextView(this).apply {
-            text = "Region: "
+            text = "Tipo de comida: "
             textSize = 20f
             setTypeface(null, Typeface.BOLD)
         }
@@ -1108,6 +1108,5 @@ class MiRestaurante : AppCompatActivity(),OnMapReadyCallback {
                     }
                 }
             }
-
     }
 }

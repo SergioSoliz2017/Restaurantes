@@ -102,6 +102,7 @@ class PantallaPrincipal : AppCompatActivity() {
                 putExtra("restaurante",Restaurante())
             }
             startActivity(inicio)
+            finish()
         }
     }
     private fun guardarDatos(email:String) {
