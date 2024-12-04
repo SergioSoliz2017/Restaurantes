@@ -38,16 +38,12 @@
                 android:fontFamily="sans-serif"
                 android:textSize="20sp" />
 
-            <!-- Checklist Section for Filters -->
-
-            <!-- RecyclerView for restaurant list -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Region Title -->
                 <TextView
                     android:id="@+id/toggleButton1"
                     android:layout_width="wrap_content"
@@ -57,7 +53,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <!-- Region Checkboxes  -->
+
                 <LinearLayout
                     android:id="@+id/checkboxContainer1"
                     android:layout_width="match_parent"
@@ -127,7 +123,7 @@
 
                 </LinearLayout>
 
-                <!-- Service Type Title -->
+
                 <TextView
                     android:id="@+id/toggleButton2"
                     android:layout_width="wrap_content"

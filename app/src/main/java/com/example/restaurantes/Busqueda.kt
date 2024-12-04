@@ -69,7 +69,7 @@ class Busqueda : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_busqueda)
         usuario = intent.getParcelableExtra("usuario")!!
-        //inicializar los check
+
         checkBoxItaliana = findViewById(R.id.checkBoxItaliana)
         checkBoxMexicana = findViewById(R.id.checkBoxMexicana)
         checkBoxAsiatica = findViewById(R.id.checkBoxAsiatica)
@@ -126,7 +126,7 @@ class Busqueda : AppCompatActivity() {
             R.id.toggleButton4 to "Ingrediente Principal ↓"
         )
 
-        // Lista de contenedores correspondientes a cada botón
+
         val checkboxContainers: List<LinearLayout> = listOf(
             findViewById(R.id.checkboxContainer1),
             findViewById(R.id.checkboxContainer2),
@@ -134,16 +134,16 @@ class Busqueda : AppCompatActivity() {
             findViewById(R.id.checkboxContainer4)
         )
 
-        // Configurar solo los botones en buttonTextMap
+
         buttonTextMap.forEach { (buttonId, initialText) ->
             val toggleButton: TextView = findViewById(buttonId)
             toggleButton.text = initialText
 
             toggleButton.setOnClickListener {
-                // Obtener el contenedor correspondiente
+
                 val checkboxContainer = checkboxContainers[buttonTextMap.keys.indexOf(buttonId)]
 
-                // visibilidad de los check
+
                 if (checkboxContainer.visibility == View.GONE) {
                     checkboxContainer.visibility = View.VISIBLE
                     toggleButton.text = initialText.replace("↓", "↑")
